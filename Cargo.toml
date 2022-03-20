@@ -3,13 +3,4 @@ name = "rtp_test"
 version = "0.1.0"
 edition = "2021"
 
-# WGPU requires cargo resolver v2
-resolver = "2"
-
 [dependencies]
-egui = "0.17"
-egui_wgpu_backend = "0.17"
-egui-winit = "0.17"
-pollster = "0.2"
-wgpu = "0.12"
-winit = "0.26"
