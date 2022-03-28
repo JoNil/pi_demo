@@ -1,3 +1,4 @@
+mod egl;
 mod gl;
 
 fn main() {
