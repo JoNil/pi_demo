@@ -69,7 +69,9 @@ fn main() {
 
     conn.check_request(cookie).unwrap();
 
-    conn.send_request(&x::MapWindow { window });
+    let cookie = conn.send_request_checked(&x::MapWindow { window });
+
+    conn.check_request(cookie).unwrap();
 
     let surface =
         egl::create_window_surface(display, config, window.resource_id() as _, &[]).unwrap();
@@ -80,7 +82,7 @@ fn main() {
 
     loop {
         unsafe {
-            gl::ClearColor(1.0, 0.0, 0.0, 1.0);
+            gl::ClearColor(1.0, 1.0, 0.0, 1.0);
             gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
         }
 
