@@ -18,7 +18,7 @@ mod gfx;
 mod gfx_backend;
 
 const VERT: &'static str = r#"
-    #version 330 es
+    #version 310 es
     layout(location = 0) in vec2 a_pos;
     layout(location = 1) in vec3 a_color;
 
@@ -31,7 +31,7 @@ const VERT: &'static str = r#"
 "#;
 
 const FRAG: &'static str = r#"
-    #version 330 es
+    #version 310 es
     precision mediump float;
 
     layout(location = 0) in vec3 v_color;
