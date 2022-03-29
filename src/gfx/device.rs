@@ -115,13 +115,13 @@ pub struct Device {
 }
 
 impl Device {
-    pub fn new(backend: Box<dyn DeviceBackend>) -> Result<Self, String> {
-        Ok(Self {
+    pub fn new(backend: Box<dyn DeviceBackend>) -> Self {
+        Self {
             backend,
             size: (1, 1),
             dpi: 1.0,
             drop_manager: Arc::new(Default::default()),
-        })
+        }
     }
 
     #[inline]

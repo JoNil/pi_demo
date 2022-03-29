@@ -1,3 +1,4 @@
+use gfx_backend::{egl, gl};
 use winit::{
     event::{Event, WindowEvent},
     event_loop::{ControlFlow, EventLoop},
@@ -5,9 +6,18 @@ use winit::{
     window::WindowBuilder,
 };
 
-mod egl;
-mod gl;
+use crate::{
+    gfx::{
+        buffer::{VertexFormat, VertexInfo},
+        color::Color,
+        device::Device,
+        pipeline::ClearOptions,
+    },
+    gfx_backend::GlesBackend,
+};
+
 mod gfx;
+mod gfx_backend;
 
 static CONFIG_ATTRIBS: &[i32] = &[
     egl::EGL_RED_SIZE,
@@ -24,6 +34,31 @@ static CONFIG_ATTRIBS: &[i32] = &[
 ];
 
 static CONTEXT_ATTRIBS: &[i32] = &[egl::EGL_CONTEXT_CLIENT_VERSION, 3, egl::EGL_NONE];
+
+const VERT: &'static str = r#"
+    #version 330 es
+    layout(location = 0) in vec2 a_pos;
+    layout(location = 1) in vec3 a_color;
+
+    layout(location = 0) out vec3 v_color;
+
+    void main() {
+        v_color = a_color;
+        gl_Position = vec4(a_pos - 0.5, 0.0, 1.0);
+    }
+"#;
+
+const FRAG: &'static str = r#"
+    #version 330 es
+    precision mediump float;
+
+    layout(location = 0) in vec3 v_color;
+    layout(location = 0) out vec4 color;
+
+    void main() {
+        color = vec4(v_color, 1.0);
+    }
+"#;
 
 fn main() {
     let display = egl::get_display(egl::EGL_DEFAULT_DISPLAY).unwrap();
@@ -59,15 +94,51 @@ fn main() {
 
     gl::load_with(|s| egl::get_proc_address(s) as _);
 
+    let backend = GlesBackend::new();
+
+    let device = Device::new(backend);
+
+    let clear_options = ClearOptions::color(Color::new(0.1, 0.2, 0.3, 1.0));
+
+    let vertex_info = VertexInfo::new()
+        .attr(0, VertexFormat::Float32x2)
+        .attr(1, VertexFormat::Float32x3);
+
+    let pipeline = device
+        .create_pipeline()
+        .from(&VERT, &FRAG)
+        .with_vertex_info(&vertex_info)
+        .build()
+        .unwrap();
+
+    #[rustfmt::skip]
+    let vertices = [
+        0.5, 1.0,   1.0, 0.2, 0.3,
+        0.0, 0.0,   0.1, 1.0, 0.3,
+        1.0, 0.0,   0.1, 0.2, 1.0,
+    ];
+
+    let vbo = device
+        .create_vertex_buffer()
+        .with_info(&vertex_info)
+        .with_data(&vertices)
+        .build()
+        .unwrap();
+
     event_loop.run_return(move |event, _, control_flow| {
         *control_flow = ControlFlow::Poll;
 
         match event {
             Event::RedrawRequested(_) => {
-                unsafe {
-                    gl::ClearColor(1.0, 1.0, 0.0, 1.0);
-                    gl::Clear(gl::COLOR_BUFFER_BIT | gl::DEPTH_BUFFER_BIT);
-                }
+                let mut renderer = device.create_renderer();
+
+                renderer.begin(Some(&clear_options));
+                renderer.set_pipeline(&pipeline);
+                renderer.bind_buffer(&vbo);
+                renderer.draw(0, 3);
+                renderer.end();
+
+                device.render(renderer.commands());
 
                 egl::swap_buffers(display, surface);
             }
