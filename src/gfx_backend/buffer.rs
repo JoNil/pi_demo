@@ -1,5 +1,9 @@
-use super::{egl::EGLContext, gl, pipeline::{VertexAttributes, InnerPipeline}};
-use std::ffi::c_void;
+use super::{
+    egl::EGLContext,
+    gl,
+    pipeline::{InnerPipeline, VertexAttributes},
+};
+use std::ffi::{c_void, CString};
 
 pub(crate) enum Kind {
     Vertex(VertexAttributes),
@@ -20,7 +24,6 @@ pub(crate) struct InnerBuffer {
 }
 
 impl InnerBuffer {
-    #[allow(unused_variables)] // ubo is used only on wasm32 builds
     pub fn new(context: &EGLContext, kind: Kind, dynamic: bool) -> Result<Self, String> {
         let buffer = 0;
         unsafe {
@@ -69,7 +72,7 @@ impl InnerBuffer {
                     }
                 }
                 Kind::Uniform(slot, _) => {
-                    gl.bind_buffer_base(gl::UNIFORM_BUFFER, *slot, Some(self.buffer));
+                    gl::BindBufferBase(gl::UNIFORM_BUFFER, *slot, self.buffer);
                 }
                 _ => {}
             }
@@ -104,8 +107,12 @@ impl InnerBuffer {
 
         if let Kind::Uniform(slot, name) = &self.kind {
             unsafe {
-                if let Some(index) = gl.get_uniform_block_index(pipeline.program, name) {
-                    gl.uniform_block_binding(pipeline.program, index, *slot as _);
+                let name = CString::new(*name).unwrap();
+
+                let index = gl::GetUniformBlockIndex(pipeline.program, name.as_ptr());
+
+                if index != gl::INVALID_INDEX {
+                    gl::UniformBlockBinding(pipeline.program, index, *slot);
                 }
             }
         }
@@ -114,7 +121,7 @@ impl InnerBuffer {
     #[inline(always)]
     pub fn clean(self, context: &EGLContext) {
         unsafe {
-            gl.delete_buffer(self.buffer);
+            gl::DeleteBuffers(1, &self.buffer as *const _);
         }
     }
 }
