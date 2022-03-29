@@ -489,7 +489,7 @@ impl DeviceBackend for GlesBackend {
     ) -> Result<(), String> {
         match self.textures.get(&texture) {
             Some(texture) => unsafe {
-                let fbo = 0;
+                let mut fbo = 0;
                 gl::GenFramebuffers(1, &mut fbo as *mut _);
                 gl::BindFramebuffer(gl::FRAMEBUFFER, fbo);
                 gl::FramebufferTexture2D(
@@ -536,7 +536,7 @@ impl DeviceBackend for GlesBackend {
 
 #[inline]
 pub(crate) fn clear(
-    context: &EGLContext,
+    _context: &EGLContext,
     color: &Option<Color>,
     depth: &Option<f32>,
     stencil: &Option<i32>,

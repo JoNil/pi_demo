@@ -17,7 +17,7 @@ impl InnerTexture {
         Ok(Self { texture, size })
     }
 
-    pub fn bind(&self, context: &EGLContext, slot: u32, location: &u32) {
+    pub fn bind(&self, _context: &EGLContext, slot: u32, location: &u32) {
         unsafe {
             gl::ActiveTexture(gl_slot(slot).unwrap());
             gl::BindTexture(gl::TEXTURE_2D, self.texture);
@@ -26,7 +26,7 @@ impl InnerTexture {
     }
 
     #[inline(always)]
-    pub fn clean(self, context: &EGLContext) {
+    pub fn clean(self, _context: &EGLContext) {
         unsafe {
             gl::DeleteTextures(1, &self.texture as *const _);
         }
@@ -49,10 +49,10 @@ fn gl_slot(slot: u32) -> Result<u32, String> {
 }
 
 pub(crate) unsafe fn create_texture(
-    context: &EGLContext,
+    _context: &EGLContext,
     info: &TextureInfo,
 ) -> Result<TextureKey, String> {
-    let texture = 0;
+    let mut texture = 0;
     gl::GenTextures(1, &mut texture as *mut _);
 
     let bytes_per_pixel = info.bytes_per_pixel();
@@ -96,7 +96,7 @@ pub(crate) unsafe fn create_texture(
         );
     }
 
-    let c_data = ptr::null();
+    let mut c_data = ptr::null();
     if let Some(data) = data {
         c_data = data.as_ptr();
     }

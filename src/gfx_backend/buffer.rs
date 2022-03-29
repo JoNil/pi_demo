@@ -24,8 +24,8 @@ pub(crate) struct InnerBuffer {
 }
 
 impl InnerBuffer {
-    pub fn new(context: &EGLContext, kind: Kind, dynamic: bool) -> Result<Self, String> {
-        let buffer = 0;
+    pub fn new(_context: &EGLContext, kind: Kind, dynamic: bool) -> Result<Self, String> {
+        let mut buffer = 0;
         unsafe {
             gl::GenBuffers(1, &mut buffer);
         }
@@ -80,7 +80,7 @@ impl InnerBuffer {
     }
 
     #[inline]
-    pub fn update(&mut self, gl: &EGLContext, data: &[u8]) {
+    pub fn update(&mut self, _context: &EGLContext, data: &[u8]) {
         let needs_alloc = self.gpu_buff_size != data.len();
 
         unsafe {
@@ -102,12 +102,12 @@ impl InnerBuffer {
         }
     }
 
-    pub fn bind_ubo_block(&mut self, context: &EGLContext, pipeline: &InnerPipeline) {
+    pub fn bind_ubo_block(&mut self, _context: &EGLContext, pipeline: &InnerPipeline) {
         self.block_binded = true;
 
         if let Kind::Uniform(slot, name) = &self.kind {
             unsafe {
-                let name = CString::new(*name).unwrap();
+                let name = CString::new(name.clone()).unwrap();
 
                 let index = gl::GetUniformBlockIndex(pipeline.program, name.as_ptr());
 
@@ -119,7 +119,7 @@ impl InnerBuffer {
     }
 
     #[inline(always)]
-    pub fn clean(self, context: &EGLContext) {
+    pub fn clean(self, _context: &EGLContext) {
         unsafe {
             gl::DeleteBuffers(1, &self.buffer as *const _);
         }

@@ -39,7 +39,7 @@ impl InnerRenderTexture {
     }
 
     #[inline(always)]
-    pub fn clean(&self, context: &EGLContext) {
+    pub fn clean(&self, _context: &EGLContext) {
         unsafe {
             gl::DeleteFramebuffers(1, &self.fbo as *const _);
             if let Some(tex) = self.depth_texture {
@@ -49,7 +49,7 @@ impl InnerRenderTexture {
     }
 
     #[inline]
-    pub fn bind(&self, context: &EGLContext) {
+    pub fn bind(&self, _context: &EGLContext) {
         unsafe {
             gl::BindFramebuffer(gl::FRAMEBUFFER, self.fbo);
         }
@@ -61,7 +61,7 @@ unsafe fn create_fbo(
     texture: u32,
     depth_info: Option<DepthInfo>,
 ) -> Result<(u32, Option<u32>), String> {
-    let fbo = 0;
+    let mut fbo = 0;
     gl::GenFramebuffers(1, &mut fbo as *mut _);
     gl::BindFramebuffer(gl::FRAMEBUFFER, fbo);
     gl::FramebufferTexture2D(
