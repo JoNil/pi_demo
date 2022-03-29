@@ -2,7 +2,6 @@ use super::{
     buffer::{VertexAttr, VertexInfo},
     color::Color,
     device::{Device, DropManager, ResourceId},
-    shader::ShaderSource,
 };
 use std::sync::Arc;
 
@@ -65,16 +64,9 @@ impl Pipeline {
     }
 }
 
-enum ShaderKind<'b> {
-    Raw {
-        vertex: &'b [u8],
-        fragment: &'b [u8],
-    },
-
-    Source {
-        vertex: &'b ShaderSource<'b>,
-        fragment: &'b ShaderSource<'b>,
-    },
+struct ShaderSource<'b> {
+    vertex: &'b str,
+    fragment: &'b str,
 }
 
 /// Pipeline builder pattern
@@ -82,7 +74,7 @@ pub struct PipelineBuilder<'a, 'b> {
     device: &'a mut Device,
     attrs: Vec<VertexAttr>,
     options: PipelineOptions,
-    shaders: Option<ShaderKind<'b>>,
+    shaders: Option<ShaderSource<'b>>,
 }
 
 impl<'a, 'b> PipelineBuilder<'a, 'b> {
@@ -95,16 +87,9 @@ impl<'a, 'b> PipelineBuilder<'a, 'b> {
         }
     }
 
-    /// Set the shaders from a ShaderSource object
-    pub fn from(mut self, vertex: &'b ShaderSource, fragment: &'b ShaderSource) -> Self {
-        self.shaders = Some(ShaderKind::Source { vertex, fragment });
-        self
-    }
-
     /// Set the shaders from a bytes slice
-    #[allow(clippy::wrong_self_convention)]
-    pub fn from_raw(mut self, vertex: &'b [u8], fragment: &'b [u8]) -> Self {
-        self.shaders = Some(ShaderKind::Raw { vertex, fragment });
+    pub fn from(mut self, vertex: &'b str, fragment: &'b str) -> Self {
+        self.shaders = Some(ShaderSource { vertex, fragment });
         self
     }
 
@@ -153,13 +138,10 @@ impl<'a, 'b> PipelineBuilder<'a, 'b> {
     /// Build the pipeline with the data set on the builder
     pub fn build(self) -> Result<Pipeline, String> {
         match self.shaders {
-            Some(ShaderKind::Source { vertex, fragment }) => {
+            Some(ShaderSource { vertex, fragment }) => {
                 self.device
                     .inner_create_pipeline(vertex, fragment, &self.attrs, self.options)
             }
-            Some(ShaderKind::Raw { vertex, fragment }) => self
-                .device
-                .inner_create_pipeline_from_raw(vertex, fragment, &self.attrs, self.options),
             _ => Err("Vertex and Fragment shaders should be present".to_string()),
         }
     }

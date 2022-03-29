@@ -8,7 +8,6 @@ use super::{
     pipeline::{Pipeline, PipelineBuilder, PipelineOptions},
     render_texture::{RenderTexture, RenderTextureBuilder},
     renderer::Renderer,
-    shader::ShaderSource,
     texture::{
         Texture, TextureBuilder, TextureInfo, TextureRead, TextureReader, TextureUpdate,
         TextureUpdater,
@@ -240,18 +239,13 @@ impl Device {
     #[inline]
     pub(crate) fn inner_create_pipeline(
         &mut self,
-        vertex_source: &ShaderSource,
-        fragment_source: &ShaderSource,
+        vertex_source: &str,
+        fragment_source: &str,
         vertex_attrs: &[VertexAttr],
         options: PipelineOptions,
     ) -> Result<Pipeline, String> {
-        let api = self.backend.api_name();
-        let vertex = vertex_source
-            .get_source(api)
-            .ok_or(format!("Vertex shader for api '{}' not available.", api))?;
-        let fragment = fragment_source
-            .get_source(api)
-            .ok_or(format!("Fragment shader for api '{}' not available.", api))?;
+        let vertex = vertex_source.as_bytes();
+        let fragment = fragment_source.as_bytes();
         self.inner_create_pipeline_from_raw(vertex, fragment, vertex_attrs, options)
     }
 
