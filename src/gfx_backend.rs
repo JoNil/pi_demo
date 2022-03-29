@@ -542,25 +542,25 @@ pub(crate) fn clear(
     unsafe {
         if let Some(color) = color {
             mask |= gl::COLOR_BUFFER_BIT;
-            gl.clear_color(color.r, color.g, color.b, color.a);
+            gl::ClearColor(color.r, color.g, color.b, color.a);
         }
 
         if let Some(depth) = *depth {
             mask |= gl::DEPTH_BUFFER_BIT;
-            gl.enable(gl::DEPTH_TEST);
-            gl.depth_mask(true);
-            gl.clear_depth_f32(depth);
+            gl::Enable(gl::DEPTH_TEST);
+            gl::DepthMask(1);
+            gl::ClearDepthf(depth);
         }
 
         if let Some(stencil) = *stencil {
             mask |= gl::STENCIL_BUFFER_BIT;
-            gl.enable(gl::STENCIL_TEST);
-            gl.stencil_mask(0xff);
-            gl.clear_stencil(stencil);
+            gl::Enable(gl::STENCIL_TEST);
+            gl::StencilMask(0xff);
+            gl::ClearStencil(stencil);
         }
 
         if mask != 0 {
-            gl.clear(mask);
+            gl::Clear(mask);
         }
     }
 }

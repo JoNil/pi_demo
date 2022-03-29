@@ -1,3 +1,5 @@
+use std::ptr;
+
 use super::{egl::EGLContext, gl, to_gl::ToGl};
 use crate::gfx::texture::{TextureFormat, TextureInfo};
 
@@ -6,33 +8,27 @@ pub type TextureKey = u32;
 pub(crate) struct InnerTexture {
     pub texture: TextureKey,
     pub size: (i32, i32),
-    pub is_srgba: bool,
 }
 
 impl InnerTexture {
     pub fn new(context: &EGLContext, info: &TextureInfo) -> Result<Self, String> {
         let texture = unsafe { create_texture(context, info)? };
         let size = (info.width, info.height);
-        let is_srgba = info.format == TextureFormat::SRgba8;
-        Ok(Self {
-            texture,
-            size,
-            is_srgba,
-        })
+        Ok(Self { texture, size })
     }
 
     pub fn bind(&self, context: &EGLContext, slot: u32, location: &u32) {
         unsafe {
-            gl.active_texture(gl_slot(slot).unwrap());
-            gl.bind_texture(gl::TEXTURE_2D, Some(self.texture));
-            gl.uniform_1_i32(Some(location), slot as _);
+            gl::ActiveTexture(gl_slot(slot).unwrap());
+            gl::BindTexture(gl::TEXTURE_2D, self.texture);
+            gl::Uniform1i(*location as _, slot as _);
         }
     }
 
     #[inline(always)]
     pub fn clean(self, context: &EGLContext) {
         unsafe {
-            gl.delete_texture(self.texture);
+            gl::DeleteTextures(1, &self.texture as *const _);
         }
     }
 }
@@ -56,31 +52,28 @@ pub(crate) unsafe fn create_texture(
     context: &EGLContext,
     info: &TextureInfo,
 ) -> Result<TextureKey, String> {
-    let texture = gl.create_texture()?;
+    let texture = 0;
+    gl::GenTextures(1, &mut texture as *mut _);
 
     let bytes_per_pixel = info.bytes_per_pixel();
     if bytes_per_pixel != 4 {
-        gl.pixel_store_i32(gl::UNPACK_ALIGNMENT, bytes_per_pixel as _);
+        gl::PixelStorei(gl::UNPACK_ALIGNMENT, bytes_per_pixel as _);
     }
 
-    gl.bind_texture(gl::TEXTURE_2D, Some(texture));
+    gl::BindTexture(gl::TEXTURE_2D, texture);
 
-    gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE as _);
-
-    gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE as _);
-
-    gl.tex_parameter_i32(
+    gl::TexParameteri(
         gl::TEXTURE_2D,
         gl::TEXTURE_MAG_FILTER,
         info.mag_filter.to_gl() as _,
     );
-    gl.tex_parameter_i32(
+    gl::TexParameteri(
         gl::TEXTURE_2D,
         gl::TEXTURE_MIN_FILTER,
         info.min_filter.to_gl() as _,
     );
-    gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE as _);
-    gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE as _);
+    gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE as _);
+    gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE as _);
 
     let depth = TextureFormat::Depth16 == info.format;
     let mut data = info.bytes.as_deref();
@@ -91,19 +84,24 @@ pub(crate) unsafe fn create_texture(
         typ = gl::UNSIGNED_SHORT;
         data = None;
 
-        gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::NEAREST as _);
-        gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::NEAREST as _);
+        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MAG_FILTER, gl::NEAREST as _);
+        gl::TexParameteri(gl::TEXTURE_2D, gl::TEXTURE_MIN_FILTER, gl::NEAREST as _);
 
-        gl.framebuffer_texture_2d(
+        gl::FramebufferTexture2D(
             gl::FRAMEBUFFER,
             gl::DEPTH_ATTACHMENT,
             gl::TEXTURE_2D,
-            Some(texture),
+            texture,
             0,
         );
     }
 
-    gl.tex_image_2d(
+    let c_data = ptr::null();
+    if let Some(data) = data {
+        c_data = data.as_ptr();
+    }
+
+    gl::TexImage2D(
         gl::TEXTURE_2D,
         0,
         texture_internal_format(&info.format) as _,
@@ -112,11 +110,11 @@ pub(crate) unsafe fn create_texture(
         0,
         format,
         typ,
-        data,
+        c_data as *const _,
     );
 
-    //TODO mipmaps? gl.generate_mipmap(gl::TEXTURE_2D);
-    gl.bind_texture(gl::TEXTURE_2D, None);
+    gl::BindTexture(gl::TEXTURE_2D, 0);
+
     Ok(texture)
 }
 
@@ -125,14 +123,12 @@ pub(crate) fn texture_format(tf: &TextureFormat) -> u32 {
         TextureFormat::Rgba32 => gl::RGBA,
         TextureFormat::R8 => gl::RED,
         TextureFormat::Depth16 => gl::DEPTH_COMPONENT16,
-        TextureFormat::SRgba8 => gl::RGBA,
     }
 }
 
 pub(crate) fn texture_internal_format(tf: &TextureFormat) -> u32 {
     match tf {
         TextureFormat::R8 => gl::R8,
-        TextureFormat::SRgba8 => gl::SRGB8_ALPHA8,
         _ => texture_format(tf),
     }
 }

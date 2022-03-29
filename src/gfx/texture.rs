@@ -56,10 +56,10 @@ impl Default for TextureInfo {
 
 impl TextureInfo {
     pub fn bytes_per_pixel(&self) -> u8 {
-        use TextureFormat::*;
         match self.format {
-            R8 | SRgba8 => 1,
-            _ => 4,
+            TextureFormat::R8 => 1,
+            TextureFormat::Depth16 => 2,
+            TextureFormat::Rgba32 => 4,
         }
     }
 }
@@ -201,10 +201,8 @@ impl AsRef<Texture> for Texture {
     }
 }
 
-// https://developer.mozilla.org/en-US/docs/Web/API/WebGLRenderingContext/texImage2D
 #[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum TextureFormat {
-    SRgba8,
     Rgba32,
     R8,
     Depth16,
@@ -280,11 +278,6 @@ impl<'a, 'b> TextureBuilder<'a, 'b> {
     pub fn with_premultiplied_alpha(mut self) -> Self {
         self.info.premultiplied_alpha = true;
         self
-    }
-
-    /// Generate the mipmaps
-    pub fn generate_mipmap(self) -> Self {
-        todo!("generate mipmaps");
     }
 
     pub fn build(self) -> Result<Texture, String> {
