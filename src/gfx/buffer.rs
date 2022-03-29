@@ -1,3 +1,10 @@
+use std::sync::Arc;
+
+use super::{
+    device::{Device, DropManager, ResourceId},
+    pipeline::DrawType,
+};
+
 #[derive(Debug)]
 struct BufferIdRef {
     id: u64,

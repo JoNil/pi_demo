@@ -1,7 +1,9 @@
-use crate::texture::*;
-use crate::{Device, DropManager, Renderer, ResourceId};
-use std::ops::Deref;
-use std::sync::Arc;
+use super::{
+    device::{Device, DropManager, ResourceId},
+    renderer::Renderer,
+    texture::{Texture, TextureFilter, TextureFormat, TextureInfo},
+};
+use std::{ops::Deref, sync::Arc};
 
 #[derive(Debug)]
 struct RenderTextureIdRef {

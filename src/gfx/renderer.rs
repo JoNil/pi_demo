@@ -1,8 +1,9 @@
-use crate::buffer::*;
-use crate::commands::*;
-
-use crate::pipeline::*;
-use crate::texture::*;
+use super::{
+    buffer::Buffer,
+    commands::Commands,
+    pipeline::{ClearOptions, DrawPrimitive, Pipeline},
+    texture::Texture,
+};
 
 #[derive(Default, Clone)]
 pub struct Renderer {

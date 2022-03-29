@@ -1,4 +1,20 @@
-use super::limits::Limits;
+use super::{
+    buffer::{
+        Buffer, BufferUsage, IndexBufferBuilder, UniformBufferBuilder, VertexAttr,
+        VertexBufferBuilder, VertexStepMode,
+    },
+    commands::Commands,
+    limits::Limits,
+    pipeline::{Pipeline, PipelineBuilder, PipelineOptions},
+    render_texture::{RenderTexture, RenderTextureBuilder},
+    renderer::Renderer,
+    shader::ShaderSource,
+    texture::{
+        Texture, TextureBuilder, TextureInfo, TextureRead, TextureReader, TextureUpdate,
+        TextureUpdater,
+    },
+};
+use std::sync::{Arc, RwLock};
 
 /// Device resource ID, used to know which resource was dropped
 #[derive(Debug)]
@@ -84,11 +100,11 @@ pub(crate) struct DropManager {
 
 impl DropManager {
     pub fn push(&self, id: ResourceId) {
-        self.dropped.write().push(id);
+        self.dropped.write().unwrap().push(id);
     }
 
     pub fn clean(&self) {
-        self.dropped.write().clear();
+        self.dropped.write().unwrap().clear();
     }
 }
 
@@ -344,11 +360,12 @@ impl Device {
 
     #[inline]
     pub fn clean(&mut self) {
-        if self.drop_manager.dropped.read().is_empty() {
+        if self.drop_manager.dropped.read().unwrap().is_empty() {
             return;
         }
 
-        self.backend.clean(&self.drop_manager.dropped.read());
+        self.backend
+            .clean(&self.drop_manager.dropped.read().unwrap());
         self.drop_manager.clean();
     }
 

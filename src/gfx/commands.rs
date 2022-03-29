@@ -1,5 +1,7 @@
-use crate::color::Color;
-use crate::pipeline::*;
+use super::{
+    color::Color,
+    pipeline::{DrawPrimitive, PipelineOptions},
+};
 
 #[allow(unused)]
 #[derive(Debug, Clone)]

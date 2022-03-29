@@ -49,24 +49,24 @@ pub type EGLContext = *mut c_void;
 pub type EGLSurface = *mut c_void;
 pub type EGLNativeDisplayType = *mut c_void;
 
-#[cfg(not(android))]
+#[cfg(not(target_os = "android"))]
 pub type EGLNativePixmapType = *mut c_void;
 
-#[cfg(not(android))]
+#[cfg(not(target_os = "android"))]
 pub type EGLNativeWindowType = *mut c_void;
 
 #[repr(C)]
-#[cfg(android)]
+#[cfg(target_os = "android")]
 struct android_native_window_t;
 
 #[repr(C)]
-#[cfg(android)]
+#[cfg(target_os = "android")]
 struct egl_native_pixmap_t;
 
-#[cfg(android)]
+#[cfg(target_os = "android")]
 pub type EGLNativePixmapType = *mut egl_native_pixmap_t;
 
-#[cfg(android)]
+#[cfg(target_os = "android")]
 pub type EGLNativeWindowType = *mut android_native_window_t;
 
 pub const EGL_ALPHA_SIZE: EGLint = 0x3021;

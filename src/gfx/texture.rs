@@ -1,10 +1,10 @@
-#![allow(clippy::wrong_self_convention)]
-
-use crate::color::Color;
-use crate::device::{DropManager, ResourceId};
-use crate::Device;
-use notan_math::Rect;
 use std::sync::Arc;
+
+use super::{
+    color::Color,
+    device::{Device, DropManager, ResourceId},
+    rect::Rect,
+};
 
 #[derive(Debug)]
 pub struct TextureRead {
@@ -102,7 +102,6 @@ impl Texture {
             ..
         } = info;
 
-        // let data = Arc::new(bytes);
         let frame = Rect {
             x: 0.0,
             y: 0.0,
@@ -218,7 +217,6 @@ pub enum TextureFilter {
 }
 
 enum TextureKind<'a> {
-    Texture(&'a [u8]),
     Bytes(&'a [u8]),
     EmptyBuffer,
 }
@@ -236,12 +234,6 @@ impl<'a, 'b> TextureBuilder<'a, 'b> {
             info: Default::default(),
             kind: None,
         }
-    }
-
-    /// Creates a Texture from an image
-    pub fn from_image(mut self, bytes: &'b [u8]) -> Self {
-        self.kind = Some(TextureKind::Texture(bytes));
-        self
     }
 
     /// Creates a Texture from a buffer of pixels
@@ -303,22 +295,6 @@ impl<'a, 'b> TextureBuilder<'a, 'b> {
         } = self;
 
         match kind {
-            Some(TextureKind::Texture(bytes)) => {
-                let data = image::load_from_memory(bytes)
-                    .map_err(|e| e.to_string())?
-                    .to_rgba8();
-
-                let pixels = if info.premultiplied_alpha {
-                    premultiplied_alpha(data.to_vec())
-                } else {
-                    data.to_vec()
-                };
-
-                info.bytes = Some(pixels);
-                info.format = TextureFormat::Rgba32;
-                info.width = data.width() as _;
-                info.height = data.height() as _;
-            }
             Some(TextureKind::Bytes(bytes)) => {
                 #[cfg(debug_assertions)]
                 {

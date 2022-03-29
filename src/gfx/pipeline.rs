@@ -1,7 +1,9 @@
-use crate::buffer::{VertexAttr, VertexInfo};
-use crate::color::Color;
-use crate::device::{DropManager, ResourceId};
-use crate::{Device, ShaderSource};
+use super::{
+    buffer::{VertexAttr, VertexInfo},
+    color::Color,
+    device::{Device, DropManager, ResourceId},
+    shader::ShaderSource,
+};
 use std::sync::Arc;
 
 #[derive(Debug)]
