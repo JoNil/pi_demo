@@ -1,9 +1,3 @@
-use winit::{
-    event::{Event, WindowEvent},
-    event_loop::{ControlFlow, EventLoop},
-    platform::run_return::EventLoopExtRunReturn,
-    window::WindowBuilder,
-};
 use crate::{
     gfx::{
         buffer::{VertexFormat, VertexInfo},
@@ -12,6 +6,12 @@ use crate::{
         pipeline::ClearOptions,
     },
     gfx_backend::GlesBackend,
+};
+use winit::{
+    event::{Event, WindowEvent},
+    event_loop::{ControlFlow, EventLoop},
+    platform::run_return::EventLoopExtRunReturn,
+    window::WindowBuilder,
 };
 
 mod gfx;
@@ -46,9 +46,7 @@ fn main() {
     let mut event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
 
-    let backend = GlesBackend::new(&window);
-
-    let device = Device::new(backend);
+    let device = Device::new(Box::new(GlesBackend::new(&window).unwrap()));
 
     let clear_options = ClearOptions::color(Color::new(0.1, 0.2, 0.3, 1.0));
 
@@ -92,7 +90,7 @@ fn main() {
 
                 device.render(encoder.commands());
 
-                egl::swap_buffers(display, surface);
+                device.swap_buffers();
             }
             Event::MainEventsCleared => {
                 window.request_redraw();

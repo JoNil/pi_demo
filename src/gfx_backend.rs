@@ -67,7 +67,7 @@ pub struct GlesBackend {
 }
 
 impl GlesBackend {
-    fn new(window: &Window) -> Result<Self, String> {
+    pub fn new(window: &Window) -> Result<Self, String> {
         let display =
             egl::get_display(egl::EGL_DEFAULT_DISPLAY).ok_or("Faild to get egl display")?;
 
@@ -524,6 +524,10 @@ impl DeviceBackend for GlesBackend {
             },
             None => Err("Invalid texture id".to_string()),
         }
+    }
+
+    fn swap_buffers(&mut self) {
+        egl::swap_buffers(self.display, self.surface);
     }
 }
 

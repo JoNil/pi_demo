@@ -85,6 +85,9 @@ pub trait DeviceBackend {
         bytes: &mut [u8],
         opts: &TextureRead,
     ) -> Result<(), String>;
+
+    /// Let the backend swap the window buffer
+    fn swap_buffers(&mut self);
 }
 
 /// Helper to drop resources on the backend
@@ -153,52 +156,49 @@ impl Device {
         CommandEncoder::new(self.size.0, self.size.1)
     }
 
-    /// Creates a Pipeline builder
     #[inline]
     pub fn create_pipeline(&mut self) -> PipelineBuilder {
         PipelineBuilder::new(self)
     }
 
-    /// Creates a texture builder
     #[inline]
     pub fn create_texture(&mut self) -> TextureBuilder {
         TextureBuilder::new(self)
     }
 
-    /// Creates a render texture builder
     #[inline]
     pub fn create_render_texture(&mut self, width: i32, height: i32) -> RenderTextureBuilder {
         RenderTextureBuilder::new(self, width, height)
     }
 
-    /// Creates a vertex buffer builder
     #[inline]
     pub fn create_vertex_buffer(&mut self) -> VertexBufferBuilder {
         VertexBufferBuilder::new(self)
     }
 
-    /// Creates a index buffer builder
     #[inline]
     pub fn create_index_buffer(&mut self) -> IndexBufferBuilder {
         IndexBufferBuilder::new(self)
     }
 
-    /// Creates a uniform buffer builder
     #[inline]
     pub fn create_uniform_buffer(&mut self, slot: u32, name: &str) -> UniformBufferBuilder {
         UniformBufferBuilder::new(self, slot, name)
     }
 
-    /// Update the texture data
     #[inline]
     pub fn update_texture<'a>(&'a mut self, texture: &'a mut Texture) -> TextureUpdater {
         TextureUpdater::new(self, texture)
     }
 
-    /// Read pixels from a texture
     #[inline]
     pub fn read_pixels<'a>(&'a mut self, texture: &'a Texture) -> TextureReader {
         TextureReader::new(self, texture)
+    }
+
+    #[inline]
+    fn swap_buffers(&mut self) {
+        self.backend.swap_buffers();
     }
 
     #[inline]
@@ -281,7 +281,6 @@ impl Device {
         name: &str,
         data: Option<&[f32]>,
     ) -> Result<Buffer, String> {
-        //debug_assert!(current_pipeline.is_some()) //pipeline should be already binded
         let id = self.backend.create_uniform_buffer(slot, name)?;
         let buffer = Buffer::new(
             id,
