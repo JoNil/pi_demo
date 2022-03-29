@@ -6,13 +6,13 @@ use super::{
 };
 
 #[derive(Default, Clone)]
-pub struct Renderer {
+pub struct CommandEncoder {
     commands: Vec<Commands>,
     size: (i32, i32),
     primitive: DrawPrimitive,
 }
 
-impl Renderer {
+impl CommandEncoder {
     pub fn new(width: i32, height: i32) -> Self {
         Self {
             size: (width, height),

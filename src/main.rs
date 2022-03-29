@@ -130,15 +130,15 @@ fn main() {
 
         match event {
             Event::RedrawRequested(_) => {
-                let mut renderer = device.create_renderer();
+                let mut encoder = device.create_command_encoder();
 
-                renderer.begin(Some(&clear_options));
-                renderer.set_pipeline(&pipeline);
-                renderer.bind_buffer(&vbo);
-                renderer.draw(0, 3);
-                renderer.end();
+                encoder.begin(Some(&clear_options));
+                encoder.set_pipeline(&pipeline);
+                encoder.bind_buffer(&vbo);
+                encoder.draw(0, 3);
+                encoder.end();
 
-                device.render(renderer.commands());
+                device.render(encoder.commands());
 
                 egl::swap_buffers(display, surface);
             }

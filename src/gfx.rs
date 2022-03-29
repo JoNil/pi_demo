@@ -8,5 +8,5 @@ pub mod limits;
 pub mod pipeline;
 pub mod rect;
 pub mod render_texture;
-pub mod renderer;
+pub mod encoder;
 pub mod texture;

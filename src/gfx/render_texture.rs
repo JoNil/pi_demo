@@ -1,6 +1,6 @@
 use super::{
     device::{Device, DropManager, ResourceId},
-    renderer::Renderer,
+    encoder::CommandEncoder,
     texture::{Texture, TextureFilter, TextureFormat, TextureInfo},
 };
 use std::{ops::Deref, sync::Arc};
@@ -54,8 +54,8 @@ impl RenderTexture {
         texture
     }
 
-    pub fn create_renderer(&mut self) -> Renderer {
-        Renderer::new(self.width() as _, self.height() as _)
+    pub fn create_renderer(&mut self) -> CommandEncoder {
+        CommandEncoder::new(self.width() as _, self.height() as _)
     }
 }
 

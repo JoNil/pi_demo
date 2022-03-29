@@ -7,7 +7,7 @@ use super::{
     limits::Limits,
     pipeline::{Pipeline, PipelineBuilder, PipelineOptions},
     render_texture::{RenderTexture, RenderTextureBuilder},
-    renderer::Renderer,
+    encoder::CommandEncoder,
     texture::{
         Texture, TextureBuilder, TextureInfo, TextureRead, TextureReader, TextureUpdate,
         TextureUpdater,
@@ -157,8 +157,8 @@ impl Device {
     }
 
     #[inline]
-    pub fn create_renderer(&self) -> Renderer {
-        Renderer::new(self.size.0, self.size.1)
+    pub fn create_command_encoder(&self) -> CommandEncoder {
+        CommandEncoder::new(self.size.0, self.size.1)
     }
 
     /// Creates a Pipeline builder
