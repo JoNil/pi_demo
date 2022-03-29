@@ -7,6 +7,7 @@ use winit::{
 
 mod egl;
 mod gl;
+mod gfx;
 
 static CONFIG_ATTRIBS: &[i32] = &[
     egl::EGL_RED_SIZE,
