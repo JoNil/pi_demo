@@ -167,7 +167,7 @@ impl GlesBackend {
             }
             None => {
                 unsafe {
-                    self.gl.bind_framebuffer(gl::FRAMEBUFFER, None);
+                    gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
                 }
                 (self.size.0, self.size.1, self.dpi)
             }
@@ -184,7 +184,7 @@ impl GlesBackend {
         let hh = height * dpi;
 
         unsafe {
-            self.gl.viewport(x as _, y as _, ww as _, hh as _);
+            gl::Viewport(x as _, y as _, ww as _, hh as _);
         }
     }
 
@@ -196,20 +196,19 @@ impl GlesBackend {
         let height = height * dpi;
 
         unsafe {
-            self.gl.enable(gl::SCISSOR_TEST);
-            self.gl
-                .scissor(x as _, canvas_height, width as _, height as _);
+            gl::Enable(gl::SCISSOR_TEST);
+            gl::Scissor(x as _, canvas_height, width as _, height as _);
         }
     }
 
     fn end(&mut self) {
         unsafe {
-            self.gl.disable(gl::SCISSOR_TEST);
-            self.gl.bind_buffer(gl::ARRAY_BUFFER, None);
-            self.gl.bind_buffer(gl::ELEMENT_ARRAY_BUFFER, None);
-            self.gl.bind_buffer(gl::UNIFORM_BUFFER, None);
-            self.gl.bind_vertex_array(None);
-            self.gl.bind_framebuffer(gl::FRAMEBUFFER, None);
+            gl::Disable(gl::SCISSOR_TEST);
+            gl::BindBuffer(gl::ARRAY_BUFFER, 0);
+            gl::BindBuffer(gl::ELEMENT_ARRAY_BUFFER, 0);
+            gl::BindBuffer(gl::UNIFORM_BUFFER, 0);
+            gl::BindVertexArray(0);
+            gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
         }
 
         self.using_indices = false;
@@ -283,26 +282,29 @@ impl GlesBackend {
     fn draw(&mut self, primitive: &DrawPrimitive, offset: i32, count: i32) {
         unsafe {
             if self.using_indices {
-                self.gl
-                    .draw_elements(primitive.to_gl(), count, gl::UNSIGNED_INT, offset * 4);
+                gl::DrawElements(
+                    primitive.to_gl(),
+                    count,
+                    gl::UNSIGNED_INT,
+                    (offset * 4) as *const _,
+                );
             } else {
-                self.gl.draw_arrays(primitive.to_gl(), offset, count);
+                gl::DrawArrays(primitive.to_gl(), offset, count);
             }
         }
     }
     fn draw_instanced(&mut self, primitive: &DrawPrimitive, offset: i32, count: i32, length: i32) {
         unsafe {
             if self.using_indices {
-                self.gl.draw_elements_instanced(
+                gl::DrawElementsInstanced(
                     primitive.to_gl(),
                     count,
                     gl::UNSIGNED_INT,
-                    offset,
+                    offset as *const _,
                     length,
                 );
             } else {
-                self.gl
-                    .draw_arrays_instanced(primitive.to_gl(), offset, count, length);
+                gl::DrawArraysInstanced(primitive.to_gl(), offset, count, length);
             }
         }
     }
@@ -459,8 +461,8 @@ impl DeviceBackend for GlesBackend {
         match self.textures.get(&texture) {
             Some(texture) => {
                 unsafe {
-                    self.gl.bind_texture(gl::TEXTURE_2D, Some(texture.texture));
-                    self.gl.tex_sub_image_2d(
+                    gl::BindTexture(gl::TEXTURE_2D, texture.texture);
+                    gl::TexSubImage2D(
                         gl::TEXTURE_2D,
                         0,
                         opts.x_offset,
@@ -469,7 +471,7 @@ impl DeviceBackend for GlesBackend {
                         opts.height,
                         texture_format(&opts.format), // 3d texture needs another value?
                         gl::UNSIGNED_BYTE,            // todo UNSIGNED SHORT FOR DEPTH (3d) TEXTURES
-                        PixelUnpackData::Slice(opts.bytes),
+                        opts.bytes.as_ptr() as *const _,
                     );
                     // todo unbind texture?
                     Ok(())
@@ -487,33 +489,34 @@ impl DeviceBackend for GlesBackend {
     ) -> Result<(), String> {
         match self.textures.get(&texture) {
             Some(texture) => unsafe {
-                let fbo = self.gl.create_framebuffer()?;
-                self.gl.bind_framebuffer(gl::FRAMEBUFFER, Some(fbo));
-                self.gl.framebuffer_texture_2d(
+                let fbo = 0;
+                gl::GenFramebuffers(1, &mut fbo as *mut _);
+                gl::BindFramebuffer(gl::FRAMEBUFFER, fbo);
+                gl::FramebufferTexture2D(
                     gl::FRAMEBUFFER,
                     gl::COLOR_ATTACHMENT0,
                     gl::TEXTURE_2D,
-                    Some(texture.texture),
+                    texture.texture,
                     0,
                 );
 
-                let status = self.gl.check_framebuffer_status(gl::FRAMEBUFFER);
+                let status = gl::CheckFramebufferStatus(gl::FRAMEBUFFER);
                 let can_read = status == gl::FRAMEBUFFER_COMPLETE;
 
                 let clean = || {
-                    self.gl.bind_framebuffer(gl::FRAMEBUFFER, None);
-                    self.gl.delete_framebuffer(fbo);
+                    gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
+                    gl::DeleteFramebuffers(1, &fbo as *const _);
                 };
 
                 if can_read {
-                    self.gl.read_pixels(
+                    gl::ReadPixels(
                         opts.x_offset,
                         opts.y_offset,
                         opts.width,
                         opts.height,
                         texture_format(&opts.format),
                         gl::UNSIGNED_BYTE,
-                        gl::PixelPackData::Slice(bytes),
+                        bytes.as_mut_ptr() as *mut _,
                     );
                     clean();
                     Ok(())

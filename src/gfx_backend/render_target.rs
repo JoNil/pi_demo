@@ -1,7 +1,8 @@
 use super::{
+    clear,
     egl::EGLContext,
     gl::{self},
-    texture::InnerTexture, clear,
+    texture::{create_texture, InnerTexture},
 };
 use crate::gfx::{
     color::Color,
@@ -40,9 +41,9 @@ impl InnerRenderTexture {
     #[inline(always)]
     pub fn clean(&self, context: &EGLContext) {
         unsafe {
-            gl.delete_framebuffer(self.fbo);
+            gl::DeleteFramebuffers(1, &self.fbo as *const _);
             if let Some(tex) = self.depth_texture {
-                gl.delete_texture(tex);
+                gl::DeleteTextures(1, &tex as *const _);
             }
         }
     }
@@ -50,7 +51,7 @@ impl InnerRenderTexture {
     #[inline]
     pub fn bind(&self, context: &EGLContext) {
         unsafe {
-            gl.bind_framebuffer(gl::FRAMEBUFFER, Some(self.fbo));
+            gl::BindFramebuffer(gl::FRAMEBUFFER, self.fbo);
         }
     }
 }
@@ -60,13 +61,14 @@ unsafe fn create_fbo(
     texture: u32,
     depth_info: Option<DepthInfo>,
 ) -> Result<(u32, Option<u32>), String> {
-    let fbo = gl.create_framebuffer()?;
-    gl.bind_framebuffer(gl::FRAMEBUFFER, Some(fbo));
-    gl.framebuffer_texture_2d(
+    let fbo = 0;
+    gl::GenFramebuffers(1, &mut fbo as *mut _);
+    gl::BindFramebuffer(gl::FRAMEBUFFER, fbo);
+    gl::FramebufferTexture2D(
         gl::FRAMEBUFFER,
         gl::COLOR_ATTACHMENT0,
         gl::TEXTURE_2D,
-        Some(texture),
+        texture,
         0,
     );
 
@@ -85,7 +87,7 @@ unsafe fn create_fbo(
         _ => None,
     };
 
-    let status = gl.check_framebuffer_status(gl::FRAMEBUFFER);
+    let status = gl::CheckFramebufferStatus(gl::FRAMEBUFFER);
     if status != gl::FRAMEBUFFER_COMPLETE {
         return Err(
             "Cannot create a render target because the frambuffer is incomplete...".to_string(),
@@ -95,7 +97,7 @@ unsafe fn create_fbo(
     // transparent clear to avoid weird visual glitches
     clear(context, &Some(Color::TRANSPARENT), &None, &None);
 
-    gl.bind_framebuffer(gl::FRAMEBUFFER, None);
+    gl::BindFramebuffer(gl::FRAMEBUFFER, 0);
     Ok((fbo, depth_texture))
 }
 

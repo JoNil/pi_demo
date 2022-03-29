@@ -3,7 +3,11 @@ use crate::gfx::{
     pipeline::{BlendMode, CompareMode, PipelineOptions, StencilAction, StencilOptions},
 };
 
-use super::{egl::EGLContext, gl, to_gl::{ToGl, ToOptionalGl}};
+use super::{
+    egl::EGLContext,
+    gl,
+    to_gl::{ToGl, ToOptionalGl},
+};
 
 pub(crate) struct InnerPipeline {
     pub vertex: u32,
@@ -49,8 +53,8 @@ impl InnerPipeline {
     #[inline(always)]
     pub fn bind(&self, context: &EGLContext, options: &PipelineOptions) {
         unsafe {
-            gl.bind_vertex_array(Some(self.vao));
-            gl.use_program(Some(self.program));
+            gl::BindVertexArray(self.vao);
+            gl::UseProgram(self.program);
 
             set_stencil(context, options);
             set_depth_stencil(context, options);
@@ -112,32 +116,32 @@ impl InnerAttr {
 
     #[inline(always)]
     unsafe fn enable(&self, context: &EGLContext, stride: i32, vertex_step_mode: u32) {
-        gl.enable_vertex_attrib_array(self.location);
-        gl.vertex_attrib_pointer_f32(
+        gl::EnableVertexAttribArray(self.location);
+        gl::VertexAttribPointer(
             self.location,
             self.size,
             self.data_type,
-            self.normalized,
+            self.normalized as u8,
             stride,
-            self.offset,
+            self.offset as *const _,
         );
-        gl.vertex_attrib_divisor(self.location, vertex_step_mode);
+        gl::VertexAttribDivisor(self.location, vertex_step_mode);
     }
 }
 
 #[inline(always)]
 unsafe fn set_stencil(context: &EGLContext, options: &PipelineOptions) {
     if should_disable_stencil(&options.stencil) {
-        gl.disable(gl::STENCIL_TEST);
+        gl::Disable(gl::STENCIL_TEST);
     } else if let Some(opts) = options.stencil {
-        gl.enable(gl::STENCIL_TEST);
-        gl.stencil_mask(opts.write_mask);
-        gl.stencil_op(
+        gl::Enable(gl::STENCIL_TEST);
+        gl::StencilMask(opts.write_mask);
+        gl::StencilOp(
             opts.stencil_fail.to_gl(),
             opts.depth_fail.to_gl(),
             opts.pass.to_gl(),
         );
-        gl.stencil_func(
+        gl::StencilFunc(
             opts.compare.to_gl().unwrap_or(gl::ALWAYS),
             opts.reference as _,
             opts.read_mask,
@@ -149,22 +153,22 @@ unsafe fn set_stencil(context: &EGLContext, options: &PipelineOptions) {
 unsafe fn set_depth_stencil(context: &EGLContext, options: &PipelineOptions) {
     match options.depth_stencil.compare.to_gl() {
         Some(d) => {
-            gl.enable(gl::DEPTH_TEST);
-            gl.depth_func(d);
+            gl::Enable(gl::DEPTH_TEST);
+            gl::DepthFunc(d);
         }
-        _ => gl.disable(gl::DEPTH_TEST),
+        _ => gl::Disable(gl::DEPTH_TEST),
     }
 
-    gl.depth_mask(options.depth_stencil.write);
+    gl::DepthMask(options.depth_stencil.write as _);
 }
 
 #[inline(always)]
 unsafe fn set_color_mask(context: &EGLContext, options: &PipelineOptions) {
-    gl.color_mask(
-        options.color_mask.r,
-        options.color_mask.g,
-        options.color_mask.b,
-        options.color_mask.a,
+    gl::ColorMask(
+        options.color_mask.r as _,
+        options.color_mask.g as _,
+        options.color_mask.b as _,
+        options.color_mask.a as _,
     );
 }
 
@@ -172,10 +176,10 @@ unsafe fn set_color_mask(context: &EGLContext, options: &PipelineOptions) {
 unsafe fn set_culling(context: &EGLContext, options: &PipelineOptions) {
     match options.cull_mode.to_gl() {
         Some(mode) => {
-            gl.enable(gl::CULL_FACE);
-            gl.cull_face(mode);
+            gl::Enable(gl::CULL_FACE);
+            gl::CullFace(mode);
         }
-        _ => gl.disable(gl::CULL_FACE),
+        _ => gl::Disable(gl::CULL_FACE),
     }
 }
 
@@ -183,33 +187,33 @@ unsafe fn set_culling(context: &EGLContext, options: &PipelineOptions) {
 unsafe fn set_blend_mode(context: &EGLContext, options: &PipelineOptions) {
     match (options.color_blend, options.alpha_blend) {
         (Some(cbm), None) => {
-            gl.enable(gl::BLEND);
-            gl.blend_func(cbm.src.to_gl(), cbm.dst.to_gl());
-            gl.blend_equation(cbm.op.to_gl());
+            gl::Enable(gl::BLEND);
+            gl::BlendFunc(cbm.src.to_gl(), cbm.dst.to_gl());
+            gl::BlendEquation(cbm.op.to_gl());
         }
         (Some(cbm), Some(abm)) => {
-            gl.enable(gl::BLEND);
-            gl.blend_func_separate(
+            gl::Enable(gl::BLEND);
+            gl::BlendFuncSeparate(
                 cbm.src.to_gl(),
                 cbm.dst.to_gl(),
                 abm.src.to_gl(),
                 abm.dst.to_gl(),
             );
-            gl.blend_equation_separate(cbm.op.to_gl(), abm.op.to_gl());
+            gl::BlendEquationSeparate(cbm.op.to_gl(), abm.op.to_gl());
         }
         (None, Some(abm)) => {
             let cbm = BlendMode::NORMAL;
-            gl.enable(gl::BLEND);
-            gl.blend_func_separate(
+            gl::Enable(gl::BLEND);
+            gl::BlendFuncSeparate(
                 cbm.src.to_gl(),
                 cbm.dst.to_gl(),
                 abm.src.to_gl(),
                 abm.dst.to_gl(),
             );
-            gl.blend_equation_separate(cbm.op.to_gl(), abm.op.to_gl());
+            gl::BlendEquationSeparate(cbm.op.to_gl(), abm.op.to_gl());
         }
         (None, None) => {
-            gl.disable(gl::BLEND);
+            gl::Disable(gl::BLEND);
         }
     }
 }
@@ -225,10 +229,10 @@ fn clean_pipeline(context: &EGLContext, pip: InnerPipeline) {
     } = pip;
 
     unsafe {
-        gl.delete_shader(vertex);
-        gl.delete_shader(fragment);
-        gl.delete_program(program);
-        gl.delete_vertex_array(vao);
+        gl::DeleteShader(vertex);
+        gl::DeleteShader(fragment);
+        gl::DeleteProgram(program);
+        gl::DeleteVertexArrays(1, &vao as *const _);
     }
 }
 
@@ -245,28 +249,53 @@ fn create_pipeline(
     let program = create_program(context, vertex, fragment)?;
 
     let uniform_locations = unsafe {
-        let count = gl.get_active_uniforms(program);
+        let mut count = 0;
+        gl::GetProgramiv(program, gl::ACTIVE_UNIFORMS, &mut count);
+
+        let mut uniform_max_size = 0;
+        gl::GetProgramiv(
+            program,
+            gl::ACTIVE_UNIFORM_MAX_LENGTH,
+            &mut uniform_max_size,
+        );
+
         (0..count)
             .into_iter()
-            .filter_map(|index| match gl.get_active_uniform(program, index) {
-                Some(u) => match gl.get_uniform_location(program, &u.name) {
-                    Some(loc) => Some(loc),
-                    _ => {
+            .filter_map(|index| {
+                let mut name = String::with_capacity(uniform_max_size as usize);
+                name.extend(std::iter::repeat('\0').take(uniform_max_size as usize));
+                let mut length = 0;
+                let mut size = 0;
+                let mut utype = 0;
+                gl::GetActiveUniform(
+                    program,
+                    index as _,
+                    uniform_max_size,
+                    &mut length,
+                    &mut size,
+                    &mut utype,
+                    name.as_ptr() as *mut _,
+                );
+                name.truncate(length as usize);
+
+                match gl::GetUniformLocation(program, name.as_ptr() as *const _) {
+                    0 => {
                         // inform about uniforms outside of blocks that are missing
-                        if !u.name.contains("") {
-                            eprintln!("Cannot get uniform location for: {}", u.name);
+                        if !name.contains("") {
+                            eprintln!("Cannot get uniform location for: {}", name);
                         }
                         None
                     }
-                },
-                _ => None,
+                    loc => Some(loc as _),
+                }
             })
             .collect::<Vec<_>>()
     };
 
     let vao = unsafe {
-        let vao = gl.create_vertex_array()?;
-        gl.bind_vertex_array(Some(vao));
+        let vao = 0;
+        gl::GenVertexArrays(1, &mut vao as *mut _);
+        gl::BindVertexArray(vao);
         vao
     };
 
@@ -282,17 +311,35 @@ fn create_pipeline(
 #[inline(always)]
 fn create_shader(context: &EGLContext, typ: u32, source: &str) -> Result<u32, String> {
     unsafe {
-        let shader = gl.create_shader(typ)?;
-        gl.shader_source(shader, source);
-        gl.compile_shader(shader);
+        let shader = gl::CreateShader(typ);
+        gl::ShaderSource(
+            shader,
+            1,
+            &(source.as_ptr() as *const _),
+            &(source.len() as _),
+        );
+        gl::CompileShader(shader);
 
-        let success = gl.get_shader_compile_status(shader);
-        if success {
+        let mut status = 0;
+        gl::GetShaderiv(shader, gl::COMPILE_STATUS, &mut status as *mut _);
+        if status {
             return Ok(shader);
         }
 
-        let err = gl.get_shader_info_log(shader);
-        gl.delete_shader(shader);
+        let err = {
+            let mut length = 0;
+            gl::GetShaderiv(shader, gl::INFO_LOG_LENGTH, &mut length as *mut _);
+            if length > 0 {
+                let mut log = String::with_capacity(length as usize);
+                log.extend(std::iter::repeat('\0').take(length as usize));
+                gl::GetShaderInfoLog(shader, length, &mut length, (&log[..]).as_ptr() as *mut _);
+                log.truncate(length as usize);
+                log
+            } else {
+                String::from("")
+            }
+        };
+        gl::DeleteShader(shader);
 
         let typ_name = match typ {
             gl::VERTEX_SHADER => "vertex".to_string(),
@@ -310,18 +357,31 @@ fn create_shader(context: &EGLContext, typ: u32, source: &str) -> Result<u32, St
 #[inline(always)]
 fn create_program(context: &EGLContext, vertex: u32, fragment: u32) -> Result<u32, String> {
     unsafe {
-        let program = gl.create_program()?;
-        gl.attach_shader(program, vertex);
-        gl.attach_shader(program, fragment);
-        gl.link_program(program);
+        let program = gl::CreateProgram();
+        gl::AttachShader(program, vertex);
+        gl::AttachShader(program, fragment);
+        gl::LinkProgram(program);
 
-        let success = gl.get_program_link_status(program);
-        if success {
+        let mut status = 0;
+        gl::GetProgramiv(program, gl::LINK_STATUS, &mut status);
+        if status {
             return Ok(program);
         }
 
-        let err = gl.get_program_info_log(program);
-        gl.delete_program(program);
+        let err = {
+            let mut length = 0;
+            gl::GetProgramiv(program, gl::INFO_LOG_LENGTH, &mut length);
+            if length > 0 {
+                let mut log = String::with_capacity(length as usize);
+                log.extend(std::iter::repeat('\0').take(length as usize));
+                gl::GetProgramInfoLog(program, length, &mut length, (&log[..]).as_ptr() as *mut _);
+                log.truncate(length as usize);
+                log
+            } else {
+                String::from("")
+            }
+        };
+        gl::DeleteProgram(program);
         Err(err)
     }
 }
