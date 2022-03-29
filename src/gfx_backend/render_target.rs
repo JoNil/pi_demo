@@ -1,4 +1,8 @@
-use super::{egl::EGLContext, gl, texture::InnerTexture};
+use super::{
+    egl::EGLContext,
+    gl::{self},
+    texture::InnerTexture, clear,
+};
 use crate::gfx::{
     color::Color,
     texture::{TextureFilter, TextureFormat, TextureInfo},
@@ -53,9 +57,9 @@ impl InnerRenderTexture {
 
 unsafe fn create_fbo(
     context: &EGLContext,
-    texture: UniformMatrix3x2fv,
+    texture: u32,
     depth_info: Option<DepthInfo>,
-) -> Result<(Framebuffer, Option<u32>), String> {
+) -> Result<(u32, Option<u32>), String> {
     let fbo = gl.create_framebuffer()?;
     gl.bind_framebuffer(gl::FRAMEBUFFER, Some(fbo));
     gl.framebuffer_texture_2d(

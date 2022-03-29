@@ -1,18 +1,22 @@
 use self::{
     buffer::{InnerBuffer, Kind},
     egl::{EGLContext, EGLDisplay, EGLSurface},
-    pipeline::{InnerPipeline, VertexAttributes},
+    pipeline::{get_inner_attrs, InnerPipeline, VertexAttributes},
     render_target::InnerRenderTexture,
     texture::{texture_format, InnerTexture},
+    to_gl::ToGl,
 };
-use crate::gfx::{
-    buffer::{VertexAttr, VertexStepMode},
-    color::Color,
-    commands::Commands,
-    device::{DeviceBackend, ResourceId},
-    limits::Limits,
-    pipeline::{DrawPrimitive, PipelineOptions},
-    texture::{TextureInfo, TextureRead, TextureUpdate},
+use crate::{
+    gfx::{
+        buffer::{VertexAttr, VertexStepMode},
+        color::Color,
+        commands::Commands,
+        device::{DeviceBackend, ResourceId},
+        limits::Limits,
+        pipeline::{DrawPrimitive, PipelineOptions},
+        texture::{TextureInfo, TextureRead, TextureUpdate},
+    },
+    gfx_backend::gl::types::GLint,
 };
 use std::collections::HashMap;
 use winit::{platform::unix::WindowExtUnix, window::Window};
@@ -60,39 +64,50 @@ pub struct GlesBackend {
     current_pipeline: u64,
     limits: Limits,
     current_uniforms: Vec<u32>,
-    drawing_srgba: bool,
 }
 
 impl GlesBackend {
     fn new(window: &Window) -> Result<Self, String> {
-        let display = egl::get_display(egl::EGL_DEFAULT_DISPLAY).unwrap();
+        let display =
+            egl::get_display(egl::EGL_DEFAULT_DISPLAY).ok_or("Faild to get egl display")?;
 
         let mut major = 0;
         let mut minor = 0;
 
-        assert!(egl::initialize(display, &mut major, &mut minor));
+        egl::initialize(display, &mut major, &mut minor)
+            .then(|| ())
+            .ok_or("Failed to initialize egl")?;
 
-        assert!(egl::bind_api(egl::EGL_OPENGL_ES_API));
+        egl::bind_api(egl::EGL_OPENGL_ES_API)
+            .then(|| ())
+            .ok_or("Failed to bind api")?;
 
-        let config = egl::choose_config(display, CONFIG_ATTRIBS, 1).unwrap();
+        let config =
+            egl::choose_config(display, CONFIG_ATTRIBS, 1).ok_or("Failed to choose config")?;
 
-        let context =
-            egl::create_context(display, config, egl::EGL_NO_CONTEXT, CONTEXT_ATTRIBS).unwrap();
+        let context = egl::create_context(display, config, egl::EGL_NO_CONTEXT, CONTEXT_ATTRIBS)
+            .ok_or("Failed to create context")?;
 
-        let surface =
-            egl::create_window_surface(display, config, window.xlib_window().unwrap() as _, &[])
-                .unwrap();
+        let window = window.xlib_window().ok_or("Failed to get window")?;
 
-        assert!(egl::make_current(display, surface, surface, context));
+        let surface = egl::create_window_surface(display, config, window as _, &[])
+            .ok_or("Failed to create surface")?;
+
+        egl::make_current(display, surface, surface, context)
+            .then(|| ())
+            .ok_or("Failed to make the context current")?;
 
         gl::load_with(|s| egl::get_proc_address(s) as _);
 
-        let limits = Limits::default();
+        let mut limits = Limits::default();
         unsafe {
-            gl::GetIntegerv(gl::MAX_TEXTURE_SIZE, &mut limits.max_texture_size as *mut _);
+            gl::GetIntegerv(
+                gl::MAX_TEXTURE_SIZE,
+                &mut limits.max_texture_size as *mut _ as *mut GLint,
+            );
             gl::GetIntegerv(
                 gl::MAX_UNIFORM_BLOCK_SIZE,
-                &mut limits.max_uniform_blocks as *mut _,
+                &mut limits.max_uniform_blocks as *mut _ as *mut GLint,
             );
         }
 
@@ -115,7 +130,6 @@ impl GlesBackend {
             current_pipeline: 0,
             limits,
             current_uniforms: vec![],
-            drawing_srgba: false,
         })
     }
 }
@@ -131,31 +145,7 @@ impl Drop for GlesBackend {
 impl GlesBackend {
     #[inline(always)]
     fn clear(&self, color: &Option<Color>, depth: &Option<f32>, stencil: &Option<i32>) {
-        clear(&self.gl, color, depth, stencil);
-    }
-
-    #[inline]
-    fn enable_srgba(&mut self) {
-        if self.drawing_srgba {
-            return;
-        }
-
-        self.drawing_srgba = true;
-        unsafe {
-            self.gl.enable(gl::FRAMEBUFFER_SRGB);
-        }
-    }
-
-    #[inline]
-    fn disable_srgba(&mut self) {
-        if !self.drawing_srgba {
-            return;
-        }
-
-        self.drawing_srgba = false;
-        unsafe {
-            gl::Disable(gl::FRAMEBUFFER_SRGB);
-        }
+        clear(&self.context, color, depth, stencil);
     }
 
     fn begin(
@@ -214,7 +204,6 @@ impl GlesBackend {
 
     fn end(&mut self) {
         unsafe {
-            self.disable_srgba();
             self.gl.disable(gl::SCISSOR_TEST);
             self.gl.bind_buffer(gl::ARRAY_BUFFER, None);
             self.gl.bind_buffer(gl::ELEMENT_ARRAY_BUFFER, None);
@@ -228,13 +217,13 @@ impl GlesBackend {
 
     fn clean_pipeline(&mut self, id: u64) {
         if let Some(pip) = self.pipelines.remove(&id) {
-            pip.clean(&self.gl);
+            pip.clean(&self.context);
         }
     }
 
     fn set_pipeline(&mut self, id: u64, options: &PipelineOptions) {
         if let Some(pip) = self.pipelines.get(&id) {
-            pip.bind(&self.gl, options);
+            pip.bind(&self.context, options);
             self.using_indices = false;
             self.current_pipeline = id;
             self.current_uniforms = pip.uniform_locations.clone();
@@ -258,22 +247,13 @@ impl GlesBackend {
                 _ => {}
             }
 
-            buffer.bind(&self.gl, Some(self.current_pipeline));
+            buffer.bind(&self.context, Some(self.current_pipeline));
         }
     }
 
     fn bind_texture(&mut self, id: u64, slot: u32, location: u32) {
-        let is_srgba = if let Some(texture) = self.textures.get(&id) {
-            texture.bind(&self.gl, slot, self.get_uniform_loc(&location));
-            texture.is_srgba
-        } else {
-            false
-        };
-
-        if is_srgba {
-            self.enable_srgba();
-        } else {
-            self.disable_srgba();
+        if let Some(texture) = self.textures.get(&id) {
+            texture.bind(&self.context, slot, self.get_uniform_loc(&location));
         }
     }
 
@@ -284,19 +264,19 @@ impl GlesBackend {
 
     fn clean_buffer(&mut self, id: u64) {
         if let Some(buffer) = self.buffers.remove(&id) {
-            buffer.clean(&self.gl);
+            buffer.clean(&self.context);
         }
     }
 
     fn clean_texture(&mut self, id: u64) {
         if let Some(texture) = self.textures.remove(&id) {
-            texture.clean(&self.gl);
+            texture.clean(&self.context);
         }
     }
 
     fn clean_render_target(&mut self, id: u64) {
         if let Some(rt) = self.render_targets.remove(&id) {
-            rt.clean(&self.gl);
+            rt.clean(&self.context);
         }
     }
 
@@ -304,9 +284,9 @@ impl GlesBackend {
         unsafe {
             if self.using_indices {
                 self.gl
-                    .draw_elements(primitive.to_glow(), count, gl::UNSIGNED_INT, offset * 4);
+                    .draw_elements(primitive.to_gl(), count, gl::UNSIGNED_INT, offset * 4);
             } else {
-                self.gl.draw_arrays(primitive.to_glow(), offset, count);
+                self.gl.draw_arrays(primitive.to_gl(), offset, count);
             }
         }
     }
@@ -314,7 +294,7 @@ impl GlesBackend {
         unsafe {
             if self.using_indices {
                 self.gl.draw_elements_instanced(
-                    primitive.to_glow(),
+                    primitive.to_gl(),
                     count,
                     gl::UNSIGNED_INT,
                     offset,
@@ -322,17 +302,13 @@ impl GlesBackend {
                 );
             } else {
                 self.gl
-                    .draw_arrays_instanced(primitive.to_glow(), offset, count, length);
+                    .draw_arrays_instanced(primitive.to_gl(), offset, count, length);
             }
         }
     }
 }
 
 impl DeviceBackend for GlesBackend {
-    fn api_name(&self) -> &str {
-        &self.api_name
-    }
-
     fn limits(&self) -> Limits {
         self.limits
     }
@@ -348,8 +324,8 @@ impl DeviceBackend for GlesBackend {
         let fragment_source = std::str::from_utf8(fragment_source).map_err(|e| e.to_string())?;
 
         let inner_pipeline =
-            InnerPipeline::new(&self.gl, vertex_source, fragment_source, vertex_attrs)?;
-        inner_pipeline.bind(&self.gl, &options);
+            InnerPipeline::new(&self.context, vertex_source, fragment_source, vertex_attrs)?;
+        inner_pipeline.bind(&self.context, &options);
 
         self.pipeline_count += 1;
         self.pipelines.insert(self.pipeline_count, inner_pipeline);
@@ -365,16 +341,16 @@ impl DeviceBackend for GlesBackend {
     ) -> Result<u64, String> {
         let (stride, inner_attrs) = get_inner_attrs(attrs);
         let kind = Kind::Vertex(VertexAttributes::new(stride, inner_attrs, step_mode));
-        let mut inner_buffer = InnerBuffer::new(&self.gl, kind, true)?;
-        inner_buffer.bind(&self.gl, Some(self.current_pipeline));
+        let mut inner_buffer = InnerBuffer::new(&self.context, kind, true)?;
+        inner_buffer.bind(&self.context, Some(self.current_pipeline));
         self.buffer_count += 1;
         self.buffers.insert(self.buffer_count, inner_buffer);
         Ok(self.buffer_count)
     }
 
     fn create_index_buffer(&mut self) -> Result<u64, String> {
-        let mut inner_buffer = InnerBuffer::new(&self.gl, Kind::Index, true)?;
-        inner_buffer.bind(&self.gl, Some(self.current_pipeline));
+        let mut inner_buffer = InnerBuffer::new(&self.context, Kind::Index, true)?;
+        inner_buffer.bind(&self.context, Some(self.current_pipeline));
         self.buffer_count += 1;
         self.buffers.insert(self.buffer_count, inner_buffer);
         Ok(self.buffer_count)
@@ -382,8 +358,8 @@ impl DeviceBackend for GlesBackend {
 
     fn create_uniform_buffer(&mut self, slot: u32, name: &str) -> Result<u64, String> {
         let mut inner_buffer =
-            InnerBuffer::new(&self.gl, Kind::Uniform(slot, name.to_string()), true)?;
-        inner_buffer.bind(&self.gl, Some(self.current_pipeline));
+            InnerBuffer::new(&self.context, Kind::Uniform(slot, name.to_string()), true)?;
+        inner_buffer.bind(&self.context, Some(self.current_pipeline));
         self.buffer_count += 1;
         self.buffers.insert(self.buffer_count, inner_buffer);
         Ok(self.buffer_count)
@@ -391,8 +367,8 @@ impl DeviceBackend for GlesBackend {
 
     fn set_buffer_data(&mut self, id: u64, data: &[u8]) {
         if let Some(buffer) = self.buffers.get_mut(&id) {
-            buffer.bind(&self.gl, None);
-            buffer.update(&self.gl, data);
+            buffer.bind(&self.context, None);
+            buffer.update(&self.context, data);
         }
     }
 
@@ -456,7 +432,7 @@ impl DeviceBackend for GlesBackend {
     }
 
     fn create_texture(&mut self, info: &TextureInfo) -> Result<u64, String> {
-        let inner_texture = InnerTexture::new(&self.gl, info)?;
+        let inner_texture = InnerTexture::new(&self.context, info)?;
         self.texture_count += 1;
         self.textures.insert(self.texture_count, inner_texture);
         Ok(self.texture_count)

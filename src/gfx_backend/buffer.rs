@@ -1,4 +1,4 @@
-use super::{egl::EGLContext, gl, pipeline::VertexAttributes};
+use super::{egl::EGLContext, gl, pipeline::{VertexAttributes, InnerPipeline}};
 use std::ffi::c_void;
 
 pub(crate) enum Kind {

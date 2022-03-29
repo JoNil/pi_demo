@@ -4,10 +4,10 @@ use super::{
         VertexBufferBuilder, VertexStepMode,
     },
     commands::Commands,
+    encoder::CommandEncoder,
     limits::Limits,
     pipeline::{Pipeline, PipelineBuilder, PipelineOptions},
     render_texture::{RenderTexture, RenderTextureBuilder},
-    encoder::CommandEncoder,
     texture::{
         Texture, TextureBuilder, TextureInfo, TextureRead, TextureReader, TextureUpdate,
         TextureUpdater,
@@ -26,9 +26,6 @@ pub enum ResourceId {
 
 /// Represents a the implementation graphics backend like glow, wgpu or another
 pub trait DeviceBackend {
-    /// Returns the name of the api used (like webgl, wgpu, etc...)
-    fn api_name(&self) -> &str;
-
     /// Return the device limits
     fn limits(&self) -> Limits {
         Default::default()
@@ -149,11 +146,6 @@ impl Device {
     pub fn set_dpi(&mut self, scale_factor: f64) {
         self.dpi = scale_factor;
         self.backend.set_dpi(scale_factor);
-    }
-
-    #[inline]
-    pub fn api_name(&self) -> &str {
-        self.backend.api_name()
     }
 
     #[inline]

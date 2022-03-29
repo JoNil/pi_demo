@@ -63,7 +63,7 @@ impl ToGl for BlendFactor {
 impl ToOptionalGl for CompareMode {
     fn to_gl(&self) -> Option<u32> {
         Some(match self {
-            None => return Option::None,
+            CompareMode::None => return Option::None,
             CompareMode::Less => gl::LESS,
             CompareMode::Equal => gl::EQUAL,
             CompareMode::LEqual => gl::LEQUAL,
@@ -78,7 +78,7 @@ impl ToOptionalGl for CompareMode {
 impl ToOptionalGl for CullMode {
     fn to_gl(&self) -> Option<u32> {
         Some(match self {
-            None => return Option::None,
+            CullMode::None => return Option::None,
             CullMode::Front => gl::FRONT,
             CullMode::Back => gl::BACK,
         })

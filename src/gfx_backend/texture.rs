@@ -1,4 +1,4 @@
-use super::{egl::EGLContext, gl};
+use super::{egl::EGLContext, gl, to_gl::ToGl};
 use crate::gfx::texture::{TextureFormat, TextureInfo};
 
 pub type TextureKey = u32;
@@ -72,12 +72,12 @@ pub(crate) unsafe fn create_texture(
     gl.tex_parameter_i32(
         gl::TEXTURE_2D,
         gl::TEXTURE_MAG_FILTER,
-        info.mag_filter.to_glow() as _,
+        info.mag_filter.to_gl() as _,
     );
     gl.tex_parameter_i32(
         gl::TEXTURE_2D,
         gl::TEXTURE_MIN_FILTER,
-        info.min_filter.to_glow() as _,
+        info.min_filter.to_gl() as _,
     );
     gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_WRAP_S, gl::CLAMP_TO_EDGE as _);
     gl.tex_parameter_i32(gl::TEXTURE_2D, gl::TEXTURE_WRAP_T, gl::CLAMP_TO_EDGE as _);

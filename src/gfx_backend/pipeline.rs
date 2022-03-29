@@ -1,9 +1,9 @@
 use crate::gfx::{
     buffer::{VertexAttr, VertexStepMode},
-    pipeline::{BlendMode, PipelineOptions, CompareMode, StencilAction, StencilOptions},
+    pipeline::{BlendMode, CompareMode, PipelineOptions, StencilAction, StencilOptions},
 };
 
-use super::{egl::EGLContext, gl};
+use super::{egl::EGLContext, gl, to_gl::{ToGl, ToOptionalGl}};
 
 pub(crate) struct InnerPipeline {
     pub vertex: u32,
@@ -104,7 +104,7 @@ impl InnerAttr {
         Self {
             location: attr.location,
             size: attr.format.size(),
-            data_type: attr.format.to_glow(),
+            data_type: attr.format.to_gl(),
             normalized: attr.format.normalized(),
             offset,
         }
@@ -133,12 +133,12 @@ unsafe fn set_stencil(context: &EGLContext, options: &PipelineOptions) {
         gl.enable(gl::STENCIL_TEST);
         gl.stencil_mask(opts.write_mask);
         gl.stencil_op(
-            opts.stencil_fail.to_glow(),
-            opts.depth_fail.to_glow(),
-            opts.pass.to_glow(),
+            opts.stencil_fail.to_gl(),
+            opts.depth_fail.to_gl(),
+            opts.pass.to_gl(),
         );
         gl.stencil_func(
-            opts.compare.to_glow().unwrap_or(gl::ALWAYS),
+            opts.compare.to_gl().unwrap_or(gl::ALWAYS),
             opts.reference as _,
             opts.read_mask,
         );
@@ -147,7 +147,7 @@ unsafe fn set_stencil(context: &EGLContext, options: &PipelineOptions) {
 
 #[inline(always)]
 unsafe fn set_depth_stencil(context: &EGLContext, options: &PipelineOptions) {
-    match options.depth_stencil.compare.to_glow() {
+    match options.depth_stencil.compare.to_gl() {
         Some(d) => {
             gl.enable(gl::DEPTH_TEST);
             gl.depth_func(d);
@@ -170,7 +170,7 @@ unsafe fn set_color_mask(context: &EGLContext, options: &PipelineOptions) {
 
 #[inline(always)]
 unsafe fn set_culling(context: &EGLContext, options: &PipelineOptions) {
-    match options.cull_mode.to_glow() {
+    match options.cull_mode.to_gl() {
         Some(mode) => {
             gl.enable(gl::CULL_FACE);
             gl.cull_face(mode);
@@ -184,29 +184,29 @@ unsafe fn set_blend_mode(context: &EGLContext, options: &PipelineOptions) {
     match (options.color_blend, options.alpha_blend) {
         (Some(cbm), None) => {
             gl.enable(gl::BLEND);
-            gl.blend_func(cbm.src.to_glow(), cbm.dst.to_glow());
-            gl.blend_equation(cbm.op.to_glow());
+            gl.blend_func(cbm.src.to_gl(), cbm.dst.to_gl());
+            gl.blend_equation(cbm.op.to_gl());
         }
         (Some(cbm), Some(abm)) => {
             gl.enable(gl::BLEND);
             gl.blend_func_separate(
-                cbm.src.to_glow(),
-                cbm.dst.to_glow(),
-                abm.src.to_glow(),
-                abm.dst.to_glow(),
+                cbm.src.to_gl(),
+                cbm.dst.to_gl(),
+                abm.src.to_gl(),
+                abm.dst.to_gl(),
             );
-            gl.blend_equation_separate(cbm.op.to_glow(), abm.op.to_glow());
+            gl.blend_equation_separate(cbm.op.to_gl(), abm.op.to_gl());
         }
         (None, Some(abm)) => {
             let cbm = BlendMode::NORMAL;
             gl.enable(gl::BLEND);
             gl.blend_func_separate(
-                cbm.src.to_glow(),
-                cbm.dst.to_glow(),
-                abm.src.to_glow(),
-                abm.dst.to_glow(),
+                cbm.src.to_gl(),
+                cbm.dst.to_gl(),
+                abm.src.to_gl(),
+                abm.dst.to_gl(),
             );
-            gl.blend_equation_separate(cbm.op.to_glow(), abm.op.to_glow());
+            gl.blend_equation_separate(cbm.op.to_gl(), abm.op.to_gl());
         }
         (None, None) => {
             gl.disable(gl::BLEND);
@@ -280,7 +280,7 @@ fn create_pipeline(
 }
 
 #[inline(always)]
-fn create_shader(context: &EGLContext, typ: u32, source: &str) -> Result<Shader, String> {
+fn create_shader(context: &EGLContext, typ: u32, source: &str) -> Result<u32, String> {
     unsafe {
         let shader = gl.create_shader(typ)?;
         gl.shader_source(shader, source);
@@ -308,11 +308,7 @@ fn create_shader(context: &EGLContext, typ: u32, source: &str) -> Result<Shader,
 }
 
 #[inline(always)]
-fn create_program(
-    context: &EGLContext,
-    vertex: u32,
-    fragment: u32,
-) -> Result<u32, String> {
+fn create_program(context: &EGLContext, vertex: u32, fragment: u32) -> Result<u32, String> {
     unsafe {
         let program = gl.create_program()?;
         gl.attach_shader(program, vertex);
