@@ -197,7 +197,7 @@ impl Device {
     }
 
     #[inline]
-    fn swap_buffers(&mut self) {
+    pub fn swap_buffers(&mut self) {
         self.backend.swap_buffers();
     }
 
