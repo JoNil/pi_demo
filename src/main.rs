@@ -8,7 +8,7 @@ use crate::{
     gfx_backend::GlesBackend,
 };
 use winit::{
-    event::{Event, WindowEvent},
+    event::Event,
     event_loop::{ControlFlow, EventLoop},
     platform::run_return::EventLoopExtRunReturn,
     window::WindowBuilder,
@@ -17,7 +17,7 @@ use winit::{
 mod gfx;
 mod gfx_backend;
 
-const VERT: &'static str = r#"
+const VERT: &str = r#"
     #version 310 es
     layout(location = 0) in vec2 a_pos;
     layout(location = 1) in vec3 a_color;
@@ -30,7 +30,7 @@ const VERT: &'static str = r#"
     }
 "#;
 
-const FRAG: &'static str = r#"
+const FRAG: &str = r#"
     #version 310 es
     precision mediump float;
 
@@ -56,7 +56,7 @@ fn main() {
 
     let pipeline = device
         .create_pipeline()
-        .from(&VERT, &FRAG)
+        .from(VERT, FRAG)
         .with_vertex_info(&vertex_info)
         .build()
         .unwrap();
@@ -95,10 +95,19 @@ fn main() {
             Event::MainEventsCleared => {
                 window.request_redraw();
             }
-            Event::WindowEvent {
-                event: WindowEvent::CloseRequested,
-                window_id,
-            } if window_id == window.id() => *control_flow = ControlFlow::Exit,
+            Event::WindowEvent { event, window_id } => match event {
+                winit::event::WindowEvent::Resized(size) => {
+                    if size.width > 0 && size.height > 0 {
+                        device.set_size(size.width as i32, size.height as i32);
+                    }
+                }
+                winit::event::WindowEvent::CloseRequested => {
+                    if window_id == window.id() {
+                        *control_flow = ControlFlow::Exit;
+                    }
+                }
+                _ => {}
+            },
             _ => (),
         }
     });
