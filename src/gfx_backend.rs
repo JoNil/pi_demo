@@ -24,7 +24,7 @@ use winit::window::Window;
 use egl::{EGLContext, EGLDisplay, EGLSurface};
 
 #[cfg(target_os = "linux")]
-use platform::unix::WindowExtUnix;
+use winit::platform::unix::WindowExtUnix;
 
 mod buffer;
 pub mod gl;
@@ -55,7 +55,7 @@ static CONFIG_ATTRIBS: &[i32] = &[
 static CONTEXT_ATTRIBS: &[i32] = &[egl::EGL_CONTEXT_CLIENT_VERSION, 3, egl::EGL_NONE];
 
 #[cfg(target_os = "linux")]
-type Context = raw_gl_context::EGLContext;
+type Context = EGLContext;
 
 #[cfg(target_os = "windows")]
 type Context = raw_gl_context::GlContext;
