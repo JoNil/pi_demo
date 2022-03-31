@@ -92,7 +92,7 @@ fn main() {
             Event::RedrawRequested(_) => {
                 let mut encoder = device.create_command_encoder();
 
-                let mvp = Mat4::from_rotation_z(angle);
+                let rot = Mat4::from_rotation_z(angle);
                 let proj = Mat4::perspective_rh_gl(
                     PI / 2.0,
                     device.size().0 as f32 / device.size().1 as f32,
@@ -100,7 +100,7 @@ fn main() {
                     1000.0,
                 );
 
-                let mat = proj * mvp;
+                let mat = proj * rot;
 
                 angle += 0.005;
 
