@@ -4,9 +4,9 @@ use crate::gfx::{
 };
 
 use super::{
-    egl::EGLContext,
     gl,
     to_gl::{ToGl, ToOptionalGl},
+    Context,
 };
 
 pub(crate) struct InnerPipeline {
@@ -35,7 +35,7 @@ pub(crate) fn get_inner_attrs(attrs: &[VertexAttr]) -> (i32, Vec<InnerAttr>) {
 impl InnerPipeline {
     #[inline(always)]
     pub fn new(
-        context: &EGLContext,
+        context: &Context,
         vertex_source: &str,
         fragment_source: &str,
         attrs: &[VertexAttr],
@@ -46,12 +46,12 @@ impl InnerPipeline {
     }
 
     #[inline(always)]
-    pub fn clean(self, context: &EGLContext) {
+    pub fn clean(self, context: &Context) {
         clean_pipeline(context, self);
     }
 
     #[inline(always)]
-    pub fn bind(&self, context: &EGLContext, options: &PipelineOptions) {
+    pub fn bind(&self, context: &Context, options: &PipelineOptions) {
         unsafe {
             gl::BindVertexArray(self.vao);
             gl::UseProgram(self.program);
@@ -81,7 +81,7 @@ impl VertexAttributes {
         }
     }
 
-    pub unsafe fn enable(&self, context: &EGLContext) {
+    pub unsafe fn enable(&self, context: &Context) {
         let step_mode = match self.vertex_step_mode {
             VertexStepMode::Vertex => 0,
             VertexStepMode::Instance => 1,
@@ -115,7 +115,7 @@ impl InnerAttr {
     }
 
     #[inline(always)]
-    unsafe fn enable(&self, _context: &EGLContext, stride: i32, vertex_step_mode: u32) {
+    unsafe fn enable(&self, _context: &Context, stride: i32, vertex_step_mode: u32) {
         gl::EnableVertexAttribArray(self.location);
         gl::VertexAttribPointer(
             self.location,
@@ -130,7 +130,7 @@ impl InnerAttr {
 }
 
 #[inline(always)]
-unsafe fn set_stencil(_context: &EGLContext, options: &PipelineOptions) {
+unsafe fn set_stencil(_context: &Context, options: &PipelineOptions) {
     if should_disable_stencil(&options.stencil) {
         gl::Disable(gl::STENCIL_TEST);
     } else if let Some(opts) = options.stencil {
@@ -150,7 +150,7 @@ unsafe fn set_stencil(_context: &EGLContext, options: &PipelineOptions) {
 }
 
 #[inline(always)]
-unsafe fn set_depth_stencil(_context: &EGLContext, options: &PipelineOptions) {
+unsafe fn set_depth_stencil(_context: &Context, options: &PipelineOptions) {
     match options.depth_stencil.compare.to_gl() {
         Some(d) => {
             gl::Enable(gl::DEPTH_TEST);
@@ -163,7 +163,7 @@ unsafe fn set_depth_stencil(_context: &EGLContext, options: &PipelineOptions) {
 }
 
 #[inline(always)]
-unsafe fn set_color_mask(_context: &EGLContext, options: &PipelineOptions) {
+unsafe fn set_color_mask(_context: &Context, options: &PipelineOptions) {
     gl::ColorMask(
         options.color_mask.r as _,
         options.color_mask.g as _,
@@ -173,7 +173,7 @@ unsafe fn set_color_mask(_context: &EGLContext, options: &PipelineOptions) {
 }
 
 #[inline(always)]
-unsafe fn set_culling(_context: &EGLContext, options: &PipelineOptions) {
+unsafe fn set_culling(_context: &Context, options: &PipelineOptions) {
     match options.cull_mode.to_gl() {
         Some(mode) => {
             gl::Enable(gl::CULL_FACE);
@@ -184,7 +184,7 @@ unsafe fn set_culling(_context: &EGLContext, options: &PipelineOptions) {
 }
 
 #[inline(always)]
-unsafe fn set_blend_mode(_context: &EGLContext, options: &PipelineOptions) {
+unsafe fn set_blend_mode(_context: &Context, options: &PipelineOptions) {
     match (options.color_blend, options.alpha_blend) {
         (Some(cbm), None) => {
             gl::Enable(gl::BLEND);
@@ -219,7 +219,7 @@ unsafe fn set_blend_mode(_context: &EGLContext, options: &PipelineOptions) {
 }
 
 #[inline(always)]
-fn clean_pipeline(_context: &EGLContext, pip: InnerPipeline) {
+fn clean_pipeline(_context: &Context, pip: InnerPipeline) {
     let InnerPipeline {
         vertex,
         fragment,
@@ -238,7 +238,7 @@ fn clean_pipeline(_context: &EGLContext, pip: InnerPipeline) {
 
 #[inline(always)]
 fn create_pipeline(
-    context: &EGLContext,
+    context: &Context,
     vertex_source: &str,
     fragment_source: &str,
     _stride: i32,
@@ -309,7 +309,7 @@ fn create_pipeline(
 }
 
 #[inline(always)]
-fn create_shader(_context: &EGLContext, typ: u32, source: &str) -> Result<u32, String> {
+fn create_shader(_context: &Context, typ: u32, source: &str) -> Result<u32, String> {
     unsafe {
         let shader = gl::CreateShader(typ);
         gl::ShaderSource(
@@ -355,7 +355,7 @@ fn create_shader(_context: &EGLContext, typ: u32, source: &str) -> Result<u32, S
 }
 
 #[inline(always)]
-fn create_program(_context: &EGLContext, vertex: u32, fragment: u32) -> Result<u32, String> {
+fn create_program(_context: &Context, vertex: u32, fragment: u32) -> Result<u32, String> {
     unsafe {
         let program = gl::CreateProgram();
         gl::AttachShader(program, vertex);

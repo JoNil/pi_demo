@@ -1,7 +1,7 @@
 use super::{
-    egl::EGLContext,
     gl,
     pipeline::{InnerPipeline, VertexAttributes},
+    Context,
 };
 use std::ffi::{c_void, CString};
 
@@ -24,7 +24,7 @@ pub(crate) struct InnerBuffer {
 }
 
 impl InnerBuffer {
-    pub fn new(_context: &EGLContext, kind: Kind, dynamic: bool) -> Result<Self, String> {
+    pub fn new(_context: &Context, kind: Kind, dynamic: bool) -> Result<Self, String> {
         let mut buffer = 0;
         unsafe {
             gl::GenBuffers(1, &mut buffer);
@@ -56,7 +56,7 @@ impl InnerBuffer {
     }
 
     #[inline]
-    pub fn bind(&mut self, context: &EGLContext, pipeline_id: Option<u64>) {
+    pub fn bind(&mut self, context: &Context, pipeline_id: Option<u64>) {
         let pipeline_changed = pipeline_id.is_some() && pipeline_id != self.last_pipeline;
         if pipeline_changed {
             self.last_pipeline = pipeline_id;
@@ -80,7 +80,7 @@ impl InnerBuffer {
     }
 
     #[inline]
-    pub fn update(&mut self, _context: &EGLContext, data: &[u8]) {
+    pub fn update(&mut self, _context: &Context, data: &[u8]) {
         let needs_alloc = self.gpu_buff_size != data.len();
 
         unsafe {
@@ -102,7 +102,7 @@ impl InnerBuffer {
         }
     }
 
-    pub fn bind_ubo_block(&mut self, _context: &EGLContext, pipeline: &InnerPipeline) {
+    pub fn bind_ubo_block(&mut self, _context: &Context, pipeline: &InnerPipeline) {
         self.block_binded = true;
 
         if let Kind::Uniform(slot, name) = &self.kind {
@@ -119,7 +119,7 @@ impl InnerBuffer {
     }
 
     #[inline(always)]
-    pub fn clean(self, _context: &EGLContext) {
+    pub fn clean(self, _context: &Context) {
         unsafe {
             gl::DeleteBuffers(1, &self.buffer as *const _);
         }

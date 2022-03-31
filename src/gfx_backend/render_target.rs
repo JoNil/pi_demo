@@ -1,8 +1,8 @@
 use super::{
     clear,
-    egl::EGLContext,
     gl::{self},
     texture::{create_texture, InnerTexture},
+    Context,
 };
 use crate::gfx::{
     color::Color,
@@ -17,7 +17,7 @@ pub(crate) struct InnerRenderTexture {
 
 impl InnerRenderTexture {
     pub fn new(
-        context: &EGLContext,
+        context: &Context,
         texture: &InnerTexture,
         info: &TextureInfo,
     ) -> Result<Self, String> {
@@ -39,7 +39,7 @@ impl InnerRenderTexture {
     }
 
     #[inline(always)]
-    pub fn clean(&self, _context: &EGLContext) {
+    pub fn clean(&self, _context: &Context) {
         unsafe {
             gl::DeleteFramebuffers(1, &self.fbo as *const _);
             if let Some(tex) = self.depth_texture {
@@ -49,7 +49,7 @@ impl InnerRenderTexture {
     }
 
     #[inline]
-    pub fn bind(&self, _context: &EGLContext) {
+    pub fn bind(&self, _context: &Context) {
         unsafe {
             gl::BindFramebuffer(gl::FRAMEBUFFER, self.fbo);
         }
@@ -57,7 +57,7 @@ impl InnerRenderTexture {
 }
 
 unsafe fn create_fbo(
-    context: &EGLContext,
+    context: &Context,
     texture: u32,
     depth_info: Option<DepthInfo>,
 ) -> Result<(u32, Option<u32>), String> {

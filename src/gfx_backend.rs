@@ -1,6 +1,5 @@
 use self::{
     buffer::{InnerBuffer, Kind},
-    egl::{EGLContext, EGLDisplay, EGLSurface},
     pipeline::{get_inner_attrs, InnerPipeline, VertexAttributes},
     render_target::InnerRenderTexture,
     texture::{texture_format, InnerTexture},
@@ -19,16 +18,25 @@ use crate::{
     gfx_backend::gl::types::GLint,
 };
 use std::collections::HashMap;
-use winit::{platform::unix::WindowExtUnix, window::Window};
+use winit::window::Window;
+
+#[cfg(target_os = "linux")]
+use egl::{EGLContext, EGLDisplay, EGLSurface};
+
+#[cfg(target_os = "linux")]
+use platform::unix::WindowExtUnix;
 
 mod buffer;
-pub mod egl;
 pub mod gl;
 mod pipeline;
 mod render_target;
 mod texture;
 mod to_gl;
 
+#[cfg(target_os = "linux")]
+pub mod egl;
+
+#[cfg(target_os = "linux")]
 static CONFIG_ATTRIBS: &[i32] = &[
     egl::EGL_RED_SIZE,
     8,
@@ -43,12 +51,25 @@ static CONFIG_ATTRIBS: &[i32] = &[
     egl::EGL_NONE,
 ];
 
+#[cfg(target_os = "linux")]
 static CONTEXT_ATTRIBS: &[i32] = &[egl::EGL_CONTEXT_CLIENT_VERSION, 3, egl::EGL_NONE];
 
+#[cfg(target_os = "linux")]
+type Context = raw_gl_context::EGLContext;
+
+#[cfg(target_os = "windows")]
+type Context = raw_gl_context::GlContext;
+
 pub struct GlesBackend {
+    #[cfg(target_os = "linux")]
     display: EGLDisplay,
+    #[cfg(target_os = "linux")]
     context: EGLContext,
+    #[cfg(target_os = "linux")]
     surface: EGLSurface,
+
+    #[cfg(target_os = "windows")]
+    context: raw_gl_context::GlContext,
 
     buffer_count: u64,
     texture_count: u64,
@@ -68,36 +89,55 @@ pub struct GlesBackend {
 
 impl GlesBackend {
     pub fn new(window: &Window) -> Result<Self, String> {
-        let display =
-            egl::get_display(egl::EGL_DEFAULT_DISPLAY).ok_or("Faild to get egl display")?;
+        #[cfg(target_os = "linux")]
+        let (display, context, surface) = {
+            let display =
+                egl::get_display(egl::EGL_DEFAULT_DISPLAY).ok_or("Faild to get egl display")?;
 
-        let mut major = 0;
-        let mut minor = 0;
+            let mut major = 0;
+            let mut minor = 0;
 
-        egl::initialize(display, &mut major, &mut minor)
-            .then(|| ())
-            .ok_or("Failed to initialize egl")?;
+            egl::initialize(display, &mut major, &mut minor)
+                .then(|| ())
+                .ok_or("Failed to initialize egl")?;
 
-        egl::bind_api(egl::EGL_OPENGL_ES_API)
-            .then(|| ())
-            .ok_or("Failed to bind api")?;
+            egl::bind_api(egl::EGL_OPENGL_ES_API)
+                .then(|| ())
+                .ok_or("Failed to bind api")?;
 
-        let config =
-            egl::choose_config(display, CONFIG_ATTRIBS, 1).ok_or("Failed to choose config")?;
+            let config =
+                egl::choose_config(display, CONFIG_ATTRIBS, 1).ok_or("Failed to choose config")?;
 
-        let context = egl::create_context(display, config, egl::EGL_NO_CONTEXT, CONTEXT_ATTRIBS)
-            .ok_or("Failed to create context")?;
+            let context =
+                egl::create_context(display, config, egl::EGL_NO_CONTEXT, CONTEXT_ATTRIBS)
+                    .ok_or("Failed to create context")?;
 
-        let window = window.xlib_window().ok_or("Failed to get window")?;
+            let window = window.xlib_window().ok_or("Failed to get window")?;
 
-        let surface = egl::create_window_surface(display, config, window as _, &[])
-            .ok_or("Failed to create surface")?;
+            let surface = egl::create_window_surface(display, config, window as _, &[])
+                .ok_or("Failed to create surface")?;
 
-        egl::make_current(display, surface, surface, context)
-            .then(|| ())
-            .ok_or("Failed to make the context current")?;
+            egl::make_current(display, surface, surface, context)
+                .then(|| ())
+                .ok_or("Failed to make the context current")?;
 
-        gl::load_with(|s| egl::get_proc_address(s) as _);
+            gl::load_with(|s| egl::get_proc_address(s) as _);
+
+            (display, context, surface)
+        };
+
+        #[cfg(target_os = "windows")]
+        let context = {
+            let context =
+                raw_gl_context::GlContext::create(&window, raw_gl_context::GlConfig::default())
+                    .unwrap();
+
+            context.make_current();
+
+            gl::load_with(|symbol| context.get_proc_address(symbol) as *const _);
+
+            context
+        };
 
         let mut limits = Limits::default();
         unsafe {
@@ -112,9 +152,15 @@ impl GlesBackend {
         }
 
         Ok(Self {
+            #[cfg(target_os = "linux")]
             display,
+            #[cfg(target_os = "linux")]
             context,
+            #[cfg(target_os = "linux")]
             surface,
+
+            #[cfg(target_os = "windows")]
+            context,
 
             pipeline_count: 0,
             buffer_count: 0,
@@ -134,6 +180,7 @@ impl GlesBackend {
     }
 }
 
+#[cfg(target_os = "linux")]
 impl Drop for GlesBackend {
     fn drop(&mut self) {
         assert!(egl::destroy_surface(self.display, self.surface));
@@ -530,13 +577,17 @@ impl DeviceBackend for GlesBackend {
     }
 
     fn swap_buffers(&mut self) {
+        #[cfg(target_os = "linux")]
         egl::swap_buffers(self.display, self.surface);
+
+        #[cfg(target_os = "windows")]
+        self.context.swap_buffers();
     }
 }
 
 #[inline]
 pub(crate) fn clear(
-    _context: &EGLContext,
+    _context: &Context,
     color: &Option<Color>,
     depth: &Option<f32>,
     stencil: &Option<i32>,

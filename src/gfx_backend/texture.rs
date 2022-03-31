@@ -1,6 +1,6 @@
 use std::ptr;
 
-use super::{egl::EGLContext, gl, to_gl::ToGl};
+use super::{gl, to_gl::ToGl, Context};
 use crate::gfx::texture::{TextureFormat, TextureInfo};
 
 pub type TextureKey = u32;
@@ -11,13 +11,13 @@ pub(crate) struct InnerTexture {
 }
 
 impl InnerTexture {
-    pub fn new(context: &EGLContext, info: &TextureInfo) -> Result<Self, String> {
+    pub fn new(context: &Context, info: &TextureInfo) -> Result<Self, String> {
         let texture = unsafe { create_texture(context, info)? };
         let size = (info.width, info.height);
         Ok(Self { texture, size })
     }
 
-    pub fn bind(&self, _context: &EGLContext, slot: u32, location: &u32) {
+    pub fn bind(&self, _context: &Context, slot: u32, location: &u32) {
         unsafe {
             gl::ActiveTexture(gl_slot(slot).unwrap());
             gl::BindTexture(gl::TEXTURE_2D, self.texture);
@@ -26,7 +26,7 @@ impl InnerTexture {
     }
 
     #[inline(always)]
-    pub fn clean(self, _context: &EGLContext) {
+    pub fn clean(self, _context: &Context) {
         unsafe {
             gl::DeleteTextures(1, &self.texture as *const _);
         }
@@ -49,7 +49,7 @@ fn gl_slot(slot: u32) -> Result<u32, String> {
 }
 
 pub(crate) unsafe fn create_texture(
-    _context: &EGLContext,
+    _context: &Context,
     info: &TextureInfo,
 ) -> Result<TextureKey, String> {
     let mut texture = 0;
