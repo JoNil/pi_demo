@@ -247,10 +247,15 @@ impl VertexFormat {
     }
 
     pub fn bytes(&self) -> i32 {
-        use VertexFormat::*;
         match &self {
-            UInt8 | UInt8x2 | UInt8x3 | UInt8x4 => self.size(),
-            UInt8Norm | UInt8x2Norm | UInt8x3Norm | UInt8x4Norm => self.size(),
+            VertexFormat::UInt8
+            | VertexFormat::UInt8x2
+            | VertexFormat::UInt8x3
+            | VertexFormat::UInt8x4 => self.size(),
+            VertexFormat::UInt8Norm
+            | VertexFormat::UInt8x2Norm
+            | VertexFormat::UInt8x3Norm
+            | VertexFormat::UInt8x4Norm => self.size(),
             _ => self.size() * 4,
         }
     }
