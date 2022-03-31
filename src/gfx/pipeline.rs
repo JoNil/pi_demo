@@ -1,7 +1,7 @@
 use super::{
     buffer::{VertexAttr, VertexInfo},
     color::Color,
-    device::{Device, DropManager, ResourceId},
+    device::{Device, DeviceBackend, DropManager, ResourceId},
 };
 use std::sync::Arc;
 
@@ -70,15 +70,15 @@ struct ShaderSource<'b> {
 }
 
 /// Pipeline builder pattern
-pub struct PipelineBuilder<'a, 'b> {
-    device: &'a mut Device,
+pub struct PipelineBuilder<'a, 'b, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     attrs: Vec<VertexAttr>,
     options: PipelineOptions,
     shaders: Option<ShaderSource<'b>>,
 }
 
-impl<'a, 'b> PipelineBuilder<'a, 'b> {
-    pub fn new(device: &'a mut Device) -> Self {
+impl<'a, 'b, B: DeviceBackend> PipelineBuilder<'a, 'b, B> {
+    pub fn new(device: &'a mut Device<B>) -> Self {
         Self {
             device,
             attrs: vec![],

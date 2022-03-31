@@ -1,5 +1,5 @@
 use super::{
-    device::{Device, DropManager, ResourceId},
+    device::{Device, DeviceBackend, DropManager, ResourceId},
     encoder::CommandEncoder,
     texture::{Texture, TextureFilter, TextureFormat, TextureInfo},
 };
@@ -67,13 +67,13 @@ impl Deref for RenderTexture {
     }
 }
 
-pub struct RenderTextureBuilder<'a> {
-    device: &'a mut Device,
+pub struct RenderTextureBuilder<'a, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     info: TextureInfo,
 }
 
-impl<'a> RenderTextureBuilder<'a> {
-    pub fn new(device: &'a mut Device, width: i32, height: i32) -> Self {
+impl<'a, B: DeviceBackend> RenderTextureBuilder<'a, B> {
+    pub fn new(device: &'a mut Device<B>, width: i32, height: i32) -> Self {
         let info = TextureInfo {
             width,
             height,

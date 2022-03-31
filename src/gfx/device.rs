@@ -107,15 +107,15 @@ impl DropManager {
     }
 }
 
-pub struct Device {
+pub struct Device<B: DeviceBackend> {
     size: (i32, i32),
     dpi: f64,
-    backend: Box<dyn DeviceBackend>,
+    backend: B,
     drop_manager: Arc<DropManager>,
 }
 
-impl Device {
-    pub fn new(backend: Box<dyn DeviceBackend>) -> Self {
+impl<B: DeviceBackend> Device<B> {
+    pub fn new(backend: B) -> Self {
         Self {
             backend,
             size: (1, 1),
@@ -157,42 +157,42 @@ impl Device {
     }
 
     #[inline]
-    pub fn create_pipeline(&mut self) -> PipelineBuilder {
+    pub fn create_pipeline(&mut self) -> PipelineBuilder<B> {
         PipelineBuilder::new(self)
     }
 
     #[inline]
-    pub fn create_texture(&mut self) -> TextureBuilder {
+    pub fn create_texture(&mut self) -> TextureBuilder<B> {
         TextureBuilder::new(self)
     }
 
     #[inline]
-    pub fn create_render_texture(&mut self, width: i32, height: i32) -> RenderTextureBuilder {
+    pub fn create_render_texture(&mut self, width: i32, height: i32) -> RenderTextureBuilder<B> {
         RenderTextureBuilder::new(self, width, height)
     }
 
     #[inline]
-    pub fn create_vertex_buffer(&mut self) -> VertexBufferBuilder {
+    pub fn create_vertex_buffer(&mut self) -> VertexBufferBuilder<B> {
         VertexBufferBuilder::new(self)
     }
 
     #[inline]
-    pub fn create_index_buffer(&mut self) -> IndexBufferBuilder {
+    pub fn create_index_buffer(&mut self) -> IndexBufferBuilder<B> {
         IndexBufferBuilder::new(self)
     }
 
     #[inline]
-    pub fn create_uniform_buffer(&mut self, slot: u32, name: &str) -> UniformBufferBuilder {
+    pub fn create_uniform_buffer(&mut self, slot: u32, name: &str) -> UniformBufferBuilder<B> {
         UniformBufferBuilder::new(self, slot, name)
     }
 
     #[inline]
-    pub fn update_texture<'a>(&'a mut self, texture: &'a mut Texture) -> TextureUpdater {
+    pub fn update_texture<'a>(&'a mut self, texture: &'a mut Texture) -> TextureUpdater<B> {
         TextureUpdater::new(self, texture)
     }
 
     #[inline]
-    pub fn read_pixels<'a>(&'a mut self, texture: &'a Texture) -> TextureReader {
+    pub fn read_pixels<'a>(&'a mut self, texture: &'a Texture) -> TextureReader<B> {
         TextureReader::new(self, texture)
     }
 

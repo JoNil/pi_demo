@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use super::{
-    device::{Device, DropManager, ResourceId},
+    device::{Device, DeviceBackend, DropManager, ResourceId},
     pipeline::DrawType,
 };
 
@@ -55,15 +55,15 @@ impl std::cmp::PartialEq for Buffer {
     }
 }
 
-pub struct VertexBufferBuilder<'a> {
-    device: &'a mut Device,
+pub struct VertexBufferBuilder<'a, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     data: Option<&'a [f32]>,
     vertex_attrs: Vec<VertexAttr>,
     vertex_step_mode: VertexStepMode,
 }
 
-impl<'a> VertexBufferBuilder<'a> {
-    pub fn new(device: &'a mut Device) -> Self {
+impl<'a, B: DeviceBackend> VertexBufferBuilder<'a, B> {
+    pub fn new(device: &'a mut Device<B>) -> Self {
         Self {
             device,
             data: None,
@@ -100,13 +100,13 @@ impl<'a> VertexBufferBuilder<'a> {
     }
 }
 
-pub struct IndexBufferBuilder<'a> {
-    device: &'a mut Device,
+pub struct IndexBufferBuilder<'a, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     data: Option<&'a [u32]>,
 }
 
-impl<'a> IndexBufferBuilder<'a> {
-    pub fn new(device: &'a mut Device) -> Self {
+impl<'a, B: DeviceBackend> IndexBufferBuilder<'a, B> {
+    pub fn new(device: &'a mut Device<B>) -> Self {
         Self { device, data: None }
     }
 
@@ -122,15 +122,15 @@ impl<'a> IndexBufferBuilder<'a> {
     }
 }
 
-pub struct UniformBufferBuilder<'a> {
-    device: &'a mut Device,
+pub struct UniformBufferBuilder<'a, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     data: Option<&'a [f32]>,
     name: String,
     loc: u32,
 }
 
-impl<'a> UniformBufferBuilder<'a> {
-    pub fn new(device: &'a mut Device, location: u32, name: &str) -> Self {
+impl<'a, B: DeviceBackend> UniformBufferBuilder<'a, B> {
+    pub fn new(device: &'a mut Device<B>, location: u32, name: &str) -> Self {
         Self {
             device,
             data: None,

@@ -2,7 +2,7 @@ use std::sync::Arc;
 
 use super::{
     color::Color,
-    device::{Device, DropManager, ResourceId},
+    device::{Device, DeviceBackend, DropManager, ResourceId},
     rect::Rect,
 };
 
@@ -219,14 +219,14 @@ enum TextureKind<'a> {
     EmptyBuffer,
 }
 
-pub struct TextureBuilder<'a, 'b> {
-    device: &'a mut Device,
+pub struct TextureBuilder<'a, 'b, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     kind: Option<TextureKind<'b>>,
     info: TextureInfo,
 }
 
-impl<'a, 'b> TextureBuilder<'a, 'b> {
-    pub fn new(device: &'a mut Device) -> Self {
+impl<'a, 'b, B: DeviceBackend> TextureBuilder<'a, 'b, B> {
+    pub fn new(device: &'a mut Device<B>) -> Self {
         Self {
             device,
             info: Default::default(),
@@ -327,8 +327,8 @@ fn premultiplied_alpha(pixels: Vec<u8>) -> Vec<u8> {
         .collect()
 }
 
-pub struct TextureReader<'a> {
-    device: &'a mut Device,
+pub struct TextureReader<'a, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     texture: &'a Texture,
     x_offset: i32,
     y_offset: i32,
@@ -337,8 +337,8 @@ pub struct TextureReader<'a> {
     format: TextureFormat,
 }
 
-impl<'a> TextureReader<'a> {
-    pub fn new(device: &'a mut Device, texture: &'a Texture) -> Self {
+impl<'a, B: DeviceBackend> TextureReader<'a, B> {
+    pub fn new(device: &'a mut Device<B>, texture: &'a Texture) -> Self {
         let rect = *texture.frame();
         let x_offset = rect.x as i32;
         let y_offset = rect.y as i32;
@@ -403,8 +403,8 @@ impl<'a> TextureReader<'a> {
     }
 }
 
-pub struct TextureUpdater<'a> {
-    device: &'a mut Device,
+pub struct TextureUpdater<'a, B: DeviceBackend> {
+    device: &'a mut Device<B>,
     texture: &'a mut Texture,
     x_offset: i32,
     y_offset: i32,
@@ -414,8 +414,8 @@ pub struct TextureUpdater<'a> {
     bytes: Option<&'a [u8]>,
 }
 
-impl<'a> TextureUpdater<'a> {
-    pub fn new(device: &'a mut Device, texture: &'a mut Texture) -> Self {
+impl<'a, B: DeviceBackend> TextureUpdater<'a, B> {
+    pub fn new(device: &'a mut Device<B>, texture: &'a mut Texture) -> Self {
         let x_offset = texture.frame.x as _;
         let y_offset = texture.frame.y as _;
         let width = texture.frame.width as _;

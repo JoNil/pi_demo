@@ -52,7 +52,7 @@ fn main() {
     let mut event_loop = EventLoop::new();
     let window = WindowBuilder::new().build(&event_loop).unwrap();
 
-    let mut device = Device::new(Box::new(GlesBackend::new(&window).unwrap()));
+    let mut device = Device::new(GlesBackend::new(&window).unwrap());
 
     let clear_options = ClearOptions::color(Color::new(0.1, 0.2, 0.3, 1.0));
 
@@ -116,6 +116,8 @@ fn main() {
                 device.render(encoder.commands());
 
                 device.swap_buffers();
+
+                device.clean();
             }
             Event::MainEventsCleared => {
                 window.request_redraw();
