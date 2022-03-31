@@ -110,7 +110,7 @@ impl Color {
     }
 
     #[inline(always)]
-    pub fn to_premultiplied_alpha(&self) -> Color {
+    pub fn to_premultiplied_alpha(self) -> Color {
         Self {
             r: self.r * self.a,
             g: self.g * self.a,

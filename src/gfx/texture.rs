@@ -235,6 +235,7 @@ impl<'a, 'b> TextureBuilder<'a, 'b> {
     }
 
     /// Creates a Texture from a buffer of pixels
+    #[allow(clippy::wrong_self_convention)]
     pub fn from_bytes(mut self, bytes: &'b [u8], width: i32, height: i32) -> Self {
         self.kind = Some(TextureKind::Bytes(bytes));
         self.info.width = width;
@@ -243,6 +244,7 @@ impl<'a, 'b> TextureBuilder<'a, 'b> {
     }
 
     /// Creates a buffer for the size passed in and creates a Texture with it
+    #[allow(clippy::wrong_self_convention)]
     pub fn from_empty_buffer(mut self, width: i32, height: i32) -> Self {
         self.kind = Some(TextureKind::EmptyBuffer);
         self.with_size(width, height)

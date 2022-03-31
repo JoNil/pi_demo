@@ -1,3 +1,5 @@
+#![allow(clippy::too_many_arguments)]
+#![allow(clippy::upper_case_acronyms)]
 
 mod __gl_imports {
     pub use std::mem;
@@ -1748,36 +1750,36 @@ pub const WRITE_ONLY: types::GLenum = 0x88B9;
 pub const ZERO: types::GLenum = 0;
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ActiveShaderProgram(pipeline: types::GLuint, program: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint) -> ()>(
+pub unsafe fn ActiveShaderProgram(pipeline: types::GLuint, program: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint)>(
         storage::ActiveShaderProgram.f,
     )(pipeline, program)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ActiveTexture(texture: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(
-        storage::ActiveTexture.f,
-    )(texture)
+pub unsafe fn ActiveTexture(texture: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::ActiveTexture.f)(
+        texture,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn AttachShader(program: types::GLuint, shader: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint) -> ()>(
+pub unsafe fn AttachShader(program: types::GLuint, shader: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint)>(
         storage::AttachShader.f,
     )(program, shader)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BeginQuery(target: types::GLenum, id: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint) -> ()>(
+pub unsafe fn BeginQuery(target: types::GLenum, id: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint)>(
         storage::BeginQuery.f,
     )(target, id)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BeginTransformFeedback(primitiveMode: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(
+pub unsafe fn BeginTransformFeedback(primitiveMode: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(
         storage::BeginTransformFeedback.f,
     )(primitiveMode)
 }
@@ -1787,30 +1789,25 @@ pub unsafe fn BindAttribLocation(
     program: types::GLuint,
     index: types::GLuint,
     name: *const types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLuint, *const types::GLchar) -> (),
+        extern "system" fn(types::GLuint, types::GLuint, *const types::GLchar),
     >(storage::BindAttribLocation.f)(program, index, name)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindBuffer(target: types::GLenum, buffer: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint) -> ()>(
+pub unsafe fn BindBuffer(target: types::GLenum, buffer: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint)>(
         storage::BindBuffer.f,
     )(target, buffer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindBufferBase(
-    target: types::GLenum,
-    index: types::GLuint,
-    buffer: types::GLuint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLenum, types::GLuint, types::GLuint) -> (),
-    >(storage::BindBufferBase.f)(target, index, buffer)
+pub unsafe fn BindBufferBase(target: types::GLenum, index: types::GLuint, buffer: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint, types::GLuint)>(
+        storage::BindBufferBase.f,
+    )(target, index, buffer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -1820,7 +1817,7 @@ pub unsafe fn BindBufferRange(
     buffer: types::GLuint,
     offset: types::GLintptr,
     size: types::GLsizeiptr,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -1829,13 +1826,13 @@ pub unsafe fn BindBufferRange(
             types::GLuint,
             types::GLintptr,
             types::GLsizeiptr,
-        ) -> (),
+        ),
     >(storage::BindBufferRange.f)(target, index, buffer, offset, size)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindFramebuffer(target: types::GLenum, framebuffer: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint) -> ()>(
+pub unsafe fn BindFramebuffer(target: types::GLenum, framebuffer: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint)>(
         storage::BindFramebuffer.f,
     )(target, framebuffer)
 }
@@ -1849,7 +1846,7 @@ pub unsafe fn BindImageTexture(
     layer: types::GLint,
     access: types::GLenum,
     format: types::GLenum,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -1860,50 +1857,50 @@ pub unsafe fn BindImageTexture(
             types::GLint,
             types::GLenum,
             types::GLenum,
-        ) -> (),
+        ),
     >(storage::BindImageTexture.f)(unit, texture, level, layered, layer, access, format)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindProgramPipeline(pipeline: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
+pub unsafe fn BindProgramPipeline(pipeline: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(
         storage::BindProgramPipeline.f,
     )(pipeline)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindRenderbuffer(target: types::GLenum, renderbuffer: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint) -> ()>(
+pub unsafe fn BindRenderbuffer(target: types::GLenum, renderbuffer: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint)>(
         storage::BindRenderbuffer.f,
     )(target, renderbuffer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindSampler(unit: types::GLuint, sampler: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint) -> ()>(
+pub unsafe fn BindSampler(unit: types::GLuint, sampler: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint)>(
         storage::BindSampler.f,
     )(unit, sampler)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindTexture(target: types::GLenum, texture: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint) -> ()>(
+pub unsafe fn BindTexture(target: types::GLenum, texture: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint)>(
         storage::BindTexture.f,
     )(target, texture)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindTransformFeedback(target: types::GLenum, id: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint) -> ()>(
+pub unsafe fn BindTransformFeedback(target: types::GLenum, id: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint)>(
         storage::BindTransformFeedback.f,
     )(target, id)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BindVertexArray(array: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::BindVertexArray.f,
-    )(array)
+pub unsafe fn BindVertexArray(array: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::BindVertexArray.f)(
+        array,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -1912,10 +1909,10 @@ pub unsafe fn BindVertexBuffer(
     buffer: types::GLuint,
     offset: types::GLintptr,
     stride: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLuint, types::GLintptr, types::GLsizei) -> (),
+        extern "system" fn(types::GLuint, types::GLuint, types::GLintptr, types::GLsizei),
     >(storage::BindVertexBuffer.f)(bindingindex, buffer, offset, stride)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -1925,30 +1922,30 @@ pub unsafe fn BlendColor(
     green: types::GLfloat,
     blue: types::GLfloat,
     alpha: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLfloat, types::GLfloat, types::GLfloat, types::GLfloat) -> (),
+        extern "system" fn(types::GLfloat, types::GLfloat, types::GLfloat, types::GLfloat),
     >(storage::BlendColor.f)(red, green, blue, alpha)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BlendEquation(mode: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(
-        storage::BlendEquation.f,
-    )(mode)
+pub unsafe fn BlendEquation(mode: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::BlendEquation.f)(
+        mode,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BlendEquationSeparate(modeRGB: types::GLenum, modeAlpha: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum) -> ()>(
+pub unsafe fn BlendEquationSeparate(modeRGB: types::GLenum, modeAlpha: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum)>(
         storage::BlendEquationSeparate.f,
     )(modeRGB, modeAlpha)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn BlendFunc(sfactor: types::GLenum, dfactor: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum) -> ()>(
+pub unsafe fn BlendFunc(sfactor: types::GLenum, dfactor: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum)>(
         storage::BlendFunc.f,
     )(sfactor, dfactor)
 }
@@ -1959,10 +1956,10 @@ pub unsafe fn BlendFuncSeparate(
     dfactorRGB: types::GLenum,
     sfactorAlpha: types::GLenum,
     dfactorAlpha: types::GLenum,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, types::GLenum) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, types::GLenum),
     >(storage::BlendFuncSeparate.f)(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -1978,7 +1975,7 @@ pub unsafe fn BlitFramebuffer(
     dstY1: types::GLint,
     mask: types::GLbitfield,
     filter: types::GLenum,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -1992,7 +1989,7 @@ pub unsafe fn BlitFramebuffer(
             types::GLint,
             types::GLbitfield,
             types::GLenum,
-        ) -> (),
+        ),
     >(storage::BlitFramebuffer.f)(
         srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter,
     )
@@ -2004,7 +2001,7 @@ pub unsafe fn BufferData(
     size: types::GLsizeiptr,
     data: *const __gl_imports::raw::c_void,
     usage: types::GLenum,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2012,7 +2009,7 @@ pub unsafe fn BufferData(
             types::GLsizeiptr,
             *const __gl_imports::raw::c_void,
             types::GLenum,
-        ) -> (),
+        ),
     >(storage::BufferData.f)(target, size, data, usage)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2022,7 +2019,7 @@ pub unsafe fn BufferSubData(
     offset: types::GLintptr,
     size: types::GLsizeiptr,
     data: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2030,7 +2027,7 @@ pub unsafe fn BufferSubData(
             types::GLintptr,
             types::GLsizeiptr,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::BufferSubData.f)(target, offset, size, data)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2042,10 +2039,8 @@ pub unsafe fn CheckFramebufferStatus(target: types::GLenum) -> types::GLenum {
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Clear(mask: types::GLbitfield) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLbitfield) -> ()>(storage::Clear.f)(
-        mask,
-    )
+pub unsafe fn Clear(mask: types::GLbitfield) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLbitfield)>(storage::Clear.f)(mask)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -2054,10 +2049,10 @@ pub unsafe fn ClearBufferfi(
     drawbuffer: types::GLint,
     depth: types::GLfloat,
     stencil: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLint, types::GLfloat, types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLint, types::GLfloat, types::GLint),
     >(storage::ClearBufferfi.f)(buffer, drawbuffer, depth, stencil)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2066,10 +2061,10 @@ pub unsafe fn ClearBufferfv(
     buffer: types::GLenum,
     drawbuffer: types::GLint,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLint, *const types::GLfloat) -> (),
+        extern "system" fn(types::GLenum, types::GLint, *const types::GLfloat),
     >(storage::ClearBufferfv.f)(buffer, drawbuffer, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2078,10 +2073,10 @@ pub unsafe fn ClearBufferiv(
     buffer: types::GLenum,
     drawbuffer: types::GLint,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLint, *const types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLint, *const types::GLint),
     >(storage::ClearBufferiv.f)(buffer, drawbuffer, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2090,10 +2085,10 @@ pub unsafe fn ClearBufferuiv(
     buffer: types::GLenum,
     drawbuffer: types::GLint,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLint, *const types::GLuint) -> (),
+        extern "system" fn(types::GLenum, types::GLint, *const types::GLuint),
     >(storage::ClearBufferuiv.f)(buffer, drawbuffer, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2103,25 +2098,21 @@ pub unsafe fn ClearColor(
     green: types::GLfloat,
     blue: types::GLfloat,
     alpha: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLfloat, types::GLfloat, types::GLfloat, types::GLfloat) -> (),
+        extern "system" fn(types::GLfloat, types::GLfloat, types::GLfloat, types::GLfloat),
     >(storage::ClearColor.f)(red, green, blue, alpha)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ClearDepthf(d: types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat) -> ()>(
-        storage::ClearDepthf.f,
-    )(d)
+pub unsafe fn ClearDepthf(d: types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat)>(storage::ClearDepthf.f)(d)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ClearStencil(s: types::GLint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint) -> ()>(
-        storage::ClearStencil.f,
-    )(s)
+pub unsafe fn ClearStencil(s: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint)>(storage::ClearStencil.f)(s)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -2142,23 +2133,18 @@ pub unsafe fn ColorMask(
     green: types::GLboolean,
     blue: types::GLboolean,
     alpha: types::GLboolean,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLboolean,
-            types::GLboolean,
-            types::GLboolean,
-            types::GLboolean,
-        ) -> (),
+        extern "system" fn(types::GLboolean, types::GLboolean, types::GLboolean, types::GLboolean),
     >(storage::ColorMask.f)(red, green, blue, alpha)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn CompileShader(shader: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::CompileShader.f,
-    )(shader)
+pub unsafe fn CompileShader(shader: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::CompileShader.f)(
+        shader,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -2171,7 +2157,7 @@ pub unsafe fn CompressedTexImage2D(
     border: types::GLint,
     imageSize: types::GLsizei,
     data: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2183,7 +2169,7 @@ pub unsafe fn CompressedTexImage2D(
             types::GLint,
             types::GLsizei,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::CompressedTexImage2D.f)(
         target,
         level,
@@ -2207,7 +2193,7 @@ pub unsafe fn CompressedTexImage3D(
     border: types::GLint,
     imageSize: types::GLsizei,
     data: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2220,7 +2206,7 @@ pub unsafe fn CompressedTexImage3D(
             types::GLint,
             types::GLsizei,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::CompressedTexImage3D.f)(
         target,
         level,
@@ -2245,7 +2231,7 @@ pub unsafe fn CompressedTexSubImage2D(
     format: types::GLenum,
     imageSize: types::GLsizei,
     data: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2258,7 +2244,7 @@ pub unsafe fn CompressedTexSubImage2D(
             types::GLenum,
             types::GLsizei,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::CompressedTexSubImage2D.f)(
         target, level, xoffset, yoffset, width, height, format, imageSize, data,
     )
@@ -2277,7 +2263,7 @@ pub unsafe fn CompressedTexSubImage3D(
     format: types::GLenum,
     imageSize: types::GLsizei,
     data: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2292,7 +2278,7 @@ pub unsafe fn CompressedTexSubImage3D(
             types::GLenum,
             types::GLsizei,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::CompressedTexSubImage3D.f)(
         target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data,
     )
@@ -2305,7 +2291,7 @@ pub unsafe fn CopyBufferSubData(
     readOffset: types::GLintptr,
     writeOffset: types::GLintptr,
     size: types::GLsizeiptr,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2314,7 +2300,7 @@ pub unsafe fn CopyBufferSubData(
             types::GLintptr,
             types::GLintptr,
             types::GLsizeiptr,
-        ) -> (),
+        ),
     >(storage::CopyBufferSubData.f)(readTarget, writeTarget, readOffset, writeOffset, size)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2328,7 +2314,7 @@ pub unsafe fn CopyTexImage2D(
     width: types::GLsizei,
     height: types::GLsizei,
     border: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2340,7 +2326,7 @@ pub unsafe fn CopyTexImage2D(
             types::GLsizei,
             types::GLsizei,
             types::GLint,
-        ) -> (),
+        ),
     >(storage::CopyTexImage2D.f)(target, level, internalformat, x, y, width, height, border)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2354,7 +2340,7 @@ pub unsafe fn CopyTexSubImage2D(
     y: types::GLint,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2366,7 +2352,7 @@ pub unsafe fn CopyTexSubImage2D(
             types::GLint,
             types::GLsizei,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::CopyTexSubImage2D.f)(target, level, xoffset, yoffset, x, y, width, height)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2381,7 +2367,7 @@ pub unsafe fn CopyTexSubImage3D(
     y: types::GLint,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2394,7 +2380,7 @@ pub unsafe fn CopyTexSubImage3D(
             types::GLint,
             types::GLsizei,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::CopyTexSubImage3D.f)(
         target, level, xoffset, yoffset, zoffset, x, y, width, height,
     )
@@ -2431,134 +2417,128 @@ pub unsafe fn CreateShaderProgramv(
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn CullFace(mode: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(storage::CullFace.f)(
-        mode,
-    )
+pub unsafe fn CullFace(mode: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::CullFace.f)(mode)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteBuffers(n: types::GLsizei, buffers: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteBuffers(n: types::GLsizei, buffers: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteBuffers.f,
     )(n, buffers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteFramebuffers(n: types::GLsizei, framebuffers: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteFramebuffers(n: types::GLsizei, framebuffers: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteFramebuffers.f,
     )(n, framebuffers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteProgram(program: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::DeleteProgram.f,
-    )(program)
+pub unsafe fn DeleteProgram(program: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::DeleteProgram.f)(
+        program,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteProgramPipelines(n: types::GLsizei, pipelines: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteProgramPipelines(n: types::GLsizei, pipelines: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteProgramPipelines.f,
     )(n, pipelines)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteQueries(n: types::GLsizei, ids: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteQueries(n: types::GLsizei, ids: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteQueries.f,
     )(n, ids)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteRenderbuffers(n: types::GLsizei, renderbuffers: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteRenderbuffers(n: types::GLsizei, renderbuffers: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteRenderbuffers.f,
     )(n, renderbuffers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteSamplers(count: types::GLsizei, samplers: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteSamplers(count: types::GLsizei, samplers: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteSamplers.f,
     )(count, samplers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteShader(shader: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::DeleteShader.f,
-    )(shader)
+pub unsafe fn DeleteShader(shader: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::DeleteShader.f)(
+        shader,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteSync(sync: types::GLsync) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsync) -> ()>(
-        storage::DeleteSync.f,
-    )(sync)
+pub unsafe fn DeleteSync(sync: types::GLsync) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsync)>(storage::DeleteSync.f)(
+        sync,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteTextures(n: types::GLsizei, textures: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteTextures(n: types::GLsizei, textures: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteTextures.f,
     )(n, textures)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteTransformFeedbacks(n: types::GLsizei, ids: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteTransformFeedbacks(n: types::GLsizei, ids: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteTransformFeedbacks.f,
     )(n, ids)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DeleteVertexArrays(n: types::GLsizei, arrays: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint) -> ()>(
+pub unsafe fn DeleteVertexArrays(n: types::GLsizei, arrays: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLuint)>(
         storage::DeleteVertexArrays.f,
     )(n, arrays)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DepthFunc(func: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(storage::DepthFunc.f)(
-        func,
+pub unsafe fn DepthFunc(func: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::DepthFunc.f)(func)
+}
+#[allow(non_snake_case, unused_variables, dead_code)]
+#[inline]
+pub unsafe fn DepthMask(flag: types::GLboolean) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLboolean)>(storage::DepthMask.f)(
+        flag,
     )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DepthMask(flag: types::GLboolean) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLboolean) -> ()>(
-        storage::DepthMask.f,
-    )(flag)
-}
-#[allow(non_snake_case, unused_variables, dead_code)]
-#[inline]
-pub unsafe fn DepthRangef(n: types::GLfloat, f: types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat, types::GLfloat) -> ()>(
+pub unsafe fn DepthRangef(n: types::GLfloat, f: types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat, types::GLfloat)>(
         storage::DepthRangef.f,
     )(n, f)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DetachShader(program: types::GLuint, shader: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint) -> ()>(
+pub unsafe fn DetachShader(program: types::GLuint, shader: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint)>(
         storage::DetachShader.f,
     )(program, shader)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Disable(cap: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(storage::Disable.f)(
-        cap,
-    )
+pub unsafe fn Disable(cap: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::Disable.f)(cap)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DisableVertexAttribArray(index: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
+pub unsafe fn DisableVertexAttribArray(index: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(
         storage::DisableVertexAttribArray.f,
     )(index)
 }
@@ -2568,36 +2548,31 @@ pub unsafe fn DispatchCompute(
     num_groups_x: types::GLuint,
     num_groups_y: types::GLuint,
     num_groups_z: types::GLuint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLuint, types::GLuint, types::GLuint) -> (),
-    >(storage::DispatchCompute.f)(num_groups_x, num_groups_y, num_groups_z)
+) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint, types::GLuint)>(
+        storage::DispatchCompute.f,
+    )(num_groups_x, num_groups_y, num_groups_z)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DispatchComputeIndirect(indirect: types::GLintptr) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLintptr) -> ()>(
+pub unsafe fn DispatchComputeIndirect(indirect: types::GLintptr) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLintptr)>(
         storage::DispatchComputeIndirect.f,
     )(indirect)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DrawArrays(mode: types::GLenum, first: types::GLint, count: types::GLsizei) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLenum, types::GLint, types::GLsizei) -> (),
-    >(storage::DrawArrays.f)(mode, first, count)
+pub unsafe fn DrawArrays(mode: types::GLenum, first: types::GLint, count: types::GLsizei) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLint, types::GLsizei)>(
+        storage::DrawArrays.f,
+    )(mode, first, count)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DrawArraysIndirect(
-    mode: types::GLenum,
-    indirect: *const __gl_imports::raw::c_void,
-) -> () {
+pub unsafe fn DrawArraysIndirect(mode: types::GLenum, indirect: *const __gl_imports::raw::c_void) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, *const __gl_imports::raw::c_void) -> (),
+        extern "system" fn(types::GLenum, *const __gl_imports::raw::c_void),
     >(storage::DrawArraysIndirect.f)(mode, indirect)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2607,16 +2582,16 @@ pub unsafe fn DrawArraysInstanced(
     first: types::GLint,
     count: types::GLsizei,
     instancecount: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLint, types::GLsizei, types::GLsizei) -> (),
+        extern "system" fn(types::GLenum, types::GLint, types::GLsizei, types::GLsizei),
     >(storage::DrawArraysInstanced.f)(mode, first, count, instancecount)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn DrawBuffers(n: types::GLsizei, bufs: *const types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLenum) -> ()>(
+pub unsafe fn DrawBuffers(n: types::GLsizei, bufs: *const types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *const types::GLenum)>(
         storage::DrawBuffers.f,
     )(n, bufs)
 }
@@ -2627,7 +2602,7 @@ pub unsafe fn DrawElements(
     count: types::GLsizei,
     type_: types::GLenum,
     indices: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2635,7 +2610,7 @@ pub unsafe fn DrawElements(
             types::GLsizei,
             types::GLenum,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::DrawElements.f)(mode, count, type_, indices)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2644,10 +2619,10 @@ pub unsafe fn DrawElementsIndirect(
     mode: types::GLenum,
     type_: types::GLenum,
     indirect: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *const __gl_imports::raw::c_void) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *const __gl_imports::raw::c_void),
     >(storage::DrawElementsIndirect.f)(mode, type_, indirect)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2658,7 +2633,7 @@ pub unsafe fn DrawElementsInstanced(
     type_: types::GLenum,
     indices: *const __gl_imports::raw::c_void,
     instancecount: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2667,7 +2642,7 @@ pub unsafe fn DrawElementsInstanced(
             types::GLenum,
             *const __gl_imports::raw::c_void,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::DrawElementsInstanced.f)(mode, count, type_, indices, instancecount)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2679,7 +2654,7 @@ pub unsafe fn DrawRangeElements(
     count: types::GLsizei,
     type_: types::GLenum,
     indices: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2689,34 +2664,32 @@ pub unsafe fn DrawRangeElements(
             types::GLsizei,
             types::GLenum,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::DrawRangeElements.f)(mode, start, end, count, type_, indices)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Enable(cap: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(storage::Enable.f)(
-        cap,
-    )
+pub unsafe fn Enable(cap: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::Enable.f)(cap)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn EnableVertexAttribArray(index: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
+pub unsafe fn EnableVertexAttribArray(index: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(
         storage::EnableVertexAttribArray.f,
     )(index)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn EndQuery(target: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(storage::EndQuery.f)(
+pub unsafe fn EndQuery(target: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::EndQuery.f)(
         target,
     )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn EndTransformFeedback() -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn() -> ()>(storage::EndTransformFeedback.f)()
+pub unsafe fn EndTransformFeedback() {
+    __gl_imports::mem::transmute::<_, extern "system" fn()>(storage::EndTransformFeedback.f)()
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -2728,13 +2701,13 @@ pub unsafe fn FenceSync(condition: types::GLenum, flags: types::GLbitfield) -> t
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Finish() -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn() -> ()>(storage::Finish.f)()
+pub unsafe fn Finish() {
+    __gl_imports::mem::transmute::<_, extern "system" fn()>(storage::Finish.f)()
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Flush() -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn() -> ()>(storage::Flush.f)()
+pub unsafe fn Flush() {
+    __gl_imports::mem::transmute::<_, extern "system" fn()>(storage::Flush.f)()
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -2742,10 +2715,10 @@ pub unsafe fn FlushMappedBufferRange(
     target: types::GLenum,
     offset: types::GLintptr,
     length: types::GLsizeiptr,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLintptr, types::GLsizeiptr) -> (),
+        extern "system" fn(types::GLenum, types::GLintptr, types::GLsizeiptr),
     >(storage::FlushMappedBufferRange.f)(target, offset, length)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2754,11 +2727,10 @@ pub unsafe fn FramebufferParameteri(
     target: types::GLenum,
     pname: types::GLenum,
     param: types::GLint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLint) -> (),
-    >(storage::FramebufferParameteri.f)(target, pname, param)
+) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum, types::GLint)>(
+        storage::FramebufferParameteri.f,
+    )(target, pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -2767,10 +2739,10 @@ pub unsafe fn FramebufferRenderbuffer(
     attachment: types::GLenum,
     renderbuffertarget: types::GLenum,
     renderbuffer: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, types::GLuint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, types::GLuint),
     >(storage::FramebufferRenderbuffer.f)(target, attachment, renderbuffertarget, renderbuffer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2781,7 +2753,7 @@ pub unsafe fn FramebufferTexture2D(
     textarget: types::GLenum,
     texture: types::GLuint,
     level: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2790,7 +2762,7 @@ pub unsafe fn FramebufferTexture2D(
             types::GLenum,
             types::GLuint,
             types::GLint,
-        ) -> (),
+        ),
     >(storage::FramebufferTexture2D.f)(target, attachment, textarget, texture, level)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2801,94 +2773,86 @@ pub unsafe fn FramebufferTextureLayer(
     texture: types::GLuint,
     level: types::GLint,
     layer: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLenum,
-            types::GLenum,
-            types::GLuint,
-            types::GLint,
-            types::GLint,
-        ) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLuint, types::GLint, types::GLint),
     >(storage::FramebufferTextureLayer.f)(target, attachment, texture, level, layer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn FrontFace(mode: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(storage::FrontFace.f)(
-        mode,
-    )
+pub unsafe fn FrontFace(mode: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::FrontFace.f)(mode)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenBuffers(n: types::GLsizei, buffers: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenBuffers(n: types::GLsizei, buffers: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenBuffers.f,
     )(n, buffers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenFramebuffers(n: types::GLsizei, framebuffers: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenFramebuffers(n: types::GLsizei, framebuffers: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenFramebuffers.f,
     )(n, framebuffers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenProgramPipelines(n: types::GLsizei, pipelines: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenProgramPipelines(n: types::GLsizei, pipelines: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenProgramPipelines.f,
     )(n, pipelines)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenQueries(n: types::GLsizei, ids: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenQueries(n: types::GLsizei, ids: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenQueries.f,
     )(n, ids)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenRenderbuffers(n: types::GLsizei, renderbuffers: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenRenderbuffers(n: types::GLsizei, renderbuffers: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenRenderbuffers.f,
     )(n, renderbuffers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenSamplers(count: types::GLsizei, samplers: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenSamplers(count: types::GLsizei, samplers: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenSamplers.f,
     )(count, samplers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenTextures(n: types::GLsizei, textures: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenTextures(n: types::GLsizei, textures: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenTextures.f,
     )(n, textures)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenTransformFeedbacks(n: types::GLsizei, ids: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenTransformFeedbacks(n: types::GLsizei, ids: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenTransformFeedbacks.f,
     )(n, ids)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenVertexArrays(n: types::GLsizei, arrays: *mut types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint) -> ()>(
+pub unsafe fn GenVertexArrays(n: types::GLsizei, arrays: *mut types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLsizei, *mut types::GLuint)>(
         storage::GenVertexArrays.f,
     )(n, arrays)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GenerateMipmap(target: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(
-        storage::GenerateMipmap.f,
-    )(target)
+pub unsafe fn GenerateMipmap(target: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::GenerateMipmap.f)(
+        target,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -2900,7 +2864,7 @@ pub unsafe fn GetActiveAttrib(
     size: *mut types::GLint,
     type_: *mut types::GLenum,
     name: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2911,7 +2875,7 @@ pub unsafe fn GetActiveAttrib(
             *mut types::GLint,
             *mut types::GLenum,
             *mut types::GLchar,
-        ) -> (),
+        ),
     >(storage::GetActiveAttrib.f)(program, index, bufSize, length, size, type_, name)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2924,7 +2888,7 @@ pub unsafe fn GetActiveUniform(
     size: *mut types::GLint,
     type_: *mut types::GLenum,
     name: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2935,7 +2899,7 @@ pub unsafe fn GetActiveUniform(
             *mut types::GLint,
             *mut types::GLenum,
             *mut types::GLchar,
-        ) -> (),
+        ),
     >(storage::GetActiveUniform.f)(program, index, bufSize, length, size, type_, name)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2946,7 +2910,7 @@ pub unsafe fn GetActiveUniformBlockName(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     uniformBlockName: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2955,7 +2919,7 @@ pub unsafe fn GetActiveUniformBlockName(
             types::GLsizei,
             *mut types::GLsizei,
             *mut types::GLchar,
-        ) -> (),
+        ),
     >(storage::GetActiveUniformBlockName.f)(
         program,
         uniformBlockIndex,
@@ -2971,10 +2935,10 @@ pub unsafe fn GetActiveUniformBlockiv(
     uniformBlockIndex: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLuint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLuint, types::GLenum, *mut types::GLint),
     >(storage::GetActiveUniformBlockiv.f)(program, uniformBlockIndex, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -2985,7 +2949,7 @@ pub unsafe fn GetActiveUniformsiv(
     uniformIndices: *const types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -2994,7 +2958,7 @@ pub unsafe fn GetActiveUniformsiv(
             *const types::GLuint,
             types::GLenum,
             *mut types::GLint,
-        ) -> (),
+        ),
     >(storage::GetActiveUniformsiv.f)(program, uniformCount, uniformIndices, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3004,15 +2968,10 @@ pub unsafe fn GetAttachedShaders(
     maxCount: types::GLsizei,
     count: *mut types::GLsizei,
     shaders: *mut types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLsizei,
-            *mut types::GLsizei,
-            *mut types::GLuint,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLsizei, *mut types::GLsizei, *mut types::GLuint),
     >(storage::GetAttachedShaders.f)(program, maxCount, count, shaders)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3032,16 +2991,16 @@ pub unsafe fn GetBooleani_v(
     target: types::GLenum,
     index: types::GLuint,
     data: *mut types::GLboolean,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLboolean) -> (),
+        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLboolean),
     >(storage::GetBooleani_v.f)(target, index, data)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GetBooleanv(pname: types::GLenum, data: *mut types::GLboolean) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLboolean) -> ()>(
+pub unsafe fn GetBooleanv(pname: types::GLenum, data: *mut types::GLboolean) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLboolean)>(
         storage::GetBooleanv.f,
     )(pname, data)
 }
@@ -3051,10 +3010,10 @@ pub unsafe fn GetBufferParameteri64v(
     target: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLint64,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint64) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint64),
     >(storage::GetBufferParameteri64v.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3063,10 +3022,10 @@ pub unsafe fn GetBufferParameteriv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint),
     >(storage::GetBufferParameteriv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3075,14 +3034,10 @@ pub unsafe fn GetBufferPointerv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *const *mut __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLenum,
-            types::GLenum,
-            *const *mut __gl_imports::raw::c_void,
-        ) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *const *mut __gl_imports::raw::c_void),
     >(storage::GetBufferPointerv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3092,8 +3047,8 @@ pub unsafe fn GetError() -> types::GLenum {
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GetFloatv(pname: types::GLenum, data: *mut types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLfloat) -> ()>(
+pub unsafe fn GetFloatv(pname: types::GLenum, data: *mut types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLfloat)>(
         storage::GetFloatv.f,
     )(pname, data)
 }
@@ -3115,10 +3070,10 @@ pub unsafe fn GetFramebufferAttachmentParameteriv(
     attachment: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, *mut types::GLint),
     >(storage::GetFramebufferAttachmentParameteriv.f)(target, attachment, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3127,10 +3082,10 @@ pub unsafe fn GetFramebufferParameteriv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint),
     >(storage::GetFramebufferParameteriv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3139,35 +3094,31 @@ pub unsafe fn GetInteger64i_v(
     target: types::GLenum,
     index: types::GLuint,
     data: *mut types::GLint64,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLint64) -> (),
+        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLint64),
     >(storage::GetInteger64i_v.f)(target, index, data)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GetInteger64v(pname: types::GLenum, data: *mut types::GLint64) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLint64) -> ()>(
+pub unsafe fn GetInteger64v(pname: types::GLenum, data: *mut types::GLint64) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLint64)>(
         storage::GetInteger64v.f,
     )(pname, data)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GetIntegeri_v(
-    target: types::GLenum,
-    index: types::GLuint,
-    data: *mut types::GLint,
-) -> () {
+pub unsafe fn GetIntegeri_v(target: types::GLenum, index: types::GLuint, data: *mut types::GLint) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLint),
     >(storage::GetIntegeri_v.f)(target, index, data)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GetIntegerv(pname: types::GLenum, data: *mut types::GLint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLint) -> ()>(
+pub unsafe fn GetIntegerv(pname: types::GLenum, data: *mut types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, *mut types::GLint)>(
         storage::GetIntegerv.f,
     )(pname, data)
 }
@@ -3179,7 +3130,7 @@ pub unsafe fn GetInternalformativ(
     pname: types::GLenum,
     bufSize: types::GLsizei,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3188,7 +3139,7 @@ pub unsafe fn GetInternalformativ(
             types::GLenum,
             types::GLsizei,
             *mut types::GLint,
-        ) -> (),
+        ),
     >(storage::GetInternalformativ.f)(target, internalformat, pname, bufSize, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3197,10 +3148,10 @@ pub unsafe fn GetMultisamplefv(
     pname: types::GLenum,
     index: types::GLuint,
     val: *mut types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLfloat) -> (),
+        extern "system" fn(types::GLenum, types::GLuint, *mut types::GLfloat),
     >(storage::GetMultisamplefv.f)(pname, index, val)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3211,7 +3162,7 @@ pub unsafe fn GetProgramBinary(
     length: *mut types::GLsizei,
     binaryFormat: *mut types::GLenum,
     binary: *mut __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3220,7 +3171,7 @@ pub unsafe fn GetProgramBinary(
             *mut types::GLsizei,
             *mut types::GLenum,
             *mut __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::GetProgramBinary.f)(program, bufSize, length, binaryFormat, binary)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3230,15 +3181,10 @@ pub unsafe fn GetProgramInfoLog(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     infoLog: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLsizei,
-            *mut types::GLsizei,
-            *mut types::GLchar,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLsizei, *mut types::GLsizei, *mut types::GLchar),
     >(storage::GetProgramInfoLog.f)(program, bufSize, length, infoLog)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3248,10 +3194,10 @@ pub unsafe fn GetProgramInterfaceiv(
     programInterface: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, types::GLenum, *mut types::GLint),
     >(storage::GetProgramInterfaceiv.f)(program, programInterface, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3261,15 +3207,10 @@ pub unsafe fn GetProgramPipelineInfoLog(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     infoLog: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLsizei,
-            *mut types::GLsizei,
-            *mut types::GLchar,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLsizei, *mut types::GLsizei, *mut types::GLchar),
     >(storage::GetProgramPipelineInfoLog.f)(pipeline, bufSize, length, infoLog)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3278,10 +3219,10 @@ pub unsafe fn GetProgramPipelineiv(
     pipeline: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint),
     >(storage::GetProgramPipelineiv.f)(pipeline, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3317,7 +3258,7 @@ pub unsafe fn GetProgramResourceName(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     name: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3327,7 +3268,7 @@ pub unsafe fn GetProgramResourceName(
             types::GLsizei,
             *mut types::GLsizei,
             *mut types::GLchar,
-        ) -> (),
+        ),
     >(storage::GetProgramResourceName.f)(program, programInterface, index, bufSize, length, name)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3341,7 +3282,7 @@ pub unsafe fn GetProgramResourceiv(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3353,7 +3294,7 @@ pub unsafe fn GetProgramResourceiv(
             types::GLsizei,
             *mut types::GLsizei,
             *mut types::GLint,
-        ) -> (),
+        ),
     >(storage::GetProgramResourceiv.f)(
         program,
         programInterface,
@@ -3371,10 +3312,10 @@ pub unsafe fn GetProgramiv(
     program: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint),
     >(storage::GetProgramiv.f)(program, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3383,22 +3324,18 @@ pub unsafe fn GetQueryObjectuiv(
     id: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLuint),
     >(storage::GetQueryObjectuiv.f)(id, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GetQueryiv(
-    target: types::GLenum,
-    pname: types::GLenum,
-    params: *mut types::GLint,
-) -> () {
+pub unsafe fn GetQueryiv(target: types::GLenum, pname: types::GLenum, params: *mut types::GLint) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint),
     >(storage::GetQueryiv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3407,10 +3344,10 @@ pub unsafe fn GetRenderbufferParameteriv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint),
     >(storage::GetRenderbufferParameteriv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3419,10 +3356,10 @@ pub unsafe fn GetSamplerParameterfv(
     sampler: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLfloat),
     >(storage::GetSamplerParameterfv.f)(sampler, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3431,10 +3368,10 @@ pub unsafe fn GetSamplerParameteriv(
     sampler: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint),
     >(storage::GetSamplerParameteriv.f)(sampler, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3444,15 +3381,10 @@ pub unsafe fn GetShaderInfoLog(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     infoLog: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLsizei,
-            *mut types::GLsizei,
-            *mut types::GLchar,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLsizei, *mut types::GLsizei, *mut types::GLchar),
     >(storage::GetShaderInfoLog.f)(shader, bufSize, length, infoLog)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3462,15 +3394,10 @@ pub unsafe fn GetShaderPrecisionFormat(
     precisiontype: types::GLenum,
     range: *mut types::GLint,
     precision: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLenum,
-            types::GLenum,
-            *mut types::GLint,
-            *mut types::GLint,
-        ) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint, *mut types::GLint),
     >(storage::GetShaderPrecisionFormat.f)(shadertype, precisiontype, range, precision)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3480,27 +3407,18 @@ pub unsafe fn GetShaderSource(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     source: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLsizei,
-            *mut types::GLsizei,
-            *mut types::GLchar,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLsizei, *mut types::GLsizei, *mut types::GLchar),
     >(storage::GetShaderSource.f)(shader, bufSize, length, source)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn GetShaderiv(
-    shader: types::GLuint,
-    pname: types::GLenum,
-    params: *mut types::GLint,
-) -> () {
+pub unsafe fn GetShaderiv(shader: types::GLuint, pname: types::GLenum, params: *mut types::GLint) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint),
     >(storage::GetShaderiv.f)(shader, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3526,7 +3444,7 @@ pub unsafe fn GetSynciv(
     bufSize: types::GLsizei,
     length: *mut types::GLsizei,
     values: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3535,7 +3453,7 @@ pub unsafe fn GetSynciv(
             types::GLsizei,
             *mut types::GLsizei,
             *mut types::GLint,
-        ) -> (),
+        ),
     >(storage::GetSynciv.f)(sync, pname, bufSize, length, values)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3545,10 +3463,10 @@ pub unsafe fn GetTexLevelParameterfv(
     level: types::GLint,
     pname: types::GLenum,
     params: *mut types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLint, types::GLenum, *mut types::GLfloat) -> (),
+        extern "system" fn(types::GLenum, types::GLint, types::GLenum, *mut types::GLfloat),
     >(storage::GetTexLevelParameterfv.f)(target, level, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3558,10 +3476,10 @@ pub unsafe fn GetTexLevelParameteriv(
     level: types::GLint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLint, types::GLenum, *mut types::GLint),
     >(storage::GetTexLevelParameteriv.f)(target, level, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3570,10 +3488,10 @@ pub unsafe fn GetTexParameterfv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLfloat) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLfloat),
     >(storage::GetTexParameterfv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3582,10 +3500,10 @@ pub unsafe fn GetTexParameteriv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *mut types::GLint),
     >(storage::GetTexParameteriv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3598,7 +3516,7 @@ pub unsafe fn GetTransformFeedbackVarying(
     size: *mut types::GLsizei,
     type_: *mut types::GLenum,
     name: *mut types::GLchar,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3609,7 +3527,7 @@ pub unsafe fn GetTransformFeedbackVarying(
             *mut types::GLsizei,
             *mut types::GLenum,
             *mut types::GLchar,
-        ) -> (),
+        ),
     >(storage::GetTransformFeedbackVarying.f)(program, index, bufSize, length, size, type_, name)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3630,7 +3548,7 @@ pub unsafe fn GetUniformIndices(
     uniformCount: types::GLsizei,
     uniformNames: *const *const types::GLchar,
     uniformIndices: *mut types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3638,7 +3556,7 @@ pub unsafe fn GetUniformIndices(
             types::GLsizei,
             *const *const types::GLchar,
             *mut types::GLuint,
-        ) -> (),
+        ),
     >(storage::GetUniformIndices.f)(program, uniformCount, uniformNames, uniformIndices)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3658,10 +3576,10 @@ pub unsafe fn GetUniformfv(
     program: types::GLuint,
     location: types::GLint,
     params: *mut types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, *mut types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLint, *mut types::GLfloat),
     >(storage::GetUniformfv.f)(program, location, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3670,10 +3588,10 @@ pub unsafe fn GetUniformiv(
     program: types::GLuint,
     location: types::GLint,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, *mut types::GLint),
     >(storage::GetUniformiv.f)(program, location, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3682,10 +3600,10 @@ pub unsafe fn GetUniformuiv(
     program: types::GLuint,
     location: types::GLint,
     params: *mut types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, *mut types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, *mut types::GLuint),
     >(storage::GetUniformuiv.f)(program, location, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3694,10 +3612,10 @@ pub unsafe fn GetVertexAttribIiv(
     index: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint),
     >(storage::GetVertexAttribIiv.f)(index, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3706,10 +3624,10 @@ pub unsafe fn GetVertexAttribIuiv(
     index: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLuint),
     >(storage::GetVertexAttribIuiv.f)(index, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3718,14 +3636,10 @@ pub unsafe fn GetVertexAttribPointerv(
     index: types::GLuint,
     pname: types::GLenum,
     pointer: *const *mut __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLenum,
-            *const *mut __gl_imports::raw::c_void,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *const *mut __gl_imports::raw::c_void),
     >(storage::GetVertexAttribPointerv.f)(index, pname, pointer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3734,10 +3648,10 @@ pub unsafe fn GetVertexAttribfv(
     index: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLfloat),
     >(storage::GetVertexAttribfv.f)(index, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3746,16 +3660,16 @@ pub unsafe fn GetVertexAttribiv(
     index: types::GLuint,
     pname: types::GLenum,
     params: *mut types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *mut types::GLint),
     >(storage::GetVertexAttribiv.f)(index, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Hint(target: types::GLenum, mode: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum) -> ()>(
+pub unsafe fn Hint(target: types::GLenum, mode: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum)>(
         storage::Hint.f,
     )(target, mode)
 }
@@ -3765,10 +3679,10 @@ pub unsafe fn InvalidateFramebuffer(
     target: types::GLenum,
     numAttachments: types::GLsizei,
     attachments: *const types::GLenum,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLsizei, *const types::GLenum) -> (),
+        extern "system" fn(types::GLenum, types::GLsizei, *const types::GLenum),
     >(storage::InvalidateFramebuffer.f)(target, numAttachments, attachments)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -3781,7 +3695,7 @@ pub unsafe fn InvalidateSubFramebuffer(
     y: types::GLint,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3792,7 +3706,7 @@ pub unsafe fn InvalidateSubFramebuffer(
             types::GLint,
             types::GLsizei,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::InvalidateSubFramebuffer.f)(
         target, numAttachments, attachments, x, y, width, height
     )
@@ -3890,17 +3804,17 @@ pub unsafe fn IsVertexArray(array: types::GLuint) -> types::GLboolean {
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn LineWidth(width: types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat) -> ()>(
-        storage::LineWidth.f,
-    )(width)
+pub unsafe fn LineWidth(width: types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat)>(storage::LineWidth.f)(
+        width,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn LinkProgram(program: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::LinkProgram.f,
-    )(program)
+pub unsafe fn LinkProgram(program: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::LinkProgram.f)(
+        program,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -3922,35 +3836,34 @@ pub unsafe fn MapBufferRange(
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn MemoryBarrier(barriers: types::GLbitfield) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLbitfield) -> ()>(
+pub unsafe fn MemoryBarrier(barriers: types::GLbitfield) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLbitfield)>(
         storage::MemoryBarrier.f,
     )(barriers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn MemoryBarrierByRegion(barriers: types::GLbitfield) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLbitfield) -> ()>(
+pub unsafe fn MemoryBarrierByRegion(barriers: types::GLbitfield) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLbitfield)>(
         storage::MemoryBarrierByRegion.f,
     )(barriers)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn PauseTransformFeedback() -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn() -> ()>(storage::PauseTransformFeedback.f)(
-    )
+pub unsafe fn PauseTransformFeedback() {
+    __gl_imports::mem::transmute::<_, extern "system" fn()>(storage::PauseTransformFeedback.f)()
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn PixelStorei(pname: types::GLenum, param: types::GLint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLint) -> ()>(
+pub unsafe fn PixelStorei(pname: types::GLenum, param: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLint)>(
         storage::PixelStorei.f,
     )(pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn PolygonOffset(factor: types::GLfloat, units: types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat, types::GLfloat) -> ()>(
+pub unsafe fn PolygonOffset(factor: types::GLfloat, units: types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat, types::GLfloat)>(
         storage::PolygonOffset.f,
     )(factor, units)
 }
@@ -3961,7 +3874,7 @@ pub unsafe fn ProgramBinary(
     binaryFormat: types::GLenum,
     binary: *const __gl_imports::raw::c_void,
     length: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -3969,32 +3882,22 @@ pub unsafe fn ProgramBinary(
             types::GLenum,
             *const __gl_imports::raw::c_void,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::ProgramBinary.f)(program, binaryFormat, binary, length)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ProgramParameteri(
-    program: types::GLuint,
-    pname: types::GLenum,
-    value: types::GLint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLuint, types::GLenum, types::GLint) -> (),
-    >(storage::ProgramParameteri.f)(program, pname, value)
+pub unsafe fn ProgramParameteri(program: types::GLuint, pname: types::GLenum, value: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLenum, types::GLint)>(
+        storage::ProgramParameteri.f,
+    )(program, pname, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ProgramUniform1f(
-    program: types::GLuint,
-    location: types::GLint,
-    v0: types::GLfloat,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLfloat) -> (),
-    >(storage::ProgramUniform1f.f)(program, location, v0)
+pub unsafe fn ProgramUniform1f(program: types::GLuint, location: types::GLint, v0: types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLint, types::GLfloat)>(
+        storage::ProgramUniform1f.f,
+    )(program, location, v0)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4003,28 +3906,18 @@ pub unsafe fn ProgramUniform1fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLint,
-            types::GLsizei,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::ProgramUniform1fv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ProgramUniform1i(
-    program: types::GLuint,
-    location: types::GLint,
-    v0: types::GLint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLint) -> (),
-    >(storage::ProgramUniform1i.f)(program, location, v0)
+pub unsafe fn ProgramUniform1i(program: types::GLuint, location: types::GLint, v0: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLint, types::GLint)>(
+        storage::ProgramUniform1i.f,
+    )(program, location, v0)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4033,23 +3926,18 @@ pub unsafe fn ProgramUniform1iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint),
     >(storage::ProgramUniform1iv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ProgramUniform1ui(
-    program: types::GLuint,
-    location: types::GLint,
-    v0: types::GLuint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLuint) -> (),
-    >(storage::ProgramUniform1ui.f)(program, location, v0)
+pub unsafe fn ProgramUniform1ui(program: types::GLuint, location: types::GLint, v0: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLint, types::GLuint)>(
+        storage::ProgramUniform1ui.f,
+    )(program, location, v0)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4058,10 +3946,10 @@ pub unsafe fn ProgramUniform1uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::ProgramUniform1uiv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4071,10 +3959,10 @@ pub unsafe fn ProgramUniform2f(
     location: types::GLint,
     v0: types::GLfloat,
     v1: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLfloat, types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLfloat, types::GLfloat),
     >(storage::ProgramUniform2f.f)(program, location, v0, v1)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4084,15 +3972,10 @@ pub unsafe fn ProgramUniform2fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLint,
-            types::GLsizei,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::ProgramUniform2fv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4102,10 +3985,10 @@ pub unsafe fn ProgramUniform2i(
     location: types::GLint,
     v0: types::GLint,
     v1: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLint, types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLint, types::GLint),
     >(storage::ProgramUniform2i.f)(program, location, v0, v1)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4115,10 +3998,10 @@ pub unsafe fn ProgramUniform2iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint),
     >(storage::ProgramUniform2iv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4128,10 +4011,10 @@ pub unsafe fn ProgramUniform2ui(
     location: types::GLint,
     v0: types::GLuint,
     v1: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLuint, types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLuint, types::GLuint),
     >(storage::ProgramUniform2ui.f)(program, location, v0, v1)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4141,10 +4024,10 @@ pub unsafe fn ProgramUniform2uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::ProgramUniform2uiv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4155,7 +4038,7 @@ pub unsafe fn ProgramUniform3f(
     v0: types::GLfloat,
     v1: types::GLfloat,
     v2: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4164,7 +4047,7 @@ pub unsafe fn ProgramUniform3f(
             types::GLfloat,
             types::GLfloat,
             types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniform3f.f)(program, location, v0, v1, v2)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4174,15 +4057,10 @@ pub unsafe fn ProgramUniform3fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLint,
-            types::GLsizei,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::ProgramUniform3fv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4193,16 +4071,10 @@ pub unsafe fn ProgramUniform3i(
     v0: types::GLint,
     v1: types::GLint,
     v2: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLint,
-            types::GLint,
-            types::GLint,
-            types::GLint,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLint, types::GLint, types::GLint),
     >(storage::ProgramUniform3i.f)(program, location, v0, v1, v2)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4212,10 +4084,10 @@ pub unsafe fn ProgramUniform3iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint),
     >(storage::ProgramUniform3iv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4226,7 +4098,7 @@ pub unsafe fn ProgramUniform3ui(
     v0: types::GLuint,
     v1: types::GLuint,
     v2: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4235,7 +4107,7 @@ pub unsafe fn ProgramUniform3ui(
             types::GLuint,
             types::GLuint,
             types::GLuint,
-        ) -> (),
+        ),
     >(storage::ProgramUniform3ui.f)(program, location, v0, v1, v2)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4245,10 +4117,10 @@ pub unsafe fn ProgramUniform3uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::ProgramUniform3uiv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4260,7 +4132,7 @@ pub unsafe fn ProgramUniform4f(
     v1: types::GLfloat,
     v2: types::GLfloat,
     v3: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4270,7 +4142,7 @@ pub unsafe fn ProgramUniform4f(
             types::GLfloat,
             types::GLfloat,
             types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniform4f.f)(program, location, v0, v1, v2, v3)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4280,15 +4152,10 @@ pub unsafe fn ProgramUniform4fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLint,
-            types::GLsizei,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::ProgramUniform4fv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4300,7 +4167,7 @@ pub unsafe fn ProgramUniform4i(
     v1: types::GLint,
     v2: types::GLint,
     v3: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4310,7 +4177,7 @@ pub unsafe fn ProgramUniform4i(
             types::GLint,
             types::GLint,
             types::GLint,
-        ) -> (),
+        ),
     >(storage::ProgramUniform4i.f)(program, location, v0, v1, v2, v3)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4320,10 +4187,10 @@ pub unsafe fn ProgramUniform4iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLint),
     >(storage::ProgramUniform4iv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4335,7 +4202,7 @@ pub unsafe fn ProgramUniform4ui(
     v1: types::GLuint,
     v2: types::GLuint,
     v3: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4345,7 +4212,7 @@ pub unsafe fn ProgramUniform4ui(
             types::GLuint,
             types::GLuint,
             types::GLuint,
-        ) -> (),
+        ),
     >(storage::ProgramUniform4ui.f)(program, location, v0, v1, v2, v3)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4355,10 +4222,10 @@ pub unsafe fn ProgramUniform4uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::ProgramUniform4uiv.f)(program, location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4369,7 +4236,7 @@ pub unsafe fn ProgramUniformMatrix2fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4378,7 +4245,7 @@ pub unsafe fn ProgramUniformMatrix2fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix2fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4389,7 +4256,7 @@ pub unsafe fn ProgramUniformMatrix2x3fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4398,7 +4265,7 @@ pub unsafe fn ProgramUniformMatrix2x3fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix2x3fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4409,7 +4276,7 @@ pub unsafe fn ProgramUniformMatrix2x4fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4418,7 +4285,7 @@ pub unsafe fn ProgramUniformMatrix2x4fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix2x4fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4429,7 +4296,7 @@ pub unsafe fn ProgramUniformMatrix3fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4438,7 +4305,7 @@ pub unsafe fn ProgramUniformMatrix3fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix3fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4449,7 +4316,7 @@ pub unsafe fn ProgramUniformMatrix3x2fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4458,7 +4325,7 @@ pub unsafe fn ProgramUniformMatrix3x2fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix3x2fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4469,7 +4336,7 @@ pub unsafe fn ProgramUniformMatrix3x4fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4478,7 +4345,7 @@ pub unsafe fn ProgramUniformMatrix3x4fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix3x4fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4489,7 +4356,7 @@ pub unsafe fn ProgramUniformMatrix4fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4498,7 +4365,7 @@ pub unsafe fn ProgramUniformMatrix4fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix4fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4509,7 +4376,7 @@ pub unsafe fn ProgramUniformMatrix4x2fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4518,7 +4385,7 @@ pub unsafe fn ProgramUniformMatrix4x2fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix4x2fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4529,7 +4396,7 @@ pub unsafe fn ProgramUniformMatrix4x3fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4538,15 +4405,13 @@ pub unsafe fn ProgramUniformMatrix4x3fv(
             types::GLsizei,
             types::GLboolean,
             *const types::GLfloat,
-        ) -> (),
+        ),
     >(storage::ProgramUniformMatrix4x3fv.f)(program, location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ReadBuffer(src: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum) -> ()>(
-        storage::ReadBuffer.f,
-    )(src)
+pub unsafe fn ReadBuffer(src: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum)>(storage::ReadBuffer.f)(src)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4558,7 +4423,7 @@ pub unsafe fn ReadPixels(
     format: types::GLenum,
     type_: types::GLenum,
     pixels: *mut __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4569,14 +4434,13 @@ pub unsafe fn ReadPixels(
             types::GLenum,
             types::GLenum,
             *mut __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::ReadPixels.f)(x, y, width, height, format, type_, pixels)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ReleaseShaderCompiler() -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn() -> ()>(storage::ReleaseShaderCompiler.f)(
-    )
+pub unsafe fn ReleaseShaderCompiler() {
+    __gl_imports::mem::transmute::<_, extern "system" fn()>(storage::ReleaseShaderCompiler.f)()
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4585,10 +4449,10 @@ pub unsafe fn RenderbufferStorage(
     internalformat: types::GLenum,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLsizei, types::GLsizei) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLsizei, types::GLsizei),
     >(storage::RenderbufferStorage.f)(target, internalformat, width, height)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4599,7 +4463,7 @@ pub unsafe fn RenderbufferStorageMultisample(
     internalformat: types::GLenum,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4608,27 +4472,25 @@ pub unsafe fn RenderbufferStorageMultisample(
             types::GLenum,
             types::GLsizei,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::RenderbufferStorageMultisample.f)(target, samples, internalformat, width, height)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ResumeTransformFeedback() -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn() -> ()>(
-        storage::ResumeTransformFeedback.f,
-    )()
+pub unsafe fn ResumeTransformFeedback() {
+    __gl_imports::mem::transmute::<_, extern "system" fn()>(storage::ResumeTransformFeedback.f)()
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn SampleCoverage(value: types::GLfloat, invert: types::GLboolean) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat, types::GLboolean) -> ()>(
+pub unsafe fn SampleCoverage(value: types::GLfloat, invert: types::GLboolean) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLfloat, types::GLboolean)>(
         storage::SampleCoverage.f,
     )(value, invert)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn SampleMaski(maskNumber: types::GLuint, mask: types::GLbitfield) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLbitfield) -> ()>(
+pub unsafe fn SampleMaski(maskNumber: types::GLuint, mask: types::GLbitfield) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLbitfield)>(
         storage::SampleMaski.f,
     )(maskNumber, mask)
 }
@@ -4638,10 +4500,10 @@ pub unsafe fn SamplerParameterf(
     sampler: types::GLuint,
     pname: types::GLenum,
     param: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, types::GLfloat),
     >(storage::SamplerParameterf.f)(sampler, pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4650,23 +4512,18 @@ pub unsafe fn SamplerParameterfv(
     sampler: types::GLuint,
     pname: types::GLenum,
     param: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *const types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *const types::GLfloat),
     >(storage::SamplerParameterfv.f)(sampler, pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn SamplerParameteri(
-    sampler: types::GLuint,
-    pname: types::GLenum,
-    param: types::GLint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLuint, types::GLenum, types::GLint) -> (),
-    >(storage::SamplerParameteri.f)(sampler, pname, param)
+pub unsafe fn SamplerParameteri(sampler: types::GLuint, pname: types::GLenum, param: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLenum, types::GLint)>(
+        storage::SamplerParameteri.f,
+    )(sampler, pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4674,10 +4531,10 @@ pub unsafe fn SamplerParameteriv(
     sampler: types::GLuint,
     pname: types::GLenum,
     param: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLenum, *const types::GLint) -> (),
+        extern "system" fn(types::GLuint, types::GLenum, *const types::GLint),
     >(storage::SamplerParameteriv.f)(sampler, pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4687,10 +4544,10 @@ pub unsafe fn Scissor(
     y: types::GLint,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLint, types::GLsizei, types::GLsizei) -> (),
+        extern "system" fn(types::GLint, types::GLint, types::GLsizei, types::GLsizei),
     >(storage::Scissor.f)(x, y, width, height)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4701,7 +4558,7 @@ pub unsafe fn ShaderBinary(
     binaryformat: types::GLenum,
     binary: *const __gl_imports::raw::c_void,
     length: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4710,7 +4567,7 @@ pub unsafe fn ShaderBinary(
             types::GLenum,
             *const __gl_imports::raw::c_void,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::ShaderBinary.f)(count, shaders, binaryformat, binary, length)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4720,7 +4577,7 @@ pub unsafe fn ShaderSource(
     count: types::GLsizei,
     string: *const *const types::GLchar,
     length: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4728,16 +4585,15 @@ pub unsafe fn ShaderSource(
             types::GLsizei,
             *const *const types::GLchar,
             *const types::GLint,
-        ) -> (),
+        ),
     >(storage::ShaderSource.f)(shader, count, string, length)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn StencilFunc(func: types::GLenum, ref_: types::GLint, mask: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLenum, types::GLint, types::GLuint) -> (),
-    >(storage::StencilFunc.f)(func, ref_, mask)
+pub unsafe fn StencilFunc(func: types::GLenum, ref_: types::GLint, mask: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLint, types::GLuint)>(
+        storage::StencilFunc.f,
+    )(func, ref_, mask)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4746,33 +4602,32 @@ pub unsafe fn StencilFuncSeparate(
     func: types::GLenum,
     ref_: types::GLint,
     mask: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLint, types::GLuint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLint, types::GLuint),
     >(storage::StencilFuncSeparate.f)(face, func, ref_, mask)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn StencilMask(mask: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::StencilMask.f,
-    )(mask)
+pub unsafe fn StencilMask(mask: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::StencilMask.f)(
+        mask,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn StencilMaskSeparate(face: types::GLenum, mask: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint) -> ()>(
+pub unsafe fn StencilMaskSeparate(face: types::GLenum, mask: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLuint)>(
         storage::StencilMaskSeparate.f,
     )(face, mask)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn StencilOp(fail: types::GLenum, zfail: types::GLenum, zpass: types::GLenum) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLenum) -> (),
-    >(storage::StencilOp.f)(fail, zfail, zpass)
+pub unsafe fn StencilOp(fail: types::GLenum, zfail: types::GLenum, zpass: types::GLenum) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum, types::GLenum)>(
+        storage::StencilOp.f,
+    )(fail, zfail, zpass)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4781,10 +4636,10 @@ pub unsafe fn StencilOpSeparate(
     sfail: types::GLenum,
     dpfail: types::GLenum,
     dppass: types::GLenum,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, types::GLenum) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLenum, types::GLenum),
     >(storage::StencilOpSeparate.f)(face, sfail, dpfail, dppass)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4799,7 +4654,7 @@ pub unsafe fn TexImage2D(
     format: types::GLenum,
     type_: types::GLenum,
     pixels: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4812,7 +4667,7 @@ pub unsafe fn TexImage2D(
             types::GLenum,
             types::GLenum,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::TexImage2D.f)(
         target,
         level,
@@ -4838,7 +4693,7 @@ pub unsafe fn TexImage3D(
     format: types::GLenum,
     type_: types::GLenum,
     pixels: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4852,7 +4707,7 @@ pub unsafe fn TexImage3D(
             types::GLenum,
             types::GLenum,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::TexImage3D.f)(
         target,
         level,
@@ -4868,14 +4723,10 @@ pub unsafe fn TexImage3D(
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn TexParameterf(
-    target: types::GLenum,
-    pname: types::GLenum,
-    param: types::GLfloat,
-) -> () {
+pub unsafe fn TexParameterf(target: types::GLenum, pname: types::GLenum, param: types::GLfloat) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLfloat) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, types::GLfloat),
     >(storage::TexParameterf.f)(target, pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4884,23 +4735,18 @@ pub unsafe fn TexParameterfv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *const types::GLfloat) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *const types::GLfloat),
     >(storage::TexParameterfv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn TexParameteri(
-    target: types::GLenum,
-    pname: types::GLenum,
-    param: types::GLint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLenum, types::GLenum, types::GLint) -> (),
-    >(storage::TexParameteri.f)(target, pname, param)
+pub unsafe fn TexParameteri(target: types::GLenum, pname: types::GLenum, param: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLenum, types::GLenum, types::GLint)>(
+        storage::TexParameteri.f,
+    )(target, pname, param)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -4908,10 +4754,10 @@ pub unsafe fn TexParameteriv(
     target: types::GLenum,
     pname: types::GLenum,
     params: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLenum, types::GLenum, *const types::GLint) -> (),
+        extern "system" fn(types::GLenum, types::GLenum, *const types::GLint),
     >(storage::TexParameteriv.f)(target, pname, params)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4922,7 +4768,7 @@ pub unsafe fn TexStorage2D(
     internalformat: types::GLenum,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4931,7 +4777,7 @@ pub unsafe fn TexStorage2D(
             types::GLenum,
             types::GLsizei,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::TexStorage2D.f)(target, levels, internalformat, width, height)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4943,7 +4789,7 @@ pub unsafe fn TexStorage2DMultisample(
     width: types::GLsizei,
     height: types::GLsizei,
     fixedsamplelocations: types::GLboolean,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4953,7 +4799,7 @@ pub unsafe fn TexStorage2DMultisample(
             types::GLsizei,
             types::GLsizei,
             types::GLboolean,
-        ) -> (),
+        ),
     >(storage::TexStorage2DMultisample.f)(
         target,
         samples,
@@ -4972,7 +4818,7 @@ pub unsafe fn TexStorage3D(
     width: types::GLsizei,
     height: types::GLsizei,
     depth: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -4982,7 +4828,7 @@ pub unsafe fn TexStorage3D(
             types::GLsizei,
             types::GLsizei,
             types::GLsizei,
-        ) -> (),
+        ),
     >(storage::TexStorage3D.f)(target, levels, internalformat, width, height, depth)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -4997,7 +4843,7 @@ pub unsafe fn TexSubImage2D(
     format: types::GLenum,
     type_: types::GLenum,
     pixels: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5010,7 +4856,7 @@ pub unsafe fn TexSubImage2D(
             types::GLenum,
             types::GLenum,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::TexSubImage2D.f)(
         target, level, xoffset, yoffset, width, height, format, type_, pixels,
     )
@@ -5029,7 +4875,7 @@ pub unsafe fn TexSubImage3D(
     format: types::GLenum,
     type_: types::GLenum,
     pixels: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5044,7 +4890,7 @@ pub unsafe fn TexSubImage3D(
             types::GLenum,
             types::GLenum,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::TexSubImage3D.f)(
         target, level, xoffset, yoffset, zoffset, width, height, depth, format, type_, pixels,
     )
@@ -5056,7 +4902,7 @@ pub unsafe fn TransformFeedbackVaryings(
     count: types::GLsizei,
     varyings: *const *const types::GLchar,
     bufferMode: types::GLenum,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5064,13 +4910,13 @@ pub unsafe fn TransformFeedbackVaryings(
             types::GLsizei,
             *const *const types::GLchar,
             types::GLenum,
-        ) -> (),
+        ),
     >(storage::TransformFeedbackVaryings.f)(program, count, varyings, bufferMode)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Uniform1f(location: types::GLint, v0: types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLfloat) -> ()>(
+pub unsafe fn Uniform1f(location: types::GLint, v0: types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLfloat)>(
         storage::Uniform1f.f,
     )(location, v0)
 }
@@ -5080,16 +4926,16 @@ pub unsafe fn Uniform1fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::Uniform1fv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Uniform1i(location: types::GLint, v0: types::GLint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLint) -> ()>(
+pub unsafe fn Uniform1i(location: types::GLint, v0: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLint)>(
         storage::Uniform1i.f,
     )(location, v0)
 }
@@ -5099,16 +4945,16 @@ pub unsafe fn Uniform1iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint),
     >(storage::Uniform1iv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Uniform1ui(location: types::GLint, v0: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLuint) -> ()>(
+pub unsafe fn Uniform1ui(location: types::GLint, v0: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLuint)>(
         storage::Uniform1ui.f,
     )(location, v0)
 }
@@ -5118,18 +4964,18 @@ pub unsafe fn Uniform1uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::Uniform1uiv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Uniform2f(location: types::GLint, v0: types::GLfloat, v1: types::GLfloat) -> () {
+pub unsafe fn Uniform2f(location: types::GLint, v0: types::GLfloat, v1: types::GLfloat) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLfloat, types::GLfloat) -> (),
+        extern "system" fn(types::GLint, types::GLfloat, types::GLfloat),
     >(storage::Uniform2f.f)(location, v0, v1)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5138,19 +4984,18 @@ pub unsafe fn Uniform2fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::Uniform2fv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Uniform2i(location: types::GLint, v0: types::GLint, v1: types::GLint) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLint, types::GLint, types::GLint) -> (),
-    >(storage::Uniform2i.f)(location, v0, v1)
+pub unsafe fn Uniform2i(location: types::GLint, v0: types::GLint, v1: types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLint, types::GLint)>(
+        storage::Uniform2i.f,
+    )(location, v0, v1)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -5158,19 +5003,18 @@ pub unsafe fn Uniform2iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint),
     >(storage::Uniform2iv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn Uniform2ui(location: types::GLint, v0: types::GLuint, v1: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLint, types::GLuint, types::GLuint) -> (),
-    >(storage::Uniform2ui.f)(location, v0, v1)
+pub unsafe fn Uniform2ui(location: types::GLint, v0: types::GLuint, v1: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLint, types::GLuint, types::GLuint)>(
+        storage::Uniform2ui.f,
+    )(location, v0, v1)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -5178,10 +5022,10 @@ pub unsafe fn Uniform2uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::Uniform2uiv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5191,10 +5035,10 @@ pub unsafe fn Uniform3f(
     v0: types::GLfloat,
     v1: types::GLfloat,
     v2: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLfloat, types::GLfloat, types::GLfloat) -> (),
+        extern "system" fn(types::GLint, types::GLfloat, types::GLfloat, types::GLfloat),
     >(storage::Uniform3f.f)(location, v0, v1, v2)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5203,10 +5047,10 @@ pub unsafe fn Uniform3fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::Uniform3fv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5216,10 +5060,10 @@ pub unsafe fn Uniform3i(
     v0: types::GLint,
     v1: types::GLint,
     v2: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLint, types::GLint, types::GLint) -> (),
+        extern "system" fn(types::GLint, types::GLint, types::GLint, types::GLint),
     >(storage::Uniform3i.f)(location, v0, v1, v2)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5228,10 +5072,10 @@ pub unsafe fn Uniform3iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint),
     >(storage::Uniform3iv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5241,10 +5085,10 @@ pub unsafe fn Uniform3ui(
     v0: types::GLuint,
     v1: types::GLuint,
     v2: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLuint, types::GLuint, types::GLuint) -> (),
+        extern "system" fn(types::GLint, types::GLuint, types::GLuint, types::GLuint),
     >(storage::Uniform3ui.f)(location, v0, v1, v2)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5253,10 +5097,10 @@ pub unsafe fn Uniform3uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::Uniform3uiv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5267,7 +5111,7 @@ pub unsafe fn Uniform4f(
     v1: types::GLfloat,
     v2: types::GLfloat,
     v3: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5276,7 +5120,7 @@ pub unsafe fn Uniform4f(
             types::GLfloat,
             types::GLfloat,
             types::GLfloat,
-        ) -> (),
+        ),
     >(storage::Uniform4f.f)(location, v0, v1, v2, v3)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5285,10 +5129,10 @@ pub unsafe fn Uniform4fv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLfloat),
     >(storage::Uniform4fv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5299,16 +5143,10 @@ pub unsafe fn Uniform4i(
     v1: types::GLint,
     v2: types::GLint,
     v3: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLint,
-            types::GLint,
-            types::GLint,
-            types::GLint,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLint, types::GLint, types::GLint, types::GLint),
     >(storage::Uniform4i.f)(location, v0, v1, v2, v3)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5317,10 +5155,10 @@ pub unsafe fn Uniform4iv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLint),
     >(storage::Uniform4iv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5331,7 +5169,7 @@ pub unsafe fn Uniform4ui(
     v1: types::GLuint,
     v2: types::GLuint,
     v3: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5340,7 +5178,7 @@ pub unsafe fn Uniform4ui(
             types::GLuint,
             types::GLuint,
             types::GLuint,
-        ) -> (),
+        ),
     >(storage::Uniform4ui.f)(location, v0, v1, v2, v3)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5349,10 +5187,10 @@ pub unsafe fn Uniform4uiv(
     location: types::GLint,
     count: types::GLsizei,
     value: *const types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, *const types::GLuint),
     >(storage::Uniform4uiv.f)(location, count, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5361,11 +5199,10 @@ pub unsafe fn UniformBlockBinding(
     program: types::GLuint,
     uniformBlockIndex: types::GLuint,
     uniformBlockBinding: types::GLuint,
-) -> () {
-    __gl_imports::mem::transmute::<
-        _,
-        extern "system" fn(types::GLuint, types::GLuint, types::GLuint) -> (),
-    >(storage::UniformBlockBinding.f)(program, uniformBlockIndex, uniformBlockBinding)
+) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint, types::GLuint)>(
+        storage::UniformBlockBinding.f,
+    )(program, uniformBlockIndex, uniformBlockBinding)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -5374,15 +5211,10 @@ pub unsafe fn UniformMatrix2fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix2fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5392,15 +5224,10 @@ pub unsafe fn UniformMatrix2x3fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix2x3fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5410,15 +5237,10 @@ pub unsafe fn UniformMatrix2x4fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix2x4fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5428,15 +5250,10 @@ pub unsafe fn UniformMatrix3fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix3fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5446,15 +5263,10 @@ pub unsafe fn UniformMatrix3x2fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix3x2fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5464,15 +5276,10 @@ pub unsafe fn UniformMatrix3x4fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix3x4fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5482,15 +5289,10 @@ pub unsafe fn UniformMatrix4fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix4fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5500,15 +5302,10 @@ pub unsafe fn UniformMatrix4x2fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix4x2fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5518,15 +5315,10 @@ pub unsafe fn UniformMatrix4x3fv(
     count: types::GLsizei,
     transpose: types::GLboolean,
     value: *const types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLint,
-            types::GLsizei,
-            types::GLboolean,
-            *const types::GLfloat,
-        ) -> (),
+        extern "system" fn(types::GLint, types::GLsizei, types::GLboolean, *const types::GLfloat),
     >(storage::UniformMatrix4x3fv.f)(location, count, transpose, value)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5538,10 +5330,10 @@ pub unsafe fn UnmapBuffer(target: types::GLenum) -> types::GLboolean {
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn UseProgram(program: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::UseProgram.f,
-    )(program)
+pub unsafe fn UseProgram(program: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::UseProgram.f)(
+        program,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
@@ -5549,52 +5341,52 @@ pub unsafe fn UseProgramStages(
     pipeline: types::GLuint,
     stages: types::GLbitfield,
     program: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLbitfield, types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLbitfield, types::GLuint),
     >(storage::UseProgramStages.f)(pipeline, stages, program)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ValidateProgram(program: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
-        storage::ValidateProgram.f,
-    )(program)
+pub unsafe fn ValidateProgram(program: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(storage::ValidateProgram.f)(
+        program,
+    )
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn ValidateProgramPipeline(pipeline: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint) -> ()>(
+pub unsafe fn ValidateProgramPipeline(pipeline: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint)>(
         storage::ValidateProgramPipeline.f,
     )(pipeline)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttrib1f(index: types::GLuint, x: types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLfloat) -> ()>(
+pub unsafe fn VertexAttrib1f(index: types::GLuint, x: types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLfloat)>(
         storage::VertexAttrib1f.f,
     )(index, x)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttrib1fv(index: types::GLuint, v: *const types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat) -> ()>(
+pub unsafe fn VertexAttrib1fv(index: types::GLuint, v: *const types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat)>(
         storage::VertexAttrib1fv.f,
     )(index, v)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttrib2f(index: types::GLuint, x: types::GLfloat, y: types::GLfloat) -> () {
+pub unsafe fn VertexAttrib2f(index: types::GLuint, x: types::GLfloat, y: types::GLfloat) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLfloat, types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLfloat, types::GLfloat),
     >(storage::VertexAttrib2f.f)(index, x, y)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttrib2fv(index: types::GLuint, v: *const types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat) -> ()>(
+pub unsafe fn VertexAttrib2fv(index: types::GLuint, v: *const types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat)>(
         storage::VertexAttrib2fv.f,
     )(index, v)
 }
@@ -5605,16 +5397,16 @@ pub unsafe fn VertexAttrib3f(
     x: types::GLfloat,
     y: types::GLfloat,
     z: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLfloat, types::GLfloat, types::GLfloat) -> (),
+        extern "system" fn(types::GLuint, types::GLfloat, types::GLfloat, types::GLfloat),
     >(storage::VertexAttrib3f.f)(index, x, y, z)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttrib3fv(index: types::GLuint, v: *const types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat) -> ()>(
+pub unsafe fn VertexAttrib3fv(index: types::GLuint, v: *const types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat)>(
         storage::VertexAttrib3fv.f,
     )(index, v)
 }
@@ -5626,7 +5418,7 @@ pub unsafe fn VertexAttrib4f(
     y: types::GLfloat,
     z: types::GLfloat,
     w: types::GLfloat,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5635,27 +5427,27 @@ pub unsafe fn VertexAttrib4f(
             types::GLfloat,
             types::GLfloat,
             types::GLfloat,
-        ) -> (),
+        ),
     >(storage::VertexAttrib4f.f)(index, x, y, z, w)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttrib4fv(index: types::GLuint, v: *const types::GLfloat) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat) -> ()>(
+pub unsafe fn VertexAttrib4fv(index: types::GLuint, v: *const types::GLfloat) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLfloat)>(
         storage::VertexAttrib4fv.f,
     )(index, v)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttribBinding(attribindex: types::GLuint, bindingindex: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint) -> ()>(
+pub unsafe fn VertexAttribBinding(attribindex: types::GLuint, bindingindex: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint)>(
         storage::VertexAttribBinding.f,
     )(attribindex, bindingindex)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttribDivisor(index: types::GLuint, divisor: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint) -> ()>(
+pub unsafe fn VertexAttribDivisor(index: types::GLuint, divisor: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint)>(
         storage::VertexAttribDivisor.f,
     )(index, divisor)
 }
@@ -5667,7 +5459,7 @@ pub unsafe fn VertexAttribFormat(
     type_: types::GLenum,
     normalized: types::GLboolean,
     relativeoffset: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5676,7 +5468,7 @@ pub unsafe fn VertexAttribFormat(
             types::GLenum,
             types::GLboolean,
             types::GLuint,
-        ) -> (),
+        ),
     >(storage::VertexAttribFormat.f)(attribindex, size, type_, normalized, relativeoffset)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5687,22 +5479,16 @@ pub unsafe fn VertexAttribI4i(
     y: types::GLint,
     z: types::GLint,
     w: types::GLint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(
-            types::GLuint,
-            types::GLint,
-            types::GLint,
-            types::GLint,
-            types::GLint,
-        ) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLint, types::GLint, types::GLint),
     >(storage::VertexAttribI4i.f)(index, x, y, z, w)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttribI4iv(index: types::GLuint, v: *const types::GLint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLint) -> ()>(
+pub unsafe fn VertexAttribI4iv(index: types::GLuint, v: *const types::GLint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLint)>(
         storage::VertexAttribI4iv.f,
     )(index, v)
 }
@@ -5714,7 +5500,7 @@ pub unsafe fn VertexAttribI4ui(
     y: types::GLuint,
     z: types::GLuint,
     w: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5723,13 +5509,13 @@ pub unsafe fn VertexAttribI4ui(
             types::GLuint,
             types::GLuint,
             types::GLuint,
-        ) -> (),
+        ),
     >(storage::VertexAttribI4ui.f)(index, x, y, z, w)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexAttribI4uiv(index: types::GLuint, v: *const types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLuint) -> ()>(
+pub unsafe fn VertexAttribI4uiv(index: types::GLuint, v: *const types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, *const types::GLuint)>(
         storage::VertexAttribI4uiv.f,
     )(index, v)
 }
@@ -5740,10 +5526,10 @@ pub unsafe fn VertexAttribIFormat(
     size: types::GLint,
     type_: types::GLenum,
     relativeoffset: types::GLuint,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLuint, types::GLint, types::GLenum, types::GLuint) -> (),
+        extern "system" fn(types::GLuint, types::GLint, types::GLenum, types::GLuint),
     >(storage::VertexAttribIFormat.f)(attribindex, size, type_, relativeoffset)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5754,7 +5540,7 @@ pub unsafe fn VertexAttribIPointer(
     type_: types::GLenum,
     stride: types::GLsizei,
     pointer: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5763,7 +5549,7 @@ pub unsafe fn VertexAttribIPointer(
             types::GLenum,
             types::GLsizei,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::VertexAttribIPointer.f)(index, size, type_, stride, pointer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
@@ -5775,7 +5561,7 @@ pub unsafe fn VertexAttribPointer(
     normalized: types::GLboolean,
     stride: types::GLsizei,
     pointer: *const __gl_imports::raw::c_void,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
         extern "system" fn(
@@ -5785,13 +5571,13 @@ pub unsafe fn VertexAttribPointer(
             types::GLboolean,
             types::GLsizei,
             *const __gl_imports::raw::c_void,
-        ) -> (),
+        ),
     >(storage::VertexAttribPointer.f)(index, size, type_, normalized, stride, pointer)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn VertexBindingDivisor(bindingindex: types::GLuint, divisor: types::GLuint) -> () {
-    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint) -> ()>(
+pub unsafe fn VertexBindingDivisor(bindingindex: types::GLuint, divisor: types::GLuint) {
+    __gl_imports::mem::transmute::<_, extern "system" fn(types::GLuint, types::GLuint)>(
         storage::VertexBindingDivisor.f,
     )(bindingindex, divisor)
 }
@@ -5802,22 +5588,18 @@ pub unsafe fn Viewport(
     y: types::GLint,
     width: types::GLsizei,
     height: types::GLsizei,
-) -> () {
+) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLint, types::GLint, types::GLsizei, types::GLsizei) -> (),
+        extern "system" fn(types::GLint, types::GLint, types::GLsizei, types::GLsizei),
     >(storage::Viewport.f)(x, y, width, height)
 }
 #[allow(non_snake_case, unused_variables, dead_code)]
 #[inline]
-pub unsafe fn WaitSync(
-    sync: types::GLsync,
-    flags: types::GLbitfield,
-    timeout: types::GLuint64,
-) -> () {
+pub unsafe fn WaitSync(sync: types::GLsync, flags: types::GLbitfield, timeout: types::GLuint64) {
     __gl_imports::mem::transmute::<
         _,
-        extern "system" fn(types::GLsync, types::GLbitfield, types::GLuint64) -> (),
+        extern "system" fn(types::GLsync, types::GLbitfield, types::GLuint64),
     >(storage::WaitSync.f)(sync, flags, timeout)
 }
 
