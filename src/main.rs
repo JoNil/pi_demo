@@ -7,7 +7,7 @@ use crate::{
     },
     gfx_backend::GlesBackend,
 };
-use glam::Mat4;
+use glam::{vec3, Mat4, Quat, Vec3};
 use rand::Rng;
 use std::f32::consts::PI;
 use winit::{
@@ -71,9 +71,9 @@ fn main() {
 
     #[rustfmt::skip]
     let vertices = [
-         0.0,    0.5,  -1.0,   1.0, 0.2, 0.3,
-         0.433, -0.25, -1.0,   0.1, 1.0, 0.3,
-        -0.433, -0.25, -1.0,   0.1, 0.2, 1.0,
+         0.0,    0.5,  0.0,   1.0, 0.2, 0.3,
+         0.433, -0.25, 0.0,   0.1, 1.0, 0.3,
+        -0.433, -0.25, 0.0,   0.1, 0.2, 1.0,
     ];
 
     let vbo = device
@@ -87,10 +87,14 @@ fn main() {
 
     let mut angle = 0.0;
 
-    let mut offsets = Vec::<f32>::new();
+    let mut offsets = Vec::new();
 
     for _i in 0..1000 {
-        offsets.push(rand::thread_rng().gen::<f32>() * 2.0 * PI);
+        offsets.push((
+            rand::thread_rng().gen::<f32>() * 2.0 * PI,
+            rand::thread_rng().gen::<f32>() - 0.5,
+            rand::thread_rng().gen::<f32>() - 0.5,
+        ));
     }
 
     event_loop.run_return(move |event, _, control_flow| {
@@ -110,9 +114,13 @@ fn main() {
                 );
 
                 for offset in &offsets {
-                    let rot = Mat4::from_rotation_z(angle + offset);
+                    let transform = Mat4::from_scale_rotation_translation(
+                        Vec3::splat(0.1),
+                        Quat::from_rotation_z(angle + offset.0),
+                        vec3(offset.1, offset.2, -1.0),
+                    );
 
-                    mvps.extend_from_slice(&(proj * rot).to_cols_array());
+                    mvps.extend_from_slice(&(proj * transform).to_cols_array());
                 }
 
                 angle += 0.005;
