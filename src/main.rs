@@ -8,6 +8,7 @@ use crate::{
     gfx_backend::GlesBackend,
 };
 use glam::Mat4;
+use rand::Rng;
 use std::f32::consts::PI;
 use winit::{
     event::Event,
@@ -21,18 +22,19 @@ mod gfx_backend;
 
 const VERT: &str = r#"
     #version 310 es
+    #define MAX_INSTANCES 1000
     layout(location = 0) in vec3 a_pos;
     layout(location = 1) in vec3 a_color;
 
     layout(location = 0) out vec3 v_color;
     
-    layout(binding = 0) uniform Locals {
-        mat4 u_mvp;
+    layout(std140, binding = 0) uniform Locals {
+        mat4 u_mvp[MAX_INSTANCES];
     };
 
     void main() {
         v_color = a_color;
-        gl_Position = u_mvp * vec4(a_pos, 1.0);
+        gl_Position = u_mvp[gl_InstanceID] * vec4(a_pos, 1.0);
     }
 "#;
 
@@ -85,14 +87,21 @@ fn main() {
 
     let mut angle = 0.0;
 
+    let mut offsets = Vec::<f32>::new();
+
+    for _i in 0..100 {
+        offsets.push(rand::thread_rng().gen::<f32>() * 2.0 * PI);
+    }
+
     event_loop.run_return(move |event, _, control_flow| {
         *control_flow = ControlFlow::Poll;
 
         match event {
             Event::RedrawRequested(_) => {
+                let mut mvps = Vec::new();
+
                 let mut encoder = device.create_command_encoder();
 
-                let rot = Mat4::from_rotation_z(angle);
                 let proj = Mat4::perspective_rh_gl(
                     PI / 2.0,
                     device.size().0 as f32 / device.size().1 as f32,
@@ -100,17 +109,22 @@ fn main() {
                     1000.0,
                 );
 
-                let mat = proj * rot;
+                for offset in &offsets {
+                    let rot = Mat4::from_rotation_z(angle + offset);
+
+                    mvps.extend_from_slice(&(proj * rot).to_cols_array());
+                }
 
                 angle += 0.005;
 
-                device.set_buffer_data(&uniform_buffer, &mat.to_cols_array());
+                device.set_buffer_data(&uniform_buffer, &mvps);
 
                 encoder.begin(Some(&clear_options));
                 encoder.set_pipeline(&pipeline);
                 encoder.bind_buffer(&vbo);
                 encoder.bind_buffer(&uniform_buffer);
                 encoder.draw(0, 3);
+                encoder.draw_instanced(0, 3, mvps.len() as i32);
                 encoder.end();
 
                 device.render(encoder.commands());
