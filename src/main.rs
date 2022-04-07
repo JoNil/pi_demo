@@ -89,7 +89,7 @@ fn main() {
 
     let mut offsets = Vec::<f32>::new();
 
-    for _i in 0..100 {
+    for _i in 0..1000 {
         offsets.push(rand::thread_rng().gen::<f32>() * 2.0 * PI);
     }
 
@@ -124,7 +124,7 @@ fn main() {
                 encoder.bind_buffer(&vbo);
                 encoder.bind_buffer(&uniform_buffer);
                 encoder.draw(0, 3);
-                encoder.draw_instanced(0, 3, mvps.len() as i32);
+                encoder.draw_instanced(0, 3, offsets.len() as i32);
                 encoder.end();
 
                 device.render(encoder.commands());
