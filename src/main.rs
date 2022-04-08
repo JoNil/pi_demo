@@ -7,6 +7,7 @@ use crate::{
     },
     gfx_backend::GlesBackend,
 };
+use camera::Camera;
 use glam::{vec3, Mat4, Quat, Vec3};
 use rand::Rng;
 use std::f32::consts::PI;
@@ -17,6 +18,7 @@ use winit::{
     window::WindowBuilder,
 };
 
+mod camera;
 mod gfx;
 mod gfx_backend;
 
@@ -85,6 +87,8 @@ fn main() {
 
     let uniform_buffer = device.create_uniform_buffer(0, "Locals").build().unwrap();
 
+    let mut camera = Camera::new();
+
     let mut angle = 0.0;
 
     let mut offsets = Vec::new();
@@ -92,8 +96,8 @@ fn main() {
     for _i in 0..1000 {
         offsets.push((
             rand::thread_rng().gen::<f32>() * 2.0 * PI,
-            rand::thread_rng().gen::<f32>() - 0.5,
-            rand::thread_rng().gen::<f32>() - 0.5,
+            rand::thread_rng().gen::<f32>() * 2.0 - 1.0,
+            rand::thread_rng().gen::<f32>() * 2.0 - 1.0,
         ));
     }
 
@@ -106,12 +110,7 @@ fn main() {
 
                 let mut encoder = device.create_command_encoder();
 
-                let proj = Mat4::perspective_rh_gl(
-                    PI / 2.0,
-                    device.size().0 as f32 / device.size().1 as f32,
-                    0.01,
-                    1000.0,
-                );
+                let proj = camera.update(device.size());
 
                 for offset in &offsets {
                     let transform = Mat4::from_scale_rotation_translation(
