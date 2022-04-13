@@ -1,0 +1,350 @@
+config : {
+    audio : {
+        inputs : ( );
+        delay : ( );
+        max_audio_gain_db : 0.0;
+    };
+    stereo_mode : "mono";
+    left_eye_pos : [ -0.0325, 0.0, 0.0 ];
+    right_eye_pos : [ 0.0325, 0.0, 0.0 ];
+    stereo_convergence_distance : 7.0;
+    edit_view_stereo_eye : "left";
+    equirect_supersampling : 1.2;
+    equirect_fxaa : false;
+    scene_manager : {
+        next_scene_id : 1;
+        transition_time : 300;
+        live_scene_id : -1;
+        scenes : ( {
+                scene_id : 0;
+                uuid : "4472af0d-1848-4eec-b90e-fb4efc06b1ee";
+                root_entity : {
+                    id : "";
+                    uuid : "2f97b290-91a6-4c0a-3585-bf9d01502b1e";
+                    entity_color : [ 0.98, 0.66444, 0.3038, 1.0 ];
+                    position : [ 0.0, 0.0, 0.0 ];
+                    rotation : [ 0.0, 0.0, 0.0 ];
+                    rotation_order : "x_y_z";
+                    pre_rotation : [ 0.0, 0.0, 0.0 ];
+                    pre_rotation_order : "x_y_z";
+                    scale : [ 1.0, 1.0, 1.0 ];
+                    lock_scale : true;
+                    eye : "both";
+                    disabled : false;
+                    is_template : false;
+                    type : "entity";
+                    dummy : 0;
+                    children : ( {
+                            id : "";
+                            uuid : "91fd8719-9206-460d-1a01-348b3d5df1ab";
+                            entity_color : [ 0.98, 0.66444, 0.3038, 1.0 ];
+                            position : [ 0.0, 0.0, 0.0 ];
+                            rotation : [ 0.0, 0.0, 0.0 ];
+                            rotation_order : "x_y_z";
+                            pre_rotation : [ 0.0, 0.0, 0.0 ];
+                            pre_rotation_order : "x_y_z";
+                            scale : [ 1.0, 1.0, 1.0 ];
+                            lock_scale : true;
+                            eye : "both";
+                            disabled : false;
+                            is_template : false;
+                            type : "plugin_entity";
+                            type_id : "f8af6c02-f226-457d-b93e-98d5cec6e5f8";
+                            type_name : "Example Rendering";
+                            options : ( );
+                            recording_path : "";
+                            raw_recorder_settings : {
+                                rec_path : "";
+                                headroom_mb : 2048;
+                                size_limit_mb : -1;
+                                use_ring_buffer : false;
+                                frameskip : 0;
+                            };
+                            children : ( );
+                        } );
+                };
+                audio_mix : {
+                    level : 1.0;
+                    sources : ( );
+                };
+                transport_position : [ 0.0, 0.0, 0.0 ];
+                overcapture_angles : [ 0.0, 0.0, 0.0, 0.7 ];
+                overcapture_transitions : ( );
+            } );
+    };
+    com_manager : {
+        max_packet_size : 1400;
+        max_thread_queue_size : 200;
+        limit_send_rate : true;
+        max_async_send_rate_hz : 120;
+        max_invalid_packets_in_a_row : 250;
+    };
+    default_recording_path : "";
+    raw_rec_create_new_folder : true;
+    raw_rec_frameskip : 0;
+    raw_rec_use_ring_buffer : false;
+    raw_rec_ring_buffer_size_mb : 1024;
+    raw_rec_extraction_settings : {
+        extraction_interval : 3.0;
+        extraction_wait_time : 2.0;
+        extraction_frame_amount : 200;
+        extraction_path : "";
+        extraction_entity_selection : "00000000-0000-0000-0000-000000000000";
+    };
+    plugin_dll_path : "target/debug";
+    stream_settings : {
+        output_projection : "equirect";
+        render_pixel_format : "int8";
+        cubemap_face_extra_angle : 0.0;
+        vr180_horizontal_fov : 180.0;
+        vr180_vertical_fov : 180.0;
+        vr180_edge_fade : 0.0;
+        out_crop_left : 0;
+        out_crop_right : 0;
+        out_crop_up : 0;
+        out_crop_down : 0;
+        bandwidth_control : {
+            enable : true;
+            enable_auto_mode_switch : false;
+            use_fec : false;
+            disable_output : false;
+            fec_min_extra_packets : 2;
+            fec_amount : 0.0;
+            dfec_bad_link_fade : 0.005;
+            packet_loss_penalty_factor : 1.0;
+            round_trip_derivative_penelty : 0.0003;
+            round_trip_derivative_cutoff : 0.01;
+            channel_usage_averaging : 0.05;
+            use_redundancy_regulation : true;
+            bandwidth_cutoff_for_max_channel_usage : 10.0;
+            max_ms_behind_for_max_channel_usage : 35.0;
+            target_usage_offset : 0.0;
+            bytes_in_flight_pid_i_asymmetric_factor : 1.0;
+            high : {
+                max_packets_size : 1400;
+                resolution_scale : 1.0;
+                frames_to_skip : 0;
+                bandwidth_factor_pid : {
+                    target : 0.0;
+                    pid_p : 0.0005;
+                    pid_i : 0.001;
+                    pid_d : 0.000001;
+                    pid_state_clamp_low : 0.0;
+                    pid_state_clamp_high : 2000.0;
+                };
+                bytes_in_flight_pid : {
+                    target : 0.1;
+                    pid_p : 0.0;
+                    pid_i : 50.0;
+                    pid_d : 0.0;
+                    pid_state_clamp_low : 0.0;
+                    pid_state_clamp_high : 2000.0;
+                };
+                switch_down_region : 4.0;
+                switch_down_region_time : 2.0;
+                switch_up_region : 0.0;
+                switch_up_region_time : -1.0;
+            };
+            medium : {
+                max_packets_size : 512;
+                resolution_scale : 0.5;
+                frames_to_skip : 1;
+                bandwidth_factor_pid : {
+                    target : 0.0;
+                    pid_p : 0.0005;
+                    pid_i : 0.001;
+                    pid_d : 0.000001;
+                    pid_state_clamp_low : 0.0;
+                    pid_state_clamp_high : 2000.0;
+                };
+                bytes_in_flight_pid : {
+                    target : 0.1;
+                    pid_p : 0.0;
+                    pid_i : 50.0;
+                    pid_d : 0.0;
+                    pid_state_clamp_low : 0.0;
+                    pid_state_clamp_high : 2000.0;
+                };
+                switch_down_region : 0.75;
+                switch_down_region_time : 2.0;
+                switch_up_region : 5.0;
+                switch_up_region_time : 2.0;
+            };
+            low : {
+                max_packets_size : 256;
+                resolution_scale : 0.25;
+                frames_to_skip : 2;
+                bandwidth_factor_pid : {
+                    target : 0.0;
+                    pid_p : 0.0005;
+                    pid_i : 0.001;
+                    pid_d : 0.000001;
+                    pid_state_clamp_low : 0.0;
+                    pid_state_clamp_high : 2000.0;
+                };
+                bytes_in_flight_pid : {
+                    target : 0.1;
+                    pid_p : 0.0;
+                    pid_i : 50.0;
+                    pid_d : 0.0;
+                    pid_state_clamp_low : 0.0;
+                    pid_state_clamp_high : 2000.0;
+                };
+                switch_down_region : 0.0;
+                switch_down_region_time : -1.0;
+                switch_up_region : 1.0;
+                switch_up_region_time : 2.0;
+            };
+        };
+        multiple_links : {
+            enabled : true;
+            interfaces : ( );
+        };
+        background_color : [ 0.0, 0.0, 0.0 ];
+        type : "realtime_nvenc_gstreamer";
+        streamer_max_fps : 200.0;
+        streamer_min_fps : 10.0;
+        sync_to_video_source : false;
+        sync_video_source_id : "";
+        sync_delay_us : 0;
+        coded_output_enable : false;
+        coded_output_overwrite_existing : false;
+        coded_output_file_name : "";
+        net_settings : {
+            links : ( {
+                    mode : "sender";
+                    receive_port : 47000;
+                    bind_ip : "0.0.0.0";
+                    bind_device : "";
+                    destination_ip : "127.0.0.1";
+                    destination_port : 47000;
+                    reverse : false;
+                    use_dynamic_bonding : false;
+                    group_fec_redundancy : 0;
+                    bonding_group : 0;
+                    bonding_packet_start_range : 0.0;
+                    bonding_packet_end_range : 1.0;
+                    encryption_settings : {
+                        enable : false;
+                        private_key_path : "";
+                        allowed_public_keys : [ ];
+                        internal_source_ip : "";
+                        internal_destination_ip : "";
+                    };
+                } );
+        };
+        packet_size : 1400;
+        ip_address : "";
+        port : 0;
+        encoder_settings : {
+            use_custom_resolution : true;
+            use_scene_specific_resolution : false;
+            force_valid_nvdec_hevc_resolution : true;
+            width : 3840;
+            height : 1088;
+            scene_resolution : ( );
+            frame_rate : "f_r_60";
+            fps : -1.0;
+            bitrate : 10000000L;
+            intra_refresh_period : 30;
+            color_format : "y_cb_cr_hd_full";
+            intra_refresh : true;
+            codec : "hevc";
+            max_bitrate : 40000000L;
+            const_q : 10;
+            intra_refresh_count : 29;
+            auto_intra_refresh : false;
+            spatial_adaptive_quantization : false;
+            temporal_adaptive_quantization : false;
+            zero_reorder_delay : false;
+            gop_length : 30;
+            frames_type : "ipp";
+            preset : "low_latency_high_performance";
+            profile_h264 : "auto";
+            profile_h265 : "auto";
+            level_h264 : "auto";
+            level_h265 : "auto";
+            rate_control_mode : "cbr";
+            pipelining_type : "one_wait_state";
+            tegra_encoder_settings : {
+                tegra_hw_preset : "ultra_fast";
+                profile_h264 : "baseline";
+                profile_h265 : "main";
+            };
+            nvmedia_encoder_settings : {
+                ultra_fast_encode : true;
+                instance_id : "instance0";
+                encode_quality : "l0";
+                profile_h264 : "auto";
+                profile_h265 : "auto";
+                level_h264 : "auto";
+                level_h265 : "auto";
+            };
+        };
+        audio_streamer_settings : {
+            buffer_limit_ms : 50;
+            enable_reorder_buffer : false;
+            reorder_buffer_packets : 5;
+            max_invalid_packets_in_a_row : 250;
+            auto_start_receiver : false;
+            device : {
+                description : "None";
+                short_desc : "None";
+                id : "";
+            };
+            encoder_settings : {
+                bitrate : 64000;
+                period : "p_e_r_i_o_d_480";
+                mode : "v_b_r";
+            };
+            capture_source : "system";
+        };
+    };
+    unix_epoc_anchor_time_sec : 0L;
+    unix_epoc_anchor_time_relative_nsec : 0;
+    saved_camera_states : ( );
+    default_camera_state : {
+        startupCamera : "equirect";
+        state : {
+            position : [ 0.0, 0.0, 0.0 ];
+            yaw : 0.0;
+            pitch : 0.0;
+            fov : 100.0;
+            focus_point : [ 0.0, 0.0 ];
+            theta : 0.785;
+            phi : -0.628;
+            r : 2.0;
+            orbit_fov : 100.0;
+        };
+    };
+    grid_behaviour : "only_for_orbit";
+    background_behaviour : "show_for_both";
+    background_color : [ 0.12, 0.12, 0.12 ];
+    grid_y : 0.0;
+    is_recorded : false;
+    direct_output_mode : true;
+    process_background_scenes : true;
+    camera_eye : "all";
+    player_sync_source : "00000000-0000-0000-0000-000000000000";
+    player_min_fps : 10.0;
+    extra_delay_after_sync_ms : 0.0;
+    force_feedback : {
+        enabled : false;
+        device_uuid : "00000000-0000-0000-0000-000000000000";
+        angle_scale : 1.0;
+        proportional : 5.0;
+        min : 0.0;
+        max : 0.5;
+        deadband : 0.1;
+        proportional_towards_center : 1.0;
+    };
+    project_midi_settings : {
+        controls : ( );
+    };
+    startup_scene : "00000000-0000-0000-0000-000000000000";
+    keyMapping : {
+        remapping_active : false;
+        remapped_buttons : ( );
+        remapped_axes : ( );
+    };
+};

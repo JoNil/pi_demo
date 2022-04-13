@@ -25,12 +25,16 @@ const VERT: &str = r#"
     layout(location = 0) out vec3 v_color;
     
     layout(std140, binding = 0) uniform Locals {
-        mat4 u_mvp[MAX_INSTANCES];
+        mat4 u_p[MAX_INSTANCES];
+    };
+
+    layout(std140, binding = 1) uniform DrawLocals {
+        mat4 u_mv;
     };
 
     void main() {
         v_color = a_color;
-        gl_Position = u_mvp[gl_InstanceID] * vec4(a_pos, 1.0);
+        gl_Position = u_mv * u_p[gl_InstanceID] * vec4(a_pos, 1.0);
     }
 "#;
 
@@ -51,6 +55,7 @@ struct State {
     pipeline: Pipeline,
     vbo: Buffer,
     uniform_buffer: Buffer,
+    draw_uniform_buffer: Buffer,
 
     angle: f32,
     offsets: Vec<(f32, f32, f32)>,
@@ -86,6 +91,10 @@ impl OdenPlugin for State {
             .unwrap();
 
         let uniform_buffer = device.create_uniform_buffer(0, "Locals").build().unwrap();
+        let draw_uniform_buffer = device
+            .create_uniform_buffer(1, "DrawLocals")
+            .build()
+            .unwrap();
 
         let mut offsets = Vec::new();
 
@@ -102,6 +111,7 @@ impl OdenPlugin for State {
             pipeline,
             vbo,
             uniform_buffer,
+            draw_uniform_buffer,
             angle: 0.0,
             offsets,
         }
@@ -109,14 +119,8 @@ impl OdenPlugin for State {
 
     fn shutdown(self, _api: &ShutdownParams) {}
 
-    fn update(&mut self, _api: &UpdateParams) {}
-
-    fn draw(&mut self, api: &DrawParams) {
-        let proj = Mat4::from(api.proj_matrix()) * Mat4::from(api.world_matrix());
-        let viewport = api.viewport();
-        let target_size = api.target_size();
-
-        self.device.set_size(target_size.0, target_size.1);
+    fn update(&mut self, _api: &UpdateParams) {
+        self.device.clean();
 
         let mut mvps = Vec::new();
 
@@ -127,12 +131,23 @@ impl OdenPlugin for State {
                 vec3(offset.1, offset.2, -1.0),
             );
 
-            mvps.extend_from_slice(&(proj * transform).to_cols_array());
+            mvps.extend_from_slice(&transform.to_cols_array());
         }
 
         self.angle += 0.005;
 
         self.device.set_buffer_data(&self.uniform_buffer, &mvps);
+    }
+
+    fn draw(&mut self, api: &DrawParams) {
+        let proj = Mat4::from(api.proj_matrix()) * Mat4::from(api.world_matrix());
+
+        let viewport = api.viewport();
+        let target_size = api.target_size();
+
+        self.device.set_size(target_size.0, target_size.1);
+        self.device
+            .set_buffer_data(&self.draw_uniform_buffer, &proj.to_cols_array());
 
         let mut encoder = self.device.create_command_encoder();
         encoder.begin(None);
@@ -145,12 +160,11 @@ impl OdenPlugin for State {
         encoder.set_pipeline(&self.pipeline);
         encoder.bind_buffer(&self.vbo);
         encoder.bind_buffer(&self.uniform_buffer);
+        encoder.bind_buffer(&self.draw_uniform_buffer);
         encoder.draw_instanced(0, 3, self.offsets.len() as i32);
         encoder.end();
 
         self.device.render(encoder.commands());
-
-        self.device.clean();
     }
 
     fn gui(&mut self, _api: &GuiParams) {}
