@@ -3,11 +3,12 @@ name = "pi_demo"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+crate-type = ["cdylib"]
+
+
 [dependencies]
 bytemuck = "1"
 glam = "0.20"
+oden_plugin_rs = { path = "C:/dev/Oden/projs/oden_plugin_rs" }
 rand = "0.8.5"
-winit = { version = "0.26", default-features = false, features = ["x11"] }
-
-[target.'cfg(windows)'.dependencies]
-raw-gl-context = "0.1"

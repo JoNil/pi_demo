@@ -85,9 +85,6 @@ pub trait DeviceBackend {
         bytes: &mut [u8],
         opts: &TextureRead,
     ) -> Result<(), String>;
-
-    /// Let the backend swap the window buffer
-    fn swap_buffers(&mut self);
 }
 
 /// Helper to drop resources on the backend
@@ -194,11 +191,6 @@ impl<B: DeviceBackend> Device<B> {
     #[inline]
     pub fn read_pixels<'a>(&'a mut self, texture: &'a Texture) -> TextureReader<B> {
         TextureReader::new(self, texture)
-    }
-
-    #[inline]
-    pub fn swap_buffers(&mut self) {
-        self.backend.swap_buffers();
     }
 
     #[inline]
