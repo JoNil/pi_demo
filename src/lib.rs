@@ -1,9 +1,7 @@
 use crate::{
     gfx::{
         buffer::{VertexFormat, VertexInfo},
-        color::Color,
         device::Device,
-        pipeline::ClearOptions,
     },
     gfx_backend::GlesBackend,
 };
@@ -50,7 +48,6 @@ const FRAG: &str = r#"
 
 struct State {
     device: Device<GlesBackend>,
-    clear_options: ClearOptions,
     pipeline: Pipeline,
     vbo: Buffer,
     uniform_buffer: Buffer,
@@ -62,8 +59,6 @@ struct State {
 impl OdenPlugin for State {
     fn init(api: &InitParams) -> Self {
         let mut device = Device::new(GlesBackend::new(api.gl_loader()).unwrap());
-
-        let clear_options = ClearOptions::color(Color::new(0.1, 0.2, 0.3, 1.0));
 
         let vertex_info = VertexInfo::new()
             .attr(0, VertexFormat::Float32x3)
@@ -104,7 +99,6 @@ impl OdenPlugin for State {
 
         State {
             device,
-            clear_options,
             pipeline,
             vbo,
             uniform_buffer,
@@ -141,7 +135,7 @@ impl OdenPlugin for State {
         self.device.set_buffer_data(&self.uniform_buffer, &mvps);
 
         let mut encoder = self.device.create_command_encoder();
-        encoder.begin(Some(&self.clear_options));
+        encoder.begin(None);
         encoder.set_viewport(
             viewport.0 as f32,
             viewport.1 as f32,
@@ -151,7 +145,6 @@ impl OdenPlugin for State {
         encoder.set_pipeline(&self.pipeline);
         encoder.bind_buffer(&self.vbo);
         encoder.bind_buffer(&self.uniform_buffer);
-        encoder.draw(0, 3);
         encoder.draw_instanced(0, 3, self.offsets.len() as i32);
         encoder.end();
 
