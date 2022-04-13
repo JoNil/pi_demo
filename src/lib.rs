@@ -123,6 +123,7 @@ impl OdenPlugin for State {
         self.device.clean();
 
         let mut mvps = Vec::new();
+        mvps.reserve(self.offsets.len() * 16);
 
         for offset in &self.offsets {
             let transform = Mat4::from_scale_rotation_translation(
