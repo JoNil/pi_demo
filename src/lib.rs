@@ -5,7 +5,10 @@ use crate::{
     },
     gfx_backend::GlesBackend,
 };
-use gfx::{buffer::Buffer, pipeline::Pipeline};
+use gfx::{
+    buffer::Buffer,
+    pipeline::{CompareMode, DepthStencil, Pipeline},
+};
 use glam::{vec3, Mat4, Quat, Vec3};
 use oden_plugin_rs::{
     register_plugin, DrawParams, GuiParams, InitParams, OdenPlugin, ShutdownParams, UpdateParams,
@@ -58,7 +61,7 @@ struct State {
     draw_uniform_buffer: Buffer,
 
     angle: f32,
-    offsets: Vec<(f32, f32, f32)>,
+    offsets: Vec<(f32, f32, f32, f32)>,
 }
 
 impl OdenPlugin for State {
@@ -73,6 +76,10 @@ impl OdenPlugin for State {
             .create_pipeline()
             .from(VERT, FRAG)
             .with_vertex_info(&vertex_info)
+            .with_depth_stencil(DepthStencil {
+                write: true,
+                compare: CompareMode::Less,
+            })
             .build()
             .unwrap();
 
@@ -103,6 +110,7 @@ impl OdenPlugin for State {
                 rand::thread_rng().gen::<f32>() * 2.0 * PI,
                 rand::thread_rng().gen::<f32>() * 2.0 - 1.0,
                 rand::thread_rng().gen::<f32>() * 2.0 - 1.0,
+                rand::thread_rng().gen::<f32>() * 0.05,
             ));
         }
 
@@ -129,7 +137,7 @@ impl OdenPlugin for State {
             let transform = Mat4::from_scale_rotation_translation(
                 Vec3::splat(0.1),
                 Quat::from_rotation_z(self.angle + offset.0),
-                vec3(offset.1, offset.2, -1.0),
+                vec3(offset.1, offset.2, -1.0 + offset.3),
             );
 
             mvps.extend_from_slice(&transform.to_cols_array());
